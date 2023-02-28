@@ -73,9 +73,9 @@ t_lexer *ft_lexer(char *input)
         }
         else
         {
-            tail->next = new;
-            new->prev = tail;
-            tail = new;
+            tail->next = new; // on fait pointer le new element vers le next de la queue
+            new->prev = tail; // on fait pointer la queue vers le prev de de new
+            tail = new; // le nouveau devient la queue
         }
     }
     // Libérer le buffer et retourner la tête de la liste chaînée
