@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/01 07:43:19 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:50:45 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,67 +101,65 @@ void print_cmds(t_simple_cmds *cmds)
     }
 }
 
-// Parcours la liste t_simple_cmds retourne par group_command() et verifie si redirection / builtin 
+// int is_redirection(int token) 
+// {
+// 	if(token >= 3 && token <= 6)
+// 		return(1);
+// 	return(0);
+// }
 
-t_simple_cmds	*ft_parse(t_lexer *lexer)
-{
-	t_simple_cmds	*cmds;
-	t_simple_cmds	*curr_cmd;
-	t_lexer			*curr_lexer;
+// int is_builtin(char *cmd)
+// {
+// 	if(!ft_strncmp(cmd, "echo", 5))
+// 		return(1);
+// 	else if(!ft_strncmp(cmd, "cd", 3))
+// 		return(1);
+// 	else if(!ft_strncmp(cmd, "pwd", 4))
+// 		return(1);
+// 	else if(!ft_strncmp(cmd, "export", 7))
+// 		return(1);
+// 	else if(!ft_strncmp(cmd, "unset", 6))
+// 		return(1);
+// 	else if(!ft_strncmp(cmd, "env", 4))
+// 		return(1);
+// 	else if(!ft_strncmp(cmd, "exit", 5))
+// 		return(1);
+// 	return(0);
+// }
 
-	cmds = group_command(lexer);
-	curr_cmd = cmds;
-	while (curr_cmd)
-	{
-		// Check for redirections and store in redirections list
-		curr_lexer = curr_cmd->str;
-		while (curr_lexer)
-		{
-			if (is_redirection(curr_lexer->token))
-			{
-				curr_cmd->redirections = lexer_add_node(curr_cmd->redirections, curr_lexer->token, curr_lexer->next->str);
-				curr_lexer = lexer_remove_node(curr_lexer);
-				curr_lexer = lexer_remove_node(curr_lexer);
-			}
-			else
-				curr_lexer = curr_lexer->next;
-		}
-		// Check for builtin command
-		if (curr_cmd->str && is_builtin(curr_cmd->str[0]))
-			curr_cmd->builtin = get_builtin_func(curr_cmd->str[0]);
+// t_lexer *lexer_add_node(t_lexer *lexer, int token, char *str)
+// {
+//     t_lexer *new_node;
+//     t_lexer *curr;
 
-		// Combine remaining words into 2D array
-		curr_cmd->str = lexer_to_str_array(curr_lexer, NULL);
+//     new_node = malloc(sizeof(t_lexer));
+//     if (!new_node)
+//         return NULL;
+//     new_node->token = token;
+//     new_node->str = strdup(str);
+//     new_node->next = NULL;
 
-		curr_cmd = curr_cmd->next;
-	}
+//     if (!lexer)
+//         return new_node;
 
-	return (cmds);
-}
+//     curr = lexer;
+//     while (curr->next)
+//         curr = curr->next;
+//     curr->next = new_node;
+
+//     return lexer;
+// }
 
 
-int is_redirection(t_lexer *lexer) 
-{
-	if(lexer->token >= 3 && lexer->token <= 6)
-		return(1);
-	return(0);
-}
+// t_lexer	*lexer_remove_node(t_lexer *lexer)
+// {
+// 	t_lexer *next_node;
 
-int is_builtin(char *cmd)
-{
-	if(!ft_strncmp(cmd, "echo", 5))
-		return(1);
-	else if(!ft_strncmp(cmd, "cd", 3))
-		return(1);
-	else if(!ft_strncmp(cmd, "pwd", 4))
-		return(1);
-	else if(!ft_strncmp(cmd, "export", 7))
-		return(1);
-	else if(!ft_strncmp(cmd, "unset", 6))
-		return(1);
-	else if(!ft_strncmp(cmd, "env", 4))
-		return(1);
-	else if(!ft_strncmp(cmd, "exit", 5))
-		return(1);
-	return(0);
-}
+// 	if (!lexer)
+// 		return (NULL);
+
+// 	next_node = lexer->next;
+// 	free(lexer->str);
+// 	free(lexer);
+// 	return (next_node);
+// }
