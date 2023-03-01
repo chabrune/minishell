@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/01 06:08:15 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/01 07:23:10 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <dirent.h>
 # include <string.h>
 # include <ctype.h>
+# include <stdbool.h>
 
 typedef enum s_tokens
 {
@@ -47,12 +48,6 @@ typedef struct s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
-typedef struct s_shell
-{
-    char *input;
-    char **inputs;
-}              t_shell;
-
 typedef struct s_tools
 {
     char    *args;
@@ -61,6 +56,8 @@ typedef struct s_tools
     t_lexer *lexer_list;
     int     pipes;
     int     *pid;
+    char    *input;
+    char    **inputs;
 }   t_tools;
 
 typedef struct s_simple_cmds
@@ -80,5 +77,8 @@ void			print_tokens(t_lexer *head);
 t_simple_cmds	*group_command(t_lexer *lexer);
 t_simple_cmds	*ft_parse(t_lexer *lexer);
 void            print_cmds(t_simple_cmds *cmds);
+int             is_redirection(t_lexer *lexer);
+int             is_builtin(char *cmd);
+
 
 #endif
