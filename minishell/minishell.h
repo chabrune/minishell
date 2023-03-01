@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/03 11:20:54 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/01 06:08:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ typedef struct s_simple_cmds
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input);
 void			print_tokens(t_lexer *head);
-t_simple_cmds 	*ft_parser(t_lexer *lexer);
-
+t_simple_cmds	*group_command(t_lexer *lexer);
+t_simple_cmds	*ft_parse(t_lexer *lexer);
+void            print_cmds(t_simple_cmds *cmds);
 
 #endif

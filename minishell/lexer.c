@@ -15,9 +15,11 @@ void print_tokens(t_lexer *head)
 {
     while (head != NULL)
     {
+        printf("=================\n");
         printf("Token: %s\n", head->str);
         printf("Token type: %d\n", head->token);
         printf("Index: %d\n", head->i);
+        printf("=================\n");
         head = head->next;
     }
 }
