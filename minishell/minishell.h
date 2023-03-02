@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/02 10:46:49 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:05:49 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "/Users/chabrune/Desktop/42-school/libft/libft.h"
+# include "libft/libft.h"
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <signal.h>

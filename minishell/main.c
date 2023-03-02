@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/02 11:20:10 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:08:35 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,15 @@ int main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	(void)envp;
-	if(argc == 1)
-	{
-		t_shell	*shell;
-		shell = malloc(sizeof(t_shell));
-		ft_init_shell(shell, argv, envp);
-		shell_loop(shell);
-		free(shell);
-	}
-	else
-		return(error_msg("ERREUR INPUT\n"));
+	(void)argc;
+	// if(argc == 1)
+	// {
+	// 	t_shell	*shell;
+	// 	shell = malloc(sizeof(t_shell));
+	// 	ft_init_shell(shell, argv, envp);
+	// 	shell_loop(shell);
+	// 	free(shell);
+	// }
+	// else
+	// 	return(error_msg("ERREUR INPUT\n"));
 }
