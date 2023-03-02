@@ -6,7 +6,7 @@
 #    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/02 12:32:55 by chabrune         ###   ########.fr        #
+#    Updated: 2023/03/02 15:45:52 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,20 +18,21 @@ CFLAGS  	=       -Wextra -Wall -Werror -g3
 CC      	=       gcc
 RM      	=       rm -rf
 LIBFT		=		"libft/libft.a"
-READLINE	=		 -lreadline -L "/Users/${USER}/.brew/opt/readline/lib"
+READLINE	=		 -lreadline -L readline
 OBJS    	=       $(SRCS:.c=.o)
 
 #######################################################
 ###### SOURCES
 
 SRCS       	=	main.c \
+				lexer.c
 
 
 #######################################################
 ###### RULES
 
 .c.o:
-			gcc ${CFLAGS} -I /Users/${USER}/.brew/opt/readline/include  -c $< -o $(<:.c=.o)
+			gcc ${CFLAGS} -I readline/include  -c $< -o $(<:.c=.o)
 
 all:		${NAME}
 

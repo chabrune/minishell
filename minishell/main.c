@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/02 12:52:29 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:54:03 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,35 +49,60 @@ int	error_and_exit(char *error)
 	exit(1);
 }
 
+// int	child1_process(t_shell *shell)
+// {
+// 	shell->cmd = get_cmd(shell->env_paths, shell->inputs[0]);
+// 	execve(shell->cmd, NULL, shell->env_paths);
+// 	perror("exceve");
+// 	exit(EXIT_FAILURE);
+// 	return (0);
+// }
+
+int	quote_unclosed(char *input)
+{
+	int i;
+
+	i = 0;
+	while(*input)
+	{
+		if(*input == 34 || *input == 39)
+			i++;
+	}
+	if(i % 2 != 0)
+		return(1);
+	return(0);
+}
+
 void	shell_loop(t_shell *shell)
 {
 	while(42)
 	{
-		shell->input = readline("> ");
+		shell->input = readline("EmmaLaBest$> ");
 		shell->inputs = ft_split(shell->input, ' ');
-		get_cmd(shell->env_paths, shell->inputs);
+		if(!quote_unclosed(shell->input))
+			ft_lexer(shell->input);
 		add_history(shell->input);
 		free(shell->input);
 	}
 }
 
-char	*get_cmd(char **paths, char **cmd)
-{
-	char	*tmp;
-	char	*command;
+// char	*get_cmd(char **paths, char *cmd)
+// {
+// 	char	*tmp;
+// 	char	*command;
 
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, 0) == 0)
-			return (command);
-		free(command);
-		paths++;
-	}
-	return (NULL);
-}
+// 	while (paths)
+// 	{
+// 		tmp = ft_strjoin(*paths, "/");
+// 		command = ft_strjoin(tmp, cmd);
+// 		free(tmp);
+// 		if (access(command, 0) == 0)
+// 			return (command);
+// 		free(command);
+// 		paths++;
+// 	}
+// 	return (NULL);
+// }
 
 char *get_env_path(char **env)
 {
@@ -91,22 +116,16 @@ void	ft_init_shell(t_shell *shell, char **ar, char **env)
 	(void)ar;
 	shell->env_path = get_env_path(env);
 	shell->env_paths = ft_split(shell->env_path, ':');
-
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	(void)envp;
-	(void)argc;
-	// if(argc == 1)
-	// {
-	// 	t_shell	*shell;
-	// 	shell = malloc(sizeof(t_shell));
-	// 	ft_init_shell(shell, argv, envp);
-	// 	shell_loop(shell);
-	// 	free(shell);
-	// }
-	// else
-	// 	return(error_msg("ERREUR INPUT\n"));
+	if(argc == 1)
+	{
+		t_shell	shell;
+		ft_init_shell(&shell, argv, envp);
+		shell_loop(&shell);
+	}
+	else
+		return(error_msg("ERREUR INPUT\n"));
 }
