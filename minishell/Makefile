@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
+#    By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/02 15:45:52 by chabrune         ###   ########.fr        #
+#    Updated: 2023/02/28 22:44:37 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OBJS    	=       $(SRCS:.c=.o)
 ###### SOURCES
 
 SRCS       	=	main.c \
-				lexer.c
+				lexer.c \
 
 
 #######################################################
@@ -38,11 +38,11 @@ all:		${NAME}
 
 ${NAME}:	${OBJS}
 			${MAKE} -C libft
-			gcc ${CFLAGS} ${LIBFT} ${OBJS} ${READLINE} -o ${NAME}
+			gcc ${CFLAGS} ${OBJS} ${LIBFT} ${READLINE} -o ${NAME}
 
 debug:		fclean ${OBJS}
 			${MAKE} -C libft
-			gcc ${CFLAGS} -fsanitize=address ${LIBFT} ${OBJS} ${READLINE} -o ${NAME}
+			gcc ${CFLAGS} -fsanitize=address ${OBJS} ${LIBFT} ${READLINE} -o ${NAME}
 
 clean:
 			${RM} ${OBJS}
