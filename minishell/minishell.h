@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/02 12:05:49 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:52:29 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,13 @@ typedef struct s_shell
 	char *env_path;
 	char **env_paths;
 }   t_shell;
+
+int		error_msg(char *error);
+int		error_and_exit(char *error);
+void	shell_loop(t_shell *shell);
+char	*get_cmd(char **paths, char **cmd);
+char 	*get_env_path(char **env);
+void	ft_init_shell(t_shell *shell, char **ar, char **env);
+
 
 #endif
