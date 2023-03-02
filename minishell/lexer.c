@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_lexer *new_token(char *str, t_tokens token, int i)
+t_lexer *new_token(char *str, t_tokens token, int i) 
 {
     t_lexer *new = (t_lexer *)malloc(sizeof(t_lexer));
     new->str = str;
@@ -11,7 +11,7 @@ t_lexer *new_token(char *str, t_tokens token, int i)
     return (new);
 }
 
-void print_tokens(t_lexer *head)
+void print_tokens(t_lexer *head) 
 {
     while (head != NULL)
     {
@@ -20,6 +20,14 @@ void print_tokens(t_lexer *head)
         printf("Index: %d\n", head->i);
         head = head->next;
     }
+}
+
+int ft_isspace(int c)
+{
+    if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v')
+        return 1;
+    else
+        return 0;
 }
 
 t_lexer *ft_lexer(char *input)
@@ -33,10 +41,10 @@ t_lexer *ft_lexer(char *input)
     int buffer_len = 0;
     while (i < len)
     {
-        while(input[i] == 32)
+        if(ft_isspace(input[i]))
             i++;
         buffer_len = 0;
-        while (i < len && input[i] != 32)
+        while (i < len && !ft_isspace(input[i]))
             buffer[buffer_len++] = input[i++];
         buffer[buffer_len] = '\0';
         t_tokens token = WORD;
