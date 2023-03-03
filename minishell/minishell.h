@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/02/28 23:01:36 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:20:54 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,31 @@ typedef struct s_shell
     char **inputs;
 }              t_shell;
 
-t_lexer *new_token(char *str, t_tokens token, int i);
-t_lexer *ft_lexer(char *input);
-void print_tokens(t_lexer *head);
+typedef struct s_tools
+{
+    char    *args;
+    char    **paths;
+    char    **envp;
+    t_lexer *lexer_list;
+    int     pipes;
+    int     *pid;
+}   t_tools;
+
+typedef struct s_simple_cmds
+{
+	char                    **str;
+	int                     (*builtin)(t_tools *, struct s_simple_cmds *);
+	int                     num_redirections;
+	char                    *hd_file_name;
+	t_lexer                 *redirections;
+	struct s_simple_cmds	*next;
+	struct s_simple_cmds	*prev;
+}	t_simple_cmds;
+
+t_lexer         *new_token(char *str, t_tokens token, int i);
+t_lexer         *ft_lexer(char *input);
+void			print_tokens(t_lexer *head);
+t_simple_cmds 	*ft_parser(t_lexer *lexer);
+
 
 #endif
