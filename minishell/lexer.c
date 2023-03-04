@@ -42,11 +42,12 @@ t_lexer *ft_lexer(char *input)
     int len = ft_strlen(input);
     char *buffer = (char *)malloc(len + 1);
     int buffer_len = 0;
+    t_lexer *new;
     // Boucle principale pour traiter chaque mot de la ligne d'entrée
     while (i < len)
     {
         // Ignorer les espaces blancs en début de mot
-        if(ft_isspace(input[i]))
+        while(ft_isspace(input[i]))
             i++;
         // Copier le mot dans le buffer
         buffer_len = 0;
@@ -67,7 +68,7 @@ t_lexer *ft_lexer(char *input)
             token = GREATGREAT;
         j += 1;
         // Créer un nouveau nœud avec le mot et le jeton associé, et l'ajouter à la liste chaînée
-        t_lexer *new = new_token(ft_strdup(buffer), token, j);
+        new = new_token(ft_strdup(buffer), token, j);
         if (head == NULL)
         {
             head = new;

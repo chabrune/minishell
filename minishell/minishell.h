@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/01 08:40:16 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/04 14:00:21 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void            print_commands(t_simple_cmds *cmds);
 int             is_redirection(int token);
 int             is_builtin(char *cmd);
 t_lexer         *lexer_remove_node(t_lexer *lexer);
+int             check_closed_quotes(char *input);
 t_lexer         *lexer_add_node(t_lexer *lexer, int token, char *str);
 
 

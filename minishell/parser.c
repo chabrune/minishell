@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/01 08:50:45 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/04 14:25:58 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char **lexer_to_str_array(t_lexer *lexer, t_lexer *stop)
     int i;
 
     i = 0;
+    len = 0;
     curr = lexer;
     while(curr && curr != stop)
     {
@@ -55,9 +56,9 @@ t_simple_cmds	*group_command(t_lexer *lexer)
     {
         if(curr_lexer->token == PIPE)
         {
-            if(!curr_cmd)
-                curr_cmd = ft_calloc(1, sizeof(t_simple_cmds));
-            curr_cmd->str = lexer_to_str_array(lexer, curr_lexer);
+            if(!cmds)
+                cmds = ft_calloc(1, sizeof(t_simple_cmds));
+            cmds->str = lexer_to_str_array(lexer, curr_lexer);
             if(cmds)
                 cmds->prev = curr_cmd;
 			curr_cmd->next = cmds;
