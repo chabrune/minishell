@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/05 13:47:49 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/05 14:13:35 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,12 @@ t_simple_cmds *group_command(t_lexer **lexer)
     return head;
 }
 
+// t_lexer *new_redir_node()
+// {
+// 	t_lexer *new;
+// 	new = malloc(sizeof(t_lexer));
+// }
+//  Voir comment creer les noeuds t_lexer et les ajouter a t_simple_cmds
 
 void find_redir(t_simple_cmds **head, t_lexer **lexer)
 {
