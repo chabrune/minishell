@@ -6,13 +6,13 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/05 01:57:52 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/05 04:53:30 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_simple_cmds *new_node()
+t_simple_cmds    *new_node()
 {
     t_simple_cmds *new;
     new = malloc(sizeof(t_simple_cmds));
@@ -41,7 +41,7 @@ void    add_back(t_simple_cmds **head, t_simple_cmds *new)
     new->prev = tmp;
 }
 
-char **lexer_to_str_array(t_lexer **head, t_lexer *stop)
+char **lexer_to_str_array(t_lexer *curr, t_lexer *stop)
 {
     t_lexer *tmp;
     char **arr;
@@ -50,21 +50,21 @@ char **lexer_to_str_array(t_lexer **head, t_lexer *stop)
 
     i = 0;
     len = 0;
-    tmp = *head;
+    tmp = curr;
     while(tmp && tmp != stop)
     {
         len++;
         tmp = tmp->next;
     }
     arr = malloc(sizeof(char*) * len);
-    tmp = *head;
+    tmp = curr;
     while(i < len && tmp && tmp != stop)
     {
         arr[i] = ft_strdup(tmp->str);
         tmp = tmp->next;
         i++;
     }
-    // arr[i] = NULL;
+    arr[i] = NULL;
     return(arr);
 }
 
@@ -77,39 +77,48 @@ void print_cmd(t_simple_cmds **head)
         int i = 0;
         while (tmp->str[i])
         {
-            printf("%s\n", tmp->str[i]);
+            if(i == 0)
+                printf("cmds : ");
+            printf("%s ", tmp->str[i]);
             i++;
         }
+        printf("\n");
         tmp = tmp->next;
     }
 }
-
 
 t_simple_cmds *group_command(t_lexer **lexer)
 {
     t_lexer *tmp;
     t_simple_cmds *head;
     t_simple_cmds *new;
+    t_lexer *tmp1;
 
     head = NULL;
+    new = NULL;
     tmp = *lexer;
-    while(tmp)
+    tmp1 = *lexer;
+    while(tmp && tmp->next)
     {
         if(tmp->token == PIPE)
         {
             new = new_node();
-            new->str = lexer_to_str_array(lexer, tmp);
+            new->str = lexer_to_str_array(tmp1, tmp);
             add_back(&head, new);
-            *lexer = tmp->next;
+            tmp1 = tmp->next;
             tmp = tmp->next;
+
         }
         else
             tmp = tmp->next;
     }
-    // if(!new)
-    //     new = new_node();
-    // new->str = lexer_to_str_array(lexer, tmp);
-    // add_back(&head, new);
+    if(!new)
+    {
+        tmp1 = *lexer;
+        new = new_node();
+        new->str = lexer_to_str_array(tmp1, NULL);
+        add_back(&head, new);
+    }
     print_cmd(&head);
     return(head);
 }
