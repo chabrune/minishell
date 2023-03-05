@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/07 15:38:19 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/05 12:39:08 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 		return ;
 	if (del)
 		del(lst->str);
+	lst = NULL;
 	free(lst);
 }
 
@@ -63,7 +64,6 @@ void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 {
 	(void)scmds;
-	(void)lexer;
 	while(42)
 	{
 		tool->input = readline("EmmaLaBest> ");
@@ -72,12 +72,11 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input);
 		scmds = group_command(&lexer);
+		// find_redir(&scmds, &lexer);
 		print_tokens(lexer);
 		add_history(tool->input);
-		if(lexer)
-			lstclear_lexer(&lexer, free);
-		if(scmds)
-			lstclear_cmds(&scmds, free);
+		// lstclear_lexer(&lexer, free);
+		lstclear_cmds(&scmds, free);
 		free(tool->input);
 	}
 }

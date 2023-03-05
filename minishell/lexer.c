@@ -3,6 +3,8 @@
 t_lexer *new_token(char *str, t_tokens token, int i) 
 {
     t_lexer *new = ft_calloc(1, sizeof(t_lexer));
+    if(!new)
+        return(NULL);
     new->str = str;
     new->token = token;
     new->i = i;
@@ -13,14 +15,16 @@ t_lexer *new_token(char *str, t_tokens token, int i)
 
 void print_tokens(t_lexer *head) 
 {
-    while (head != NULL)
+    t_lexer *tmp;
+    tmp = head;
+    while (tmp)
     {
         printf("=================\n");
-        printf("Token: %s\n", head->str);
-        printf("Token type: %d\n", head->token);
-        printf("Index: %d\n", head->i);
+        printf("Token: %s\n", tmp->str);
+        printf("Token type: %d\n", tmp->token);
+        printf("Index: %d\n", tmp->i);
         printf("=================\n");
-        head = head->next;
+        tmp = tmp->next;
     }
 }
 

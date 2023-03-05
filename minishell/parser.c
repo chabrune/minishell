@@ -3,14 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/07 16:07:30 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/05 13:47:49 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	cmp(int token, int data_ref)
+{
+	if (token == data_ref)
+		return (0);
+	return (1);
+}
+
+void ft_list_remove_if(t_lexer **begin_list, int data_ref, int (*cmp)(int, int))
+{
+    if (!begin_list || !*begin_list)
+        return;
+    t_lexer *cur = *begin_list;
+    t_lexer *prev = NULL;
+    while (cur != NULL)
+    {
+        if (cmp(cur->token, data_ref) == 0)
+        {
+            if (prev == NULL)
+                *begin_list = cur->next;
+            else
+                prev->next = cur->next;
+
+            t_lexer *tmp = cur;
+            cur = cur->next;
+            free(tmp);
+        }
+        else
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+    }
+}
 
 t_simple_cmds    *new_node()
 {
@@ -20,6 +54,9 @@ t_simple_cmds    *new_node()
         return(NULL);
     new->next = NULL;
     new->prev = NULL;
+	new->redirections = NULL;
+	new->num_redirections = 0;
+	new->str = NULL;
     return(new);
 }
 
@@ -41,7 +78,7 @@ void    add_back(t_simple_cmds **head, t_simple_cmds *new)
     new->prev = tmp;
 }
 
-char **lexer_to_str_array(t_lexer *curr, t_lexer *stop)
+char **lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir)
 {
     t_lexer *tmp;
     char **arr;
@@ -58,8 +95,10 @@ char **lexer_to_str_array(t_lexer *curr, t_lexer *stop)
     }
     arr = malloc(sizeof(char*) * (len + 1));
     tmp = curr;
-    while(i < len && tmp && tmp != stop)
+    while (tmp && (tmp != stop || stop == NULL))
     {
+		if(tmp->token == GREAT || tmp->token == LESS || tmp->token == GREATGREAT || tmp->token == LESSLESS)
+			*redir += 1;
         arr[i] = ft_strdup(tmp->str);
         tmp = tmp->next;
         i++;
@@ -80,6 +119,8 @@ void print_cmd(t_simple_cmds **head)
         i = 0;
         while(tmp->str[i])
         {
+			if(i == 0)
+				printf("cmd : ");
             printf("%s ", tmp->str[i]);
             i++;
         }
@@ -99,44 +140,70 @@ t_simple_cmds *group_command(t_lexer **lexer)
     new = NULL;
     tmp = *lexer;
     tmp1 = *lexer;
-    while(tmp && tmp->next)
+    t_lexer *prev = NULL;
+    while (tmp)
     {
-        if(tmp->token == PIPE)
+        if (tmp->token == PIPE)
         {
             new = new_node();
-            new->str = lexer_to_str_array(tmp1, tmp);
+            new->str = lexer_to_str_array(tmp1, tmp, &(new->num_redirections));
             add_back(&head, new);
             tmp1 = tmp->next;
-            tmp = tmp->next;
-
         }
-        else
-            tmp = tmp->next;
+        prev = tmp;
+        tmp = tmp->next;
     }
-    if(!new)
+    if (prev && prev->token != PIPE)
     {
-        tmp1 = *lexer;
         new = new_node();
-        new->str = lexer_to_str_array(tmp1, NULL);
+        new->str = lexer_to_str_array(tmp1, NULL, &(new->num_redirections));
         add_back(&head, new);
     }
     print_cmd(&head);
-    return(head);
+    return head;
 }
 
-void    find_redir(t_simple_cmds **head, t_lexer **lexer)
+
+void find_redir(t_simple_cmds **head, t_lexer **lexer)
 {
-    t_lexer *tmp;
-    tmp = *lexer;
-    int i = 0;
-    int j;
-    while(tmp)
+    t_lexer *tmplex = *lexer;
+    t_simple_cmds *tmpcmd = *head;
+    while (tmpcmd != NULL)
     {
-        if(tmp->token == GREAT || tmp->token == GREATGREAT)
-        
-        else if(tmp->token == LESS || tmp->token == LESSLESS)
+        while (tmplex && tmplex->token != PIPE)
+        {
+            if (tmplex->token == GREATGREAT)
+            {
+				if(!tmpcmd->redirections)
 
-        
-
+                tmpcmd->redirections->token = GREATGREAT;
+                ft_list_remove_if(lexer, GREATGREAT, &cmp);
+                tmpcmd->redirections = NULL;  
+				tmplex = *lexer;
+            }
+			else if (tmplex->token == GREAT)
+            {
+                tmpcmd->redirections->token = GREAT;
+                ft_list_remove_if(lexer, GREAT, &cmp);
+                tmpcmd->redirections = NULL;
+				tmplex = *lexer;
+            }
+            else if (tmplex->token == LESS)
+            {
+                tmpcmd->redirections->token = LESS;
+                ft_list_remove_if(lexer, LESS, &cmp);
+                tmpcmd->redirections = NULL;
+				tmplex = *lexer;
+            }
+            else if (tmplex->token == LESSLESS)
+            {
+                tmpcmd->redirections->token = LESSLESS;
+                ft_list_remove_if(lexer, LESSLESS, &cmp);
+                tmpcmd->redirections = NULL;
+				tmplex = *lexer;
+            }
+            tmplex = tmplex->next;
+        }
+        tmpcmd = tmpcmd->next;
     }
 }

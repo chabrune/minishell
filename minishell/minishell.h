@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/07 13:10:48 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/05 13:42:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,16 @@ typedef struct s_simple_cmds
 	struct s_simple_cmds	*prev;
 }	t_simple_cmds;
 
+void            find_redir(t_simple_cmds **head, t_lexer **lexer);
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input);
 void			print_tokens(t_lexer *head);
 t_simple_cmds	        *group_command(t_lexer **lexer);
 int             check_closed_quotes(char *input);
 void            print_cmd(t_simple_cmds **head);
+void	        lstdelone_lexer(t_lexer *lst, void (*del)(void *));
+void	        lstclear_lexer(t_lexer **lst, void (*del)(void *));
+void	        lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *));
+void	        lstclear_cmds(t_simple_cmds **lst, void (*del)(void *));
 
 #endif
