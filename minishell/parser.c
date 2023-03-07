@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/05 04:53:30 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:07:30 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char **lexer_to_str_array(t_lexer *curr, t_lexer *stop)
         len++;
         tmp = tmp->next;
     }
-    arr = malloc(sizeof(char*) * len);
+    arr = malloc(sizeof(char*) * (len + 1));
     tmp = curr;
     while(i < len && tmp && tmp != stop)
     {
@@ -70,15 +70,16 @@ char **lexer_to_str_array(t_lexer *curr, t_lexer *stop)
 
 void print_cmd(t_simple_cmds **head)
 {
+    if(!head)
+        return;
     t_simple_cmds *tmp;
+    int i;
     tmp = *head;
-    while (tmp)
+    while (tmp != NULL) 
     {
-        int i = 0;
-        while (tmp->str[i])
+        i = 0;
+        while(tmp->str[i])
         {
-            if(i == 0)
-                printf("cmds : ");
             printf("%s ", tmp->str[i]);
             i++;
         }
@@ -121,4 +122,21 @@ t_simple_cmds *group_command(t_lexer **lexer)
     }
     print_cmd(&head);
     return(head);
+}
+
+void    find_redir(t_simple_cmds **head, t_lexer **lexer)
+{
+    t_lexer *tmp;
+    tmp = *lexer;
+    int i = 0;
+    int j;
+    while(tmp)
+    {
+        if(tmp->token == GREAT || tmp->token == GREATGREAT)
+        
+        else if(tmp->token == LESS || tmp->token == LESSLESS)
+
+        
+
+    }
 }

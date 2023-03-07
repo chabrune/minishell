@@ -1,3 +1,5 @@
 readline
 libft
 *.o
+../.DS_STORE
+.vscode/
