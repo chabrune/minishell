@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:35 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/08 06:33:46 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,52 +163,79 @@ t_simple_cmds *group_command(t_lexer **lexer)
     return head;
 }
 
-// t_lexer *new_redir_node()
-// {
-// 	t_lexer *new;
-// 	new = malloc(sizeof(t_lexer));
-// }
-//  Voir comment creer les noeuds t_lexer et les ajouter a t_simple_cmds
+void add_redir_to_cmd(t_simple_cmds *head, int num_redirections)
+{
+    int i;
+
+    i = -1;
+    while(++i < num_redirections)
+    {
+        t_lexer *new_redir = malloc(sizeof(t_lexer));
+        if(!new_redir)
+            return;
+        if(head->redirections == NULL)
+            head->redirections = new_redir;
+        else
+        {
+            t_lexer *tmp_redir = head->redirections;
+            while(tmp_redir->next != NULL)
+                tmp_redir = tmp_redir->next;
+            tmp_redir->next = new_redir;
+        }
+    }
+}
+
+void print_t_lexer_list(t_simple_cmds *head)
+{
+    t_lexer *current = head->redirections;
+
+    while (current != NULL) {
+        printf("Token: %d, Filename: %s\n", current->token, current->str);
+        current = current->next;
+    }
+}
 
 void find_redir(t_simple_cmds **head, t_lexer **lexer)
 {
-    t_lexer *tmplex = *lexer;
     t_simple_cmds *tmpcmd = *head;
+    t_lexer *tmplex = *lexer;
+    int i;
     while (tmpcmd != NULL)
     {
-        while (tmplex && tmplex->token != PIPE)
+        i = 0;
+        t_lexer *prev = NULL;
+        while (i < tmpcmd->num_redirections) 
         {
-            if (tmplex->token == GREATGREAT)
-            {
-				if(!tmpcmd->redirections)
-
-                tmpcmd->redirections->token = GREATGREAT;
-                ft_list_remove_if(lexer, GREATGREAT, &cmp);
-                tmpcmd->redirections = NULL;  
-				tmplex = *lexer;
+            while (tmplex != NULL && (tmplex->token != GREAT && tmplex->token != GREATGREAT && tmplex->token != LESS && tmplex->token != LESSLESS)) {
+                prev = tmplex;
+                tmplex = tmplex->next;
             }
-			else if (tmplex->token == GREAT)
-            {
-                tmpcmd->redirections->token = GREAT;
-                ft_list_remove_if(lexer, GREAT, &cmp);
-                tmpcmd->redirections = NULL;
-				tmplex = *lexer;
+            if (tmplex == NULL) {
+                fprintf(stderr, "error: not enough redirection tokens\n");
+                return;
             }
-            else if (tmplex->token == LESS)
-            {
-                tmpcmd->redirections->token = LESS;
-                ft_list_remove_if(lexer, LESS, &cmp);
-                tmpcmd->redirections = NULL;
-				tmplex = *lexer;
+            t_lexer *new_redir = malloc(sizeof(t_lexer));
+            if (!new_redir) {
+                fprintf(stderr, "error: allocation failed\n");
+                return;
             }
-            else if (tmplex->token == LESSLESS)
-            {
-                tmpcmd->redirections->token = LESSLESS;
-                ft_list_remove_if(lexer, LESSLESS, &cmp);
-                tmpcmd->redirections = NULL;
-				tmplex = *lexer;
+            new_redir->str = tmplex->next->str;
+            new_redir->token = tmplex->token;
+            new_redir->next = NULL;
+            if (prev == NULL)
+                *lexer = tmplex->next->next;
+            else
+                prev->next = tmplex->next->next;
+            if (tmpcmd->redirections == NULL)
+                tmpcmd->redirections = new_redir;
+            else {
+                t_lexer *tmp_redir = tmpcmd->redirections;
+                while (tmp_redir->next != NULL)
+                    tmp_redir = tmp_redir->next;
+                tmp_redir->next = new_redir;
             }
-            tmplex = tmplex->next;
+            tmplex = prev == NULL ? *lexer : prev->next;
+            i++;
         }
         tmpcmd = tmpcmd->next;
     }
