@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/07 15:10:17 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/07 15:38:19 by chabrune         ###   ########.fr       */
+/*   Created: 2023/03/07 15:10:13 by emuller           #+#    #+#             */
+/*   Updated: 2023/03/11 18:41:09 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-int my_echo(char **tab)
-{
-    
-    return (0);
-}
+# include "../minishell.h"
+
+void	choose_bultins(t_tools *tools, t_simple_cmds *cmd);
+void	my_pwd(t_tools *tools);
+void	my_echo(t_simple_cmds *cmd);
+
+#endif

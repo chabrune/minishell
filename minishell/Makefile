@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
+#    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/04 14:00:37 by chabrune         ###   ########.fr        #
+#    Updated: 2023/03/11 18:46:39 by emuller          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,9 @@ SRCS       	=	main.c \
 				lexer.c \
 				parser.c \
 				check_quotes.c \
+				get_env.c \
+				lst_utils.c \
+				builtins/builtins.c \
 
 
 #######################################################

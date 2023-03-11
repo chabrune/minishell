@@ -3,67 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/07 23:59:53 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:45:34 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
-{
-	if (lst == NULL)
-		return ;
-	if (del)
-		del(lst->str);
-	lst = NULL;
-	free(lst);
-}
-
-void	lstclear_lexer(t_lexer **lst, void (*del)(void *))
-{
-	t_lexer	*temp;
-
-	if (lst)
-	{
-		while (*lst)
-		{
-			temp = (*lst)->next;
-			lstdelone_lexer(*lst, del);
-			(*lst) = temp;
-		}
-	}
-}
-
-void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
-{
-	if (lst == NULL)
-		return ;
-	if(del)
-		del(lst->str);
-	del(lst);
-}
-
-void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
-{
-	t_simple_cmds	*temp;
-
-	if (lst)
-	{
-		while (*lst)
-		{
-			temp = (*lst)->next;
-			lstdelone_cmds(*lst, del);
-			(*lst) = temp;
-		}
-	}
-}
-
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 {
-	(void)scmds;
 	while(42)
 	{
 		tool->input = readline("EmmaLaBest> ");
@@ -72,8 +22,9 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input);
 		scmds = group_command(&lexer);
+		choose_bultins(tool, scmds);
 		find_redir(&scmds, &lexer);
-		print_tokens(lexer);
+		// print_tokens(lexer);
 		add_history(tool->input);
 		// lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);
@@ -83,17 +34,16 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 
 int main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	(void)envp;
-	if(argc == 1)
+	t_tools tool;
+	t_lexer	lexer;
+	t_simple_cmds scmds;
+
+	if (argc == 1 || argv[1])
 	{
-		t_tools tool;
-		t_lexer	lexer;
-		t_simple_cmds scmds;
+		tool.envp = dup_env(envp); // il faudra penser a free
 		minishell_loop(&tool, &lexer, &scmds);
 	}
 	else
 		return(1);
-	return(0);
-		
+	return(0);		
 }

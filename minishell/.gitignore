@@ -3,3 +3,4 @@ libft
 *.o
 ../.DS_STORE
 .vscode/
+minishell.dSYM
