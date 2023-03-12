@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
+#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/11 18:46:39 by emuller          ###   ########.fr        #
+#    Updated: 2023/03/12 16:16:55 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ OBJS    	=       $(SRCS:.c=.o)
 
 SRCS       	=	main.c \
 				lexer.c \
-				parser.c \
+				parser/parser.c \
+				parser/parser_utils.c \
 				check_quotes.c \
 				get_env.c \
 				lst_utils.c \

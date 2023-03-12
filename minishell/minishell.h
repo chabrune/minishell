@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/12 13:49:47 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/12 17:27:52 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ typedef struct s_simple_cmds
 }	t_simple_cmds;
 
 # include "builtins/builtins.h"
+# include "parser/parser.h"
 
-void            find_redir(t_simple_cmds **head, t_lexer **lexer);
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input);
 void			print_tokens(t_lexer *head);

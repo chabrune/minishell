@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/11 18:45:34 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/12 17:51:32 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input);
 		scmds = group_command(&lexer);
-		choose_bultins(tool, scmds);
+		//choose_bultins(tool, scmds);
 		find_redir(&scmds, &lexer);
+		print_t_lexer_list(scmds);
 		// print_tokens(lexer);
 		add_history(tool->input);
 		// lstclear_lexer(&lexer, free);
@@ -45,5 +46,5 @@ int main(int argc, char **argv, char **envp)
 	}
 	else
 		return(1);
-	return(0);		
+	return(0);
 }
