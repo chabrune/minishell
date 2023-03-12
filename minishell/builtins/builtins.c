@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/11 18:48:35 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/12 13:20:17 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,34 @@ void	my_echo(t_simple_cmds *cmd)
 	while (cmd->str[i])
 	{
 		ft_putstr_fd(cmd->str[i], 1);
-		i++; 	//l'ordre est important
+		i++; 
 		if (cmd->str[i])
 			ft_putchar_fd(' ', 1);
 	}
 	if (n == 0)
 		ft_putchar_fd('\n', 1);
+}
+
+void	my_env(t_tools *tools, t_simple_cmds *cmd)
+{
+	int	i;
+
+	i = -1;
+	if (cmd->str[1])
+	{
+		ft_putendl_fd("env does not handle args", 2);
+		return ;
+	}
+	while (tools->envp[++i])
+		ft_putendl_fd(tools->envp[i], 1);
+}
+
+void	my_exit(t_tools *tools, t_simple_cmds *cmds)
+{
+	//free_all();
+	(void)tools;
+	(void)cmds;
+	exit(0);
 }
 
 void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
@@ -60,15 +82,15 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
 			my_echo(cmds);
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
-			return ;
+			my_cd(tools, cmds);
 		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
 			return ;
 		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
 			return ;
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
-			return ;
+			my_env(tools, cmds);
 		else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
-			return ;
+			my_exit(tools, cmds);
 		cmds = cmds->next;
 	}
  }

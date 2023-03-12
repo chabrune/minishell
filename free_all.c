@@ -1,23 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/07 15:10:13 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/12 12:35:12 by emuller          ###   ########.fr       */
+/*   Created: 2023/03/12 12:49:38 by emuller           #+#    #+#             */
+/*   Updated: 2023/03/12 12:54:03 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "minishell.h"
 
-# include "../minishell.h"
+void	lstdelone_tools(void *lst)
+{
+	if (lst == NULL)
+		return ;
+	free(lst->str);
+	lst = NULL;
+	free(lst);
+}
 
-void	choose_bultins(t_tools *tools, t_simple_cmds *cmd);
-void	my_pwd(t_tools *tools);
-void	my_echo(t_simple_cmds *cmd);
-void	my_env(t_tools *tools, t_simple_cmds *cmd);
+void	lstclear_lexer(void **lst, void (*del)(void *))
+{
+	void	*temp;
 
-#endif
+	if (lst)
+	{
+		while (*lst)
+		{
+			temp = (*lst)->next;
+			lstdelone_lexer(*lst);
+			(*lst) = temp;
+		}
+	}
+}
+
+void    free_all(t_lexer *lexer, t_tools *tools, t_simple_cmds *cmds)
+{
+    
+}

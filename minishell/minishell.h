@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/11 18:48:11 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/12 13:49:47 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ typedef struct s_lexer
 
 typedef struct s_tools
 {
-    char    *args;
-    char    **paths;
+    char    *args; // tu veux mettre quoi la dedans?
+    char    **paths; // tu veux mettre quoi la dedans?
     char    **envp;
-    t_lexer *lexer_list;
+    t_lexer *lexer_list; // je suis pas sure qu'on en a besoin ici
     int     pipes;
     int     *pid;
     char    *input;
@@ -63,9 +63,9 @@ typedef struct s_tools
 typedef struct s_simple_cmds
 {
 	char                    **str;
-	int                     (*builtin)(t_tools *, struct s_simple_cmds *);
+	int                     (*builtin)(t_tools *, struct s_simple_cmds *); // je l'utilise pas
 	int                     num_redirections;
-	char                    *hd_file_name;
+	char                    *hd_file_name; // du coup c'est quoi
 	t_lexer                 *redirections;
 	struct s_simple_cmds	*next;
 	struct s_simple_cmds	*prev;
