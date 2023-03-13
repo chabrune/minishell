@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/12 17:51:32 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:59:24 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,8 @@ void print_t_lexer_list(t_simple_cmds *head)
 
     while(tmp)
     {
-        
         while (head->redirections)
         {
-            printf("coucou\n");
             printf("Token: %d, Filename: %s\n", current->token, current->str);
             head->redirections = head->redirections->next;
         }
@@ -95,16 +93,17 @@ void print_t_lexer_list(t_simple_cmds *head)
     }
 }
 
-// malloc le nombre de redirection
-// a voir si c'est utile
 void add_redir_to_cmd(t_simple_cmds *head, int num_redirections)
 {
     int i;
+    t_lexer	*new_redir;
+    t_lexer	*tmp_redir;
 
     i = -1;
+	printf("%d\n", num_redirections);
     while(++i < num_redirections)
     {
-        t_lexer *new_redir = malloc(sizeof(t_lexer));
+        new_redir = malloc(sizeof(t_lexer));
         if(!new_redir)
             return;
         new_redir->next = NULL;
@@ -113,10 +112,11 @@ void add_redir_to_cmd(t_simple_cmds *head, int num_redirections)
             head->redirections = new_redir;
         else
         {
-            t_lexer *tmp_redir = head->redirections; 
+            tmp_redir = head->redirections;
             while(tmp_redir->next != NULL) // on va a la fin de la liste chainee
                 tmp_redir = tmp_redir->next;
-            tmp_redir->next = new_redir; // on ajoute la nouvelle redir
+            tmp_redir->next = new_redir;
+			new_redir->prev = tmp_redir;
         }
     }
 }
@@ -128,29 +128,24 @@ void find_redir(t_simple_cmds **head, t_lexer **lexer)
     t_lexer *tmplex = *lexer;
     //t_lexer *prevlex = NULL;
 
-    while (tmpcmd)
+    while (tmpcmd && tmplex && tmplex->token != PIPE)
     {
-        add_redir_to_cmd(tmpcmd, tmpcmd->num_redirections);
-        while(tmplex && tmplex->token != PIPE)
-        {
-            if(tmplex->token == GREAT || tmplex->token == GREATGREAT)
-            {
-                tmpcmd->redirections->token = tmplex->token;
-                tmpcmd->redirections->str = ft_strdup(tmplex->next->str);
-                tmpcmd->redirections = tmpcmd->redirections->next;
-            }
-            else if (tmplex->token == LESS || tmplex->token == LESSLESS)
-            {
-                tmpcmd->redirections->token = tmplex->token;
-                tmpcmd->redirections->str = ft_strdup(tmplex->prev->str);
-                tmpcmd->redirections = tmpcmd->redirections->next;
-            }
-            printf("%s\n", tmpcmd->redirections->str);
-            printf("%d\n", tmpcmd->redirections->token);
-            tmplex = tmplex->next;
-            //if (tmplex->token == PIPE && tmplex)
-            //    tmplex = tmplex->next;
-        }
+		add_redir_to_cmd(tmpcmd, tmpcmd->num_redirections);
+		if(tmplex->token == GREAT || tmplex->token == GREATGREAT)
+		{
+			tmpcmd->redirections->token = tmplex->token;
+			tmpcmd->redirections->str = ft_strdup(tmplex->next->str);
+			tmpcmd->redirections = tmpcmd->redirections->next;
+			printf("%s\n", tmpcmd->redirections->str);
+			printf("%d\n", tmpcmd->redirections->token);
+		}
+		else if (tmplex->token == LESS || tmplex->token == LESSLESS)
+		{
+			tmpcmd->redirections->token = tmplex->token;
+			tmpcmd->redirections->str = ft_strdup(tmplex->prev->str);
+			tmpcmd->redirections = tmpcmd->redirections->next;
+		}
+        tmplex = tmplex->next;
         tmpcmd = tmpcmd->next;
     }
 }
