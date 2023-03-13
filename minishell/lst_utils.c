@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/11 18:43:27 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/13 13:50:06 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 		return ;
 	if (del)
 		del(lst->str);
-	lst = NULL;
 	free(lst);
+	lst = NULL;
 }
 
 void	lstclear_lexer(t_lexer **lst, void (*del)(void *))
