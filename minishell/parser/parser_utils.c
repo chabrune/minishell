@@ -6,45 +6,11 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:08:43 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/12 16:23:33 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:08:49 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-int	cmp(int token, int data_ref)
-{
-	if (token == data_ref)
-		return (0);
-	return (1);
-}
-
-void ft_list_remove_if(t_lexer **begin_list, int data_ref, int (*cmp)(int, int))
-{
-    if (!begin_list || !*begin_list)
-        return;
-    t_lexer *cur = *begin_list;
-    t_lexer *prev = NULL;
-    while (cur != NULL)
-    {
-        if (cmp(cur->token, data_ref) == 0)
-        {
-            if (prev == NULL)
-                *begin_list = cur->next;
-            else
-                prev->next = cur->next;
-
-            t_lexer *tmp = cur;
-            cur = cur->next;
-            free(tmp);
-        }
-        else
-        {
-            prev = cur;
-            cur = cur->next;
-        }
-    }
-}
 
 t_simple_cmds    *new_node()
 {

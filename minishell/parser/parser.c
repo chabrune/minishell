@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/13 13:57:18 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:10:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,82 +85,146 @@ void print_t_lexer_list(t_simple_cmds *head)
 
     while(tmp)
     {
-        while (head->redirections)
+        while (current)
         {
             printf("Token: %d, Filename: %s\n", current->token, current->str);
-            head->redirections = head->redirections->next;
+            current = current->next;
         }
         tmp = tmp->next;
     }
 }
 
-void find_redir(t_simple_cmds **head, t_lexer **lexer)
+void    del_node(t_lexer **head, t_lexer *delone)
+{
+    if(*head == delone) // si le noeud à supprimer est la tête de la liste
+        *head = delone->next;
+    if(delone->prev != NULL)  // si le noeud à supprimer n'est pas la tête de la liste
+        delone->prev->next = delone->next;
+    if(delone->next != NULL) // si le noeud à supprimer n'est pas la queue de la liste
+        delone->next->prev = delone->prev;
+    free(delone);
+}
+
+void    last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
+{
+    t_lexer *tmplex;
+    t_simple_cmds *tmpcmd;
+    tmplex = *headlex;
+    tmpcmd = *headcmd;
+    int i;
+
+    i = 0;
+    while(tmpcmd)
+    {
+        if(tmplex->token == PIPE)
+            tmplex = tmplex->next;
+        while(tmplex && tmplex->token != PIPE)
+        {
+            tmpcmd->str[i] = tmplex->str;
+            printf("rest of lexer : %s\n", tmpcmd->str[i]);
+            tmplex = tmplex->next;
+            i++;
+        }
+        tmpcmd = tmpcmd->next;
+    }
+}
+
+t_lexer *init_redir_next(t_lexer *curr)
+{
+    t_lexer *redir;
+    redir = malloc(sizeof(t_lexer));
+    if(!redir)
+        return(NULL);
+    redir->token = curr->token;
+    redir->str = ft_strdup(curr->next->str);
+    redir->next = NULL;
+    return(redir);
+}
+
+t_lexer *init_redir_prev(t_lexer *curr)
+{
+    t_lexer *redir;
+    redir = malloc(sizeof(t_lexer));
+    if(!redir)
+        return(NULL);
+    redir->token = curr->token;
+    redir->str = ft_strdup(curr->prev->str);
+    redir->next = NULL;
+    return(redir);
+}
+
+void    add_node_redir(t_simple_cmds *curr, t_lexer *redir)
+{
+    t_lexer *tmp_redir = NULL;
+    if(!curr->redirections)
+        curr->redirections = redir;
+    else
+    {
+        if(!tmp_redir)
+        {
+            tmp_redir = curr->redirections;
+            while(tmp_redir->next)
+                tmp_redir = tmp_redir->next;
+        }
+        tmp_redir->next = redir;
+        redir->prev = tmp_redir;
+        tmp_redir = redir;
+    }
+}
+
+void    add_redir_if_great(t_simple_cmds **head, t_lexer **lexer)
 {
     t_simple_cmds *tmpcmd = *head;
     t_lexer *tmplex = *lexer;
     t_lexer *redir;
-    t_lexer *tmp_redir;
     while (tmpcmd)
     {
-        tmp_redir = NULL;
+        if(tmplex->token == PIPE)
+            tmplex = tmplex->next;
         while(tmplex && tmplex->token != PIPE)
         {
             if(tmplex->token == GREAT || tmplex->token == GREATGREAT)
             {
-                redir = malloc(sizeof(t_lexer));
-                if(!redir)
-                    return;
-                redir->token = tmplex->token;
-                redir->str = ft_strdup(tmplex->next->str);
-                redir->next = NULL;
-                if(!tmpcmd->redirections)
-                    tmpcmd->redirections = redir;
-                else
-                {
-                    if(!tmp_redir)
-                    {
-                        tmp_redir = tmpcmd->redirections;
-                        while(tmp_redir->next)
-                            tmp_redir = tmp_redir->next;
-                    }
-                    tmp_redir->next = redir;
-                    redir->prev = tmp_redir;
-                    tmp_redir = redir;
-                }
-                // tmpcmd->redirections = tmpcmd->redirections->next;
-                // lstdelone_lexer(tmplex->next, free);
-                // lstdelone_lexer(tmplex, free);
-                // tmplex->prev = tmplex->next->next;
-            }
-            else if (tmplex->token == LESS || tmplex->token == LESSLESS)
-            {
-                redir = malloc(sizeof(t_lexer));
-                if(!redir)
-                    return;
-                redir->token = tmplex->token;
-                redir->str = ft_strdup(tmplex->prev->str);
-                redir->next = NULL;
-                if(!tmpcmd->redirections)
-                    tmpcmd->redirections = redir;
-                else
-                {
-                    if(!tmp_redir)
-                    {
-                        tmp_redir = tmpcmd->redirections;
-                        while(tmp_redir->next)
-                            tmp_redir = tmp_redir->next;
-                    }
-                    tmp_redir->next = redir;
-                    redir->prev = tmp_redir;
-                    tmp_redir = redir;
-                }
-                // tmpcmd->redirections = tmpcmd->redirections->next;
-                // lstdelone_lexer(tmplex->prev, free);
-                // lstdelone_lexer(tmplex, free);
-                // tmplex->prev->prev = tmplex->next;
+                redir = init_redir_next(tmplex);
+                add_node_redir(tmpcmd, redir);
+                del_node(lexer, tmplex);
+                tmplex = tmplex->next;
+                del_node(lexer, tmplex);
             }
             tmplex = tmplex->next;
         }
         tmpcmd = tmpcmd->next;
     }
+}
+
+void    add_redir_if_less(t_simple_cmds **head, t_lexer **lexer)
+{
+    t_simple_cmds *tmpcmd = *head;
+    t_lexer *tmplex = *lexer;
+    t_lexer *redir;
+    while (tmpcmd)
+    {
+        if(tmplex->token == PIPE)
+            tmplex = tmplex->next;
+        while(tmplex && tmplex->token != PIPE)
+        {
+            if(tmplex->token == LESS || tmplex->token == LESSLESS)
+            {
+                redir = init_redir_prev(tmplex);
+                add_node_redir(tmpcmd, redir);
+                del_node(lexer, tmplex);
+                tmplex = tmplex->prev;
+                del_node(lexer, tmplex);
+            }
+                tmplex = tmplex->next;
+        }
+        tmpcmd = tmpcmd->next;
+    }
+}
+
+void    find_redir(t_simple_cmds **head, t_lexer **lexer)
+{
+    add_redir_if_great(head, lexer);
+    add_redir_if_less(head, lexer);
+    last_lexer_to_strs_cmd(lexer, head);
 }
