@@ -80,6 +80,8 @@ t_simple_cmds *group_command(t_lexer **lexer)
 
 void print_t_lexer_list(t_simple_cmds *head)
 {
+    if(!head)
+        return;
     t_lexer *current = head->redirections;
     t_simple_cmds *tmp = head;
 
@@ -187,8 +189,7 @@ void    add_redir_if_great(t_simple_cmds **head, t_lexer **lexer)
             {
                 redir = init_redir_next(tmplex);
                 add_node_redir(tmpcmd, redir);
-                del_node(lexer, tmplex);
-                tmplex = tmplex->next;
+                del_node(lexer, tmplex->next);
                 del_node(lexer, tmplex);
             }
             tmplex = tmplex->next;
@@ -212,11 +213,10 @@ void    add_redir_if_less(t_simple_cmds **head, t_lexer **lexer)
             {
                 redir = init_redir_prev(tmplex);
                 add_node_redir(tmpcmd, redir);
-                del_node(lexer, tmplex);
-                tmplex = tmplex->prev;
+                del_node(lexer, tmplex->prev);
                 del_node(lexer, tmplex);
             }
-                tmplex = tmplex->next;
+            tmplex = tmplex->next;
         }
         tmpcmd = tmpcmd->next;
     }
