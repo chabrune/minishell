@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/13 12:19:54 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/14 13:33:05 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
 			my_echo(cmds);
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
-			my_cd(tools, cmds);
+			// my_cd(tools, cmds);
+			return;
 		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
 			return ;
 		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)

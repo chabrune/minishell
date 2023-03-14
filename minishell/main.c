@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/13 18:47:43 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:11:43 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 {
+	int i = 0;
 	while(42)
 	{
 		tool->input = readline("EmmaLaBest> ");
@@ -24,10 +25,15 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		scmds = group_command(&lexer);
 		//choose_bultins(tool, scmds);
 		find_redir(&scmds, &lexer);
-		print_t_lexer_list(scmds);
+		i = count_cmd(&scmds);
+		if(i == 1)
+			one_command(&scmds, tool);
+		// else
+		// 	multiple_commands(&scmds);
+		// print_t_lexer_list(scmds);
+		// print_tokens(lexer);
 		add_history(tool->input);
 		lstclear_lexer(&lexer, free);
-		print_tokens(lexer);
 		lstclear_cmds(&scmds, free);
 		free(tool->input);
 	}
@@ -39,6 +45,7 @@ int main(int argc, char **argv, char **envp)
 	t_lexer	lexer;
 	t_simple_cmds scmds;
 
+	tool.envp = envp;
 	if (argc == 1 || argv[1])
 	{
 		tool.envp = dup_env(envp); // il faudra penser a free

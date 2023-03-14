@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/12 17:27:52 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:06:57 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_tools
 {
     char    *args; // tu veux mettre quoi la dedans?
     char    **paths; // tu veux mettre quoi la dedans?
+    char    *path; //Mdr j'en rajoute tqt
+    char    *cmd;
     char    **envp;
     t_lexer *lexer_list; // je suis pas sure qu'on en a besoin ici
     int     pipes;
@@ -73,6 +75,7 @@ typedef struct s_simple_cmds
 
 # include "builtins/builtins.h"
 # include "parser/parser.h"
+# include "executor/exec.h"
 
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input);
