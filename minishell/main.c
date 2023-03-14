@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/13 13:36:42 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:47:43 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		find_redir(&scmds, &lexer);
 		print_t_lexer_list(scmds);
 		add_history(tool->input);
-		// lstclear_lexer(&lexer, free);
+		lstclear_lexer(&lexer, free);
 		print_tokens(lexer);
 		lstclear_cmds(&scmds, free);
 		free(tool->input);
