@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/14 18:21:07 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:36:25 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	int pid;
 	int fdfile;
 	curr = *head;
+	
 //if cmd == cd / exit / export / unset --> Exec without child
+// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
+
 	tools->path = find_path(tools->envp);
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
