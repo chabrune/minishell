@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
+#    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/14 15:41:08 by chabrune         ###   ########.fr        #
+#    Updated: 2023/03/18 18:52:51 by emuller          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,11 @@ SRCS       	=	main.c \
 				get_env.c \
 				lst_utils.c \
 				builtins/builtins.c \
+				builtins/my_cd.c \
+				builtins/my_echo.c \
+				builtins/my_env_pwd.c \
+				builtins/my_export.c \
+				builtins/my_unset.c \
 				executor/exec.c \
 
 

@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/13 18:47:35 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/18 14:08:17 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,10 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 	char	*pwd;
 	char	*old_pwd;
     int     i;
-    int     check_err = 0;
+    int     check_err;
 
     i = -1;
+	check_err = 0;
 	while (tools->envp[++i])
 	{
         if (ft_strncmp(tools->envp[i], "HOME=", 5) == 0)
