@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:59 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/18 18:51:17 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/19 17:45:45 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ void	my_env(t_tools *tools, t_simple_cmds *cmd)
 		return ;
 	}
 	while (tools->envp[++i])
-		ft_putendl_fd(tools->envp[i], 1);
+		if (ft_strchr(tools->envp[i], '=') != 0)
+			ft_putendl_fd(tools->envp[i], 1);
 }
