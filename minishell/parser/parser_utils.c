@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:08:43 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/14 17:48:54 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/25 16:27:50 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_simple_cmds    *new_node()
 {
     t_simple_cmds *new;
-    new = malloc(sizeof(t_simple_cmds));
+    new = ft_calloc(1, sizeof(t_simple_cmds));
     if(!new)
         return(NULL);
     new->next = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/14 16:06:57 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/25 18:03:43 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_simple_cmds
 # include "builtins/builtins.h"
 # include "parser/parser.h"
 # include "executor/exec.h"
+# include "expander/expander.h"
 
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input);
@@ -89,5 +90,7 @@ void	        lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *));
 void	        lstclear_cmds(t_simple_cmds **lst, void (*del)(void *));
 char	        **dup_env(char **tab);
 void	        *free_tab(char **tab, int j);
+int             ft_istoken(int c);
+t_tokens        chose_token(char *str);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/14 16:11:43 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:39:09 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// 	continue;
 		// tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input);
+		print_tokens(lexer);
 		scmds = group_command(&lexer);
-		//choose_bultins(tool, scmds);
+		// choose_bultins(tool, scmds);
 		find_redir(&scmds, &lexer);
 		i = count_cmd(&scmds);
-		if(i == 1)
-			one_command(&scmds, tool);
+		// if(i == 1)
+		// 	one_command(&scmds, tool);
 		// else
 		// 	multiple_commands(&scmds);
-		// print_t_lexer_list(scmds);
-		// print_tokens(lexer);
+		print_t_lexer_list(scmds);
 		add_history(tool->input);
 		lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);

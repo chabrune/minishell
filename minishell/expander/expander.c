@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser3.c                                          :+:      :+:    :+:   */
+/*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 15:16:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/25 17:17:51 by emuller          ###   ########.fr       */
+/*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
+/*   Updated: 2023/03/25 18:53:22 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "expander.h"
 
-void    find_redir(t_simple_cmds **head, t_lexer **lexer)
+void    find_var_env(t_tools *tools, char *var_name)
 {
-    add_redir(head, lexer);
-    if(*lexer)
-        last_lexer_to_strs_cmd(lexer, head);
-}
-
-int count_cmd(t_simple_cmds **head)
-{
-	t_simple_cmds *tmp;
     int i;
+    char    *result;
 
     i = 0;
-    tmp = *head;
-    while(tmp)
+    while (tools->envp[i])
     {
+        if (ft_strncmp(tools->envp[i], var_name, ft_strlen(var_name)) == 0)
+            result = ft_strdup(tools->envp[i]);
         i++;
-        tmp = tmp->next;
     }
-    return(i);
 }

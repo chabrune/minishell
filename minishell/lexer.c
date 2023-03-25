@@ -36,37 +36,85 @@ int ft_isspace(int c)
         return 0;
 }
 
+int ft_istoken(int c)
+{
+    if(!c)
+        return(0);
+    if(c == '>' || c == '<' || c == '|')
+        return (1);
+    else
+        return(0);
+}
+
+t_tokens chose_token(char *str)
+{
+	t_tokens token = 0;
+
+    if (ft_strncmp(str, "|", 2) == 0)
+        token = PIPE;
+    else if (ft_strncmp(str, "<", 2) == 0)
+        token = LESS;
+    else if (ft_strncmp(str, "<<", 3) == 0)
+        token = LESSLESS;
+    else if (ft_strncmp(str, ">", 2) == 0)
+        token = GREAT;
+    else if (ft_strncmp(str, ">>", 3) == 0)
+        token = GREATGREAT;
+	return (token);
+}
+
 t_lexer *ft_lexer(char *input)
 {
     t_lexer *head = NULL;
     t_lexer *tail = NULL;
-    int i = 0;
-    int j = 0;
-    int len = ft_strlen(input);
-    char *buffer = (char *)malloc(len + 1);
-    int buffer_len = 0;
     t_lexer *new;
-    while (i < len)
+	t_tokens token;
+    char *buffer;
+    int i;
+	int	j;
+	int	k;
+	
+    i = 0;
+	k = 1;
+    while (input[i])
     {
-        while(ft_isspace(input[i]))
+        while (ft_isspace(input[i]) && input[i])
             i++;
-        buffer_len = 0;
-        while (i < len && !ft_isspace(input[i]))
-            buffer[buffer_len++] = input[i++];
-        buffer[buffer_len] = '\0';
-        t_tokens token = WORD;
-        if (ft_strncmp(buffer, "|", 2) == 0)
-            token = PIPE;
-        else if (ft_strncmp(buffer, "<", 2) == 0)
-            token = LESS;
-        else if (ft_strncmp(buffer, "<<", 3) == 0)
-            token = LESSLESS;
-        else if (ft_strncmp(buffer, ">", 2) == 0)
-            token = GREAT;
-        else if (ft_strncmp(buffer, ">>", 3) == 0)
-            token = GREATGREAT;
-        j += 1;
-        new = new_token(ft_strdup(buffer), token, j);
+		if (ft_istoken(input[i]) == 0)
+		{
+        	j = 0;
+			while (input[i] && !ft_isspace(input[i]) && ft_istoken(input[i]) == 0)
+			{
+				j++;
+				i++;
+			}
+			buffer = ft_calloc(j + 1, sizeof(char));
+			i = i - j;
+			j = 0;
+			while (input[i] && !ft_isspace(input[i]) && ft_istoken(input[i]) == 0)
+				buffer[j++] = input[i++];
+			token = WORD;
+		}
+		else
+		{
+			j = 0;
+			while (input[i] && ft_istoken(input[i]) == 1)
+			{
+				j++;
+				i++;
+			}
+			buffer = ft_calloc(j + 1, sizeof(char));
+			i = i - j;
+			j = 0;
+			while (input[i] && ft_istoken(input[i]) == 1)
+				buffer[j++] = input[i++];
+			token = chose_token(buffer);
+			if (token == 0)
+				printf("Erreur a faire bien plus tard\n");
+		}
+		while (ft_isspace(input[i]) && input[i])
+            i++;
+        new = new_token(ft_strdup(buffer), token, k++);
         if (head == NULL)
         {
             head = new;
@@ -78,7 +126,7 @@ t_lexer *ft_lexer(char *input)
             new->prev = tail;
             tail = new;
         }
+		free(buffer);
     }
-    free(buffer);
-    return (head);
+	return(head);
 }

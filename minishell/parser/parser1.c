@@ -29,7 +29,7 @@ char **lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir)
         len++;
         tmp = tmp->next;
     }
-    arr = malloc(sizeof(char*) * (len + 1));
+    arr = ft_calloc(sizeof(char*), (len + 5));
     tmp = curr;
     while (tmp && (tmp != stop || stop == NULL))
     {
@@ -107,4 +107,5 @@ void    del_node(t_lexer **head, t_lexer *delone)
     if(delone && delone->next != NULL) // si le noeud à supprimer n'est pas la queue de la liste
         delone->next->prev = delone->prev;
     free(delone);
+    delone = NULL;
 }
