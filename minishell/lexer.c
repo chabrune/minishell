@@ -63,7 +63,7 @@ t_tokens chose_token(char *str)
 	return (token);
 }
 
-t_lexer *ft_lexer(char *input)
+t_lexer *ft_lexer(char *input, t_tools *tools)
 {
     t_lexer *head = NULL;
     t_lexer *tail = NULL;
@@ -76,6 +76,7 @@ t_lexer *ft_lexer(char *input)
 	
     i = 0;
 	k = 1;
+    input = expander(tools, input);
     while (input[i])
     {
         while (ft_isspace(input[i]) && input[i])

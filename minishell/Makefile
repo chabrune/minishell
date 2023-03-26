@@ -6,7 +6,7 @@
 #    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/18 18:52:51 by emuller          ###   ########.fr        #
+#    Updated: 2023/03/26 17:34:01 by emuller          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS       	=	main.c \
 				builtins/my_export.c \
 				builtins/my_unset.c \
 				executor/exec.c \
+				expander/expander.c \
 
 
 #######################################################

@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/25 18:03:43 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/26 15:26:06 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_simple_cmds
 # include "expander/expander.h"
 
 t_lexer         *new_token(char *str, t_tokens token, int i);
-t_lexer         *ft_lexer(char *input);
+t_lexer         *ft_lexer(char *input, t_tools *tool);
 void			print_tokens(t_lexer *head);
 t_simple_cmds   *group_command(t_lexer **lexer);
 int             check_closed_quotes(char *input);

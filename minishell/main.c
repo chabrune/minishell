@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/25 17:39:09 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/26 17:37:24 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// if(check_closed_quotes(tool->input))
 		// 	continue;
 		// tool->inputs = ft_split(tool->input, ' ');
-		lexer = ft_lexer(tool->input);
+		lexer = ft_lexer(tool->input, tool);
 		print_tokens(lexer);
 		scmds = group_command(&lexer);
 		// choose_bultins(tool, scmds);
