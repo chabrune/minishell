@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/25 13:27:22 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:37:37 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	
 	//if cmd == cd / exit / export / unset --> Exec without child
 	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
-	if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
-		redir_is_fun(head);
+	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
+	// 	redir_is_fun(head);
 	tools->path = find_path(tools->envp);
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
@@ -33,7 +33,7 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	}
 	else if(pid == 0)
 	{
-		execve(tools->cmd, &curr->str[1], tools->envp);
+		execve(tools->cmd, curr->str, tools->envp);
 		perror("Exceve : ");
 		exit(EXIT_FAILURE);
 	}

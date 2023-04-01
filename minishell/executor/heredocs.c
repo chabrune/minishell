@@ -6,28 +6,71 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/01 13:45:59 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:59:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	heredoc(char *filename)
+void	heredoc(char *filename, char *input)
 {
 	int fd;
 	char *line;
+	char *delimit;
+
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	line = readline("heredoc> ");
-	while(line)
+	delimit = get_word_after_hd(input);
+	while(42)
 	{
+		line = readline("heredoc> ");
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
+		if(ft_strncmp(line, delimit, ft_strlen(delimit)) == 0)
+			break;
 		free(line);
-		line = readline("heredoc> ");
-		close(fd);
 	}
 	free(line);
 	close(fd);
+}
+
+int	ft_whitespaces(char c)
+{
+	if((c >= 9 && c <= 13) || c == 32)
+		return(1);
+	else
+		return(0);
+}
+
+char *get_word_after_hd(char *line)
+{
+	int i;
+	int j;
+	int k;
+	char *res;
+
+	res = NULL;
+	k = 0;
+	j = 0;
+	i = 0;
+	while(line[i] && line[i] != '<')
+		i++;
+	if(line[i] && line[i + 1] == '<')
+	{
+		i += 2;
+		while(line[i] && ft_whitespaces(line[i]))
+			i++;
+		while(line[i++] && !ft_whitespaces(line[i]))
+			j++;
+		i = i - j - 1;
+		res = ft_calloc(sizeof(char), j + 1);
+
+		while(j > 0)
+		{
+			res[k++] = line[i++];
+			j--;
+		}
+	}
+	return(res);
 }
 
 char *create_filename()
@@ -42,7 +85,7 @@ char *create_filename()
 	return(filename);
 }
 
-void	fill_cmd_heredoc(t_simple_cmds **head)
+void	fill_cmd_heredoc(t_simple_cmds **head, char *input)
 {
 	char *filename;
 	t_simple_cmds *cmds;
@@ -55,9 +98,8 @@ void	fill_cmd_heredoc(t_simple_cmds **head)
 	{
 		if(cmds->redirections->token == LESSLESS)
 		{
-			cmds->redirections = cmds->redirections->next;
 			filename = create_filename();
-			heredoc(filename);
+			heredoc(filename, input);
 		}
 		cmds->redirections = cmds->redirections->next;
 	}

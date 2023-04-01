@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:49:25 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/20 12:39:32 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/01 15:58:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	ft_strncmp(const char *first, const char *second, size_t length)
 	prem = (unsigned char *)first;
 	snd = (unsigned char *)second;
 	i = 0;
+	if(length == 0)
+		return (0);
 	while ((prem[i] || snd[i]) && i < length)
 	{
 		if (prem[i] > snd[i])
