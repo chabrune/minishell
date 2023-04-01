@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
+#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/03/26 17:34:01 by emuller          ###   ########.fr        #
+#    Updated: 2023/04/01 13:01:45 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS       	=	main.c \
 				builtins/my_export.c \
 				builtins/my_unset.c \
 				executor/exec.c \
+				executor/heredocs.c \
 				expander/expander.c \
 
 

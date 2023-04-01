@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/16 11:36:25 by emuller          ###   ########.fr       */
+/*   Updated: 2023/03/25 13:27:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,15 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 {
 	t_simple_cmds *curr;
 	int pid;
-	int fdfile;
 	curr = *head;
 	
-//if cmd == cd / exit / export / unset --> Exec without child
-// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
-
+	//if cmd == cd / exit / export / unset --> Exec without child
+	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
+	if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
+		redir_is_fun(head);
 	tools->path = find_path(tools->envp);
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
-	if(curr->redirections && curr->redirections->token == LESS)
-	{
-		fdfile = open(curr->redirections->str, O_RDONLY);
-		if(fdfile == -1)
-		{
-			perror("Open : ");
-			return(EXIT_FAILURE);
-		}
-		if(dup2(fdfile, STDIN_FILENO) == -1)
-		{
-			perror("Dup2 : ");
-			return(EXIT_FAILURE);
-		}
-	}
 	pid = fork();
 	if(pid == -1)
 	{
@@ -79,4 +65,36 @@ char	*get_cmd(char **paths, char *cmd)
 		paths++;
 	}
 	return (NULL);
+}
+
+//appel si redir
+int	redir_is_fun(t_simple_cmds **head)
+{
+	t_simple_cmds *tmp;
+	tmp = *head;
+	int fdout;
+
+	while(tmp)
+	{
+		while(tmp->redirections)
+		{
+			if(tmp->redirections->token == LESS)
+			{
+				fdout = open(tmp->redirections->prev->str, O_RDONLY);
+				if(fdout == -1)
+				{
+					perror("Open : ");
+					return(EXIT_FAILURE);
+				}
+				if(dup2(fdout, STDIN_FILENO) == -1)
+				{
+					perror("Dup2 :");
+					return(EXIT_FAILURE);
+				}
+			}
+			tmp->redirections = tmp->redirections->next;
+		}
+		tmp = tmp->next;
+	}
+	return(0);
 }

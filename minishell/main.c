@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/26 17:37:24 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/01 13:45:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// else
 		// 	multiple_commands(&scmds);
 		print_t_lexer_list(scmds);
+		fill_cmd_heredoc(&scmds);
 		add_history(tool->input);
 		lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);
