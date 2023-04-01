@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
+#    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/04/01 13:01:45 by chabrune         ###   ########.fr        #
+#    Updated: 2023/04/01 18:51:00 by emuller          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS       	=	main.c \
 				executor/exec.c \
 				executor/heredocs.c \
 				expander/expander.c \
+				expander/expander_utils.c \
 
 
 #######################################################
