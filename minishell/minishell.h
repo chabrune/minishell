@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/26 15:26:06 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/02 14:35:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_tools
     t_lexer *lexer_list; // je suis pas sure qu'on en a besoin ici
     int     pipes;
     int     *pid;
+    int     fd[2];
     char    *input;
     char    **inputs;
 }   t_tools;

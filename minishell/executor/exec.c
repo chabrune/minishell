@@ -6,11 +6,33 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/01 18:37:37 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/02 19:11:25 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+// int	executor(t_simple_cmds **head, t_tools *tools)
+// {
+// 	int i;
+// 	t_simple_cmds *curr;
+// 	int pipes[2];
+// 	int fd_in;
+
+// 	fd_in = STDIN_FILENO;
+// 	curr = *head;
+// 	while(curr)
+// 	{
+// 		if(curr->next)
+// 			pipe(pipes);
+// 		curr = curr->next;
+// 	}
+	// i = count_cmd(head);
+	// if(i == 1)
+	// 	one_command(head, tools);
+	// else
+	// 	multiple_commands(head, tools);
+// }
 
 int	one_command(t_simple_cmds **head, t_tools *tools)
 {
@@ -40,6 +62,82 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	else
 		waitpid(pid, NULL, 0);
 	return(0);
+}
+
+int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
+{
+	t_simple_cmds *tmp;
+	int i;
+	int fd_in;
+	int fd[2];
+
+	i = 0;
+	tmp = *head;
+	fd_in = STDIN_FILENO;
+	tools->pid = ft_calloc(sizeof(int), count_cmd(head));
+	while(tmp)
+	{
+		if(tmp->next)
+		{
+			if(pipe(fd) == -1)
+			{
+				perror("Fork :");
+				return(EXIT_FAILURE);
+			}
+		}
+		close(fd[1]);
+		if(tools->pid[i] == -1)
+		{
+			perror("Fork :");
+			return(EXIT_FAILURE);
+		}
+		else if(tools->pid[i] == 0)
+			child_process(tmp, tools, fd_in, fd);
+		else
+			parent_process(tools, &i);
+		i++;
+		if(tmp->next)
+			tmp = tmp->next;
+		else
+			break;
+	}
+	return(0);
+}
+
+
+int	child_process(t_simple_cmds *curr, t_tools *tools, int fd_in, int fd[2])
+{
+	if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
+	{
+		perror("Dup2-1 : ");
+		return(EXIT_FAILURE);
+	}
+	close(fd[0]);
+	if (curr->next && dup2(fd[1], STDOUT_FILENO) < 0)
+	{
+		perror("Dup2-2 : ");
+		return(EXIT_FAILURE);
+	}
+	close(fd[1]);
+	if (curr->prev)
+		close(fd_in);
+	tools->path = find_path(tools->envp);
+	tools->paths = ft_split(tools->path, ':');
+	tools->cmd = get_cmd(tools->paths, curr->str[0]);
+	execve(tools->cmd, curr->str, tools->envp);
+	free(tools->path);
+	free(tools->paths);
+	free(tools->cmd);
+	perror("Execve :");
+	exit(EXIT_FAILURE);
+	return(0);
+}
+
+void	parent_process(t_tools *tools, int *i)
+{
+	close(tools->fd[0]);
+	close(tools->fd[1]);
+	waitpid(tools->pid[*i], NULL, 0);
 }
 
 char	*find_path(char **env)

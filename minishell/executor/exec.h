@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/01 17:59:41 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/02 19:08:58 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	heredoc(char *filename, char *input);
 char 	*create_filename();
 char 	*get_word_after_hd(char *line);
 int		ft_whitespaces(char c);
+int		multiple_commands(t_simple_cmds **head, t_tools	*tools);
+int		child_process(t_simple_cmds *curr, t_tools *tools, int fd_in, int fd[2]);
+void	parent_process(t_tools *tools, int *i);
 
 
 #endif
