@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:39:12 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/01 18:46:33 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/02 11:16:50 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 {
-	int i = 0;
+	// int i = 0;
 	while(42)
 	{
 		tool->input = readline("EmmaLaBest> ");
@@ -26,13 +26,13 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		scmds = group_command(&lexer);
 		// choose_bultins(tool, scmds);
 		find_redir(&scmds, &lexer);
-		i = count_cmd(&scmds);
-		if(i == 1)
-			one_command(&scmds, tool);
+		// i = count_cmd(&scmds);
+		// if(i == 1)
+		// 	one_command(&scmds, tool);
 		// else
 		// 	multiple_commands(&scmds);
 		print_t_lexer_list(scmds);
-		fill_cmd_heredoc(&scmds, tool->input);
+		// fill_cmd_heredoc(&scmds, tool->input);
 		add_history(tool->input);
 		lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);

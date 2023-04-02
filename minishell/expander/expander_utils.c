@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:47:22 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/01 18:49:57 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/02 13:11:11 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ char *coupe_le_debut(char *env)
 		j++;
 	i = 0;
 	result = ft_calloc(sizeof(char), (j + 2));
+	if (!result)
+		return (0);
 	while(env[k]) 
 		result[i++] = env[k++];
 	free(env);
@@ -67,4 +69,25 @@ int    check_var_name_exit(char *var_name, t_tools *tools)
 		i++;
     }   
     return (0);
+}
+
+char	*copy_var_name(int pos, char *str)
+{
+	int	i;
+	int n;
+	char	*var_name;
+
+	pos++;
+	i = pos;
+	n = 0;
+	while (ft_isalnum(str[i]) || str[i] == '_')
+	{
+		n++;
+		i++;
+	}
+	var_name = ft_calloc(n + 2, sizeof(char));
+	if (!var_name)
+		return (0);
+	ft_strlcpy(var_name, str + pos, n + 1);
+	return (var_name);
 }
