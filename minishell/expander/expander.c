@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/02 12:40:49 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/02 15:17:20 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char   *find_var_env(t_tools *tools, char *var_name)
             result = ft_strdup(tools->envp[i]);
 		i++;
     }
-	result = coupe_le_debut(result);
+	if (result)
+		result = coupe_le_debut(result);
 	return (result);
 }
 
@@ -75,7 +76,7 @@ char	*replace_name_with_content(char *str, char **var_name, char **var_content, 
 	result = ft_calloc(find_len_result(str, var_name, var_content, count), sizeof(char));
 	if (!result)
 		return (0);
-	while (l < count)
+	while (l <= count)
 	{
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
@@ -83,12 +84,14 @@ char	*replace_name_with_content(char *str, char **var_name, char **var_content, 
             result[i++] = str[k++];
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
-		if (str[k] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
+		if (str[k] == '$' && (ft_isalnum(str[k + 1]) || str[k + 1] == '_'))
 			k = k + ft_strlen(var_name[l]) + 1;
 		j = 0;
 		if (var_content[l])
+		{
 			while (var_content[l][j])
 				result[i++] = var_content[l][j++];
+		}
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
 		l++;
