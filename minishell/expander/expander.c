@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/02 15:17:20 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:00:03 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ char	*replace_name_with_content(char *str, char **var_name, char **var_content, 
 
 	i = 0;
 	k = 0;
-	l = 0;
+	l = -1;
 	if (!var_content || !var_name)
 		return (str);
 	result = ft_calloc(find_len_result(str, var_name, var_content, count), sizeof(char));
 	if (!result)
 		return (0);
-	while (l <= count)
+	while (++l <= count)
 	{
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
@@ -88,13 +88,10 @@ char	*replace_name_with_content(char *str, char **var_name, char **var_content, 
 			k = k + ft_strlen(var_name[l]) + 1;
 		j = 0;
 		if (var_content[l])
-		{
 			while (var_content[l][j])
 				result[i++] = var_content[l][j++];
-		}
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
-		l++;
 	}
 	return (result);
 }
@@ -137,17 +134,57 @@ char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools)
 	return (result);
 }
 
+char	*sub_dollar_in_quotes(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+		{
+			i++;
+			while (str[i] && str[i] != '\'')
+			{
+				if (str[i] == '$')
+					str[i] = 26;
+				i++;
+			}
+			if (str[i] == '\'' && str[i + 1])
+				i++;
+		}
+		i++;
+	}
+	return (str);
+}
+
+char	*sub_back_dollar_in_quotes(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 26)
+			str[i] = '$';
+		i++;
+	}
+	return (str);
+}
+
 char    *expander(t_tools *tools, char *str)
 {
     char *result = 0;
 	int	count;
 
+	str = sub_dollar_in_quotes(str);
 	count = count_dollar(str);
 	if (count == 0)
 		return (str);
 	else
 	{
 		result = expand_str(count, result, str, tools);
+		result = sub_back_dollar_in_quotes(result);
 		return(result);
 	}
 }

@@ -76,6 +76,8 @@ t_lexer *ft_lexer(char *input, t_tools *tools)
 	
     i = 0;
 	k = 1;
+    if (check_closed_quotes(input) == 1)
+        return (0);
     input = expander(tools, input);
     while (input[i])
     {
