@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/02 19:11:25 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:34:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,39 +68,69 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 {
 	t_simple_cmds *tmp;
 	int i;
-	int fd_in;
-	int fd[2];
+	int j;
 
+	int **pipes;
+	int *pids;
+	j = count_cmd(head);
+	pipes = ft_calloc(sizeof(int *), j - 1);
+	if (!pipes)
+		return(0);
+	pids = ft_calloc(sizeof(int), j);
+	if(!pids)
+		return(0);
 	i = 0;
 	tmp = *head;
-	fd_in = STDIN_FILENO;
-	tools->pid = ft_calloc(sizeof(int), count_cmd(head));
-	while(tmp)
+	while(i < j)
 	{
-		if(tmp->next)
+		if(i < j - 1)
 		{
-			if(pipe(fd) == -1)
+			if(pipe(pipes[i]) == -1)
 			{
-				perror("Fork :");
+				perror("pipe");
 				return(EXIT_FAILURE);
 			}
 		}
-		close(fd[1]);
-		if(tools->pid[i] == -1)
-		{
-			perror("Fork :");
-			return(EXIT_FAILURE);
-		}
-		else if(tools->pid[i] == 0)
-			child_process(tmp, tools, fd_in, fd);
-		else
-			parent_process(tools, &i);
 		i++;
-		if(tmp->next)
-			tmp = tmp->next;
-		else
-			break;
 	}
+	pids[i] = fork();
+	if(pids[i] == -1)
+	{
+		perror("fork");
+		return(EXIT_FAILURE);
+	}
+	else if(pids[i] == 0)
+	{
+		if(i > 0)
+		{
+			if(dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
+			{
+				perror("dup2");
+				return(EXIT_FAILURE);
+			}
+			close(pipes[i - 1][0]);
+		}
+		if(i < j - 1)
+		{
+			if(dup2(pipes[i][1], STDOUT_FILENO) == -1)
+			{
+				perror("dup2");
+				return(EXIT_FAILURE);
+			}
+			close(pipes[i][0]);
+		}
+		tools->path = find_path(tools->envp);
+		tools->paths = ft_split(tools->path, ':');
+		tools->cmd = get_cmd(tools->paths, tmp->str[0]);
+		execve(tools->cmd, tmp->str, tools->envp);
+		tmp = tmp->next;
+		free(tools->path);
+		free(tools->paths);
+		free(tools->cmd);
+		perror("Execve :");
+		exit(EXIT_FAILURE);
+	}
+	
 	return(0);
 }
 
@@ -112,7 +142,6 @@ int	child_process(t_simple_cmds *curr, t_tools *tools, int fd_in, int fd[2])
 		perror("Dup2-1 : ");
 		return(EXIT_FAILURE);
 	}
-	close(fd[0]);
 	if (curr->next && dup2(fd[1], STDOUT_FILENO) < 0)
 	{
 		perror("Dup2-2 : ");
