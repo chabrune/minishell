@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/04 17:34:04 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:25:51 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,67 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	return(0);
 }
 
+int **alloc_pipes(t_simple_cmds **head)
+{
+    int i;
+    int j;
+    int **pipes;
+
+    j = count_cmd(head);
+    i = -1;
+	printf("%d\n", j);
+    pipes = ft_calloc(sizeof(int *), j + 1);
+    if (!pipes)
+        return (NULL);
+    while (++i < j)
+    {
+        pipes[i] = ft_calloc(sizeof(int), 3);
+        if (!pipes[i])
+            return (NULL);
+    }
+    return (pipes);
+}
+
+int *alloc_pids(t_simple_cmds **head)
+{
+	int *pids;
+	int j;
+
+	j = count_cmd(head);
+	pids = ft_calloc(sizeof(int), j + 1);
+	if(!pids)
+		return(NULL);
+	return(pids);
+}
+
+void	free_pipes_and_pids(t_simple_cmds **head, int **pipes, int *pids)
+{
+	int i;
+	int j;
+
+	j = count_cmd(head);
+	i = -1;
+	while(++i < j - 1)
+	{
+    	free(pipes[i]);
+	}
+	free(pipes);
+	free(pids);
+}
 int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 {
 	t_simple_cmds *tmp;
 	int i;
 	int j;
-
 	int **pipes;
 	int *pids;
+
+	pipes = alloc_pipes(head);
+	pids = alloc_pids(head);
 	j = count_cmd(head);
-	pipes = ft_calloc(sizeof(int *), j - 1);
-	if (!pipes)
-		return(0);
-	pids = ft_calloc(sizeof(int), j);
-	if(!pids)
-		return(0);
-	i = 0;
+	i = -1;
 	tmp = *head;
-	while(i < j)
+	while(++i < j)
 	{
 		if(i < j - 1)
 		{
@@ -91,65 +134,42 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 				return(EXIT_FAILURE);
 			}
 		}
-		i++;
-	}
-	pids[i] = fork();
-	if(pids[i] == -1)
-	{
-		perror("fork");
-		return(EXIT_FAILURE);
-	}
-	else if(pids[i] == 0)
-	{
-		if(i > 0)
+		pids[i] = fork();
+		if(pids[i] == -1)
 		{
-			if(dup2(pipes[i - 1][0], STDIN_FILENO) == -1)
-			{
-				perror("dup2");
-				return(EXIT_FAILURE);
-			}
-			close(pipes[i - 1][0]);
+			perror("fork");
+			return(EXIT_FAILURE);
 		}
-		if(i < j - 1)
+		else if(pids[i] == 0)
 		{
-			if(dup2(pipes[i][1], STDOUT_FILENO) == -1)
-			{
-				perror("dup2");
-				return(EXIT_FAILURE);
-			}
-			close(pipes[i][0]);
+			child_process(tmp, tools, head, pipes, &i);
 		}
-		tools->path = find_path(tools->envp);
-		tools->paths = ft_split(tools->path, ':');
-		tools->cmd = get_cmd(tools->paths, tmp->str[0]);
-		execve(tools->cmd, tmp->str, tools->envp);
+		else
+			parent_process(pipes, pids);
 		tmp = tmp->next;
-		free(tools->path);
-		free(tools->paths);
-		free(tools->cmd);
-		perror("Execve :");
-		exit(EXIT_FAILURE);
 	}
-	
+	free_pipes_and_pids(head, pipes, pids);
 	return(0);
 }
 
 
-int	child_process(t_simple_cmds *curr, t_tools *tools, int fd_in, int fd[2])
+int	child_process(t_simple_cmds *curr, t_tools *tools, t_simple_cmds **head, int **pipes, int *i)
 {
-	if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
+	int j;
+
+	j = count_cmd(head);
+	if(curr->prev && dup2(pipes[*i][0], STDIN_FILENO) == -1)
 	{
-		perror("Dup2-1 : ");
+		perror("dup2-1");
 		return(EXIT_FAILURE);
 	}
-	if (curr->next && dup2(fd[1], STDOUT_FILENO) < 0)
+	close(pipes[*i][0]);
+	if(curr->next && dup2(pipes[*i][1], STDOUT_FILENO) == -1)
 	{
-		perror("Dup2-2 : ");
+		perror("dup2-2");
 		return(EXIT_FAILURE);
 	}
-	close(fd[1]);
-	if (curr->prev)
-		close(fd_in);
+	close(pipes[*i][1]);
 	tools->path = find_path(tools->envp);
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
@@ -162,11 +182,22 @@ int	child_process(t_simple_cmds *curr, t_tools *tools, int fd_in, int fd[2])
 	return(0);
 }
 
-void	parent_process(t_tools *tools, int *i)
+void	parent_process(int **pipes, int *pids)
 {
-	close(tools->fd[0]);
-	close(tools->fd[1]);
-	waitpid(tools->pid[*i], NULL, 0);
+	int j;
+	int k;
+	int i;
+
+	i = -1;
+	j = -1;
+	while(pipes[++j])
+	{
+		k = -1;
+		while(pipes[j][++k])
+			close(pipes[j][k]);
+	}
+	while(pids[++i])
+		waitpid(pids[i], NULL, 0);
 }
 
 char	*find_path(char **env)
