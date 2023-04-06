@@ -63,6 +63,73 @@ t_tokens chose_token(char *str)
 	return (token);
 }
 
+char     *fill_buffer_quote(int *i, char *input, int c, t_tokens *token)
+{
+    int j;
+    char *buffer;
+
+    (*i)++;
+    j = 0;
+    while (input[*i] && input[*i] != c)
+    {
+        j++;
+        (*i)++;
+    }
+    buffer = ft_calloc(j + 1, sizeof(char));
+    *i = *i - j;
+    j = 0;
+    while (input[*i] && input[*i] != c)
+        buffer[j++] = input[(*i)++];
+    (*i)++;
+    *token = WORD;
+    return (buffer);
+}
+
+char    *fill_buffer_word(int *i, char *input, t_tokens *token)
+{
+    int j;
+    char *buffer;
+
+    j = 0;
+    while (input[*i] && !ft_isspace(input[*i]) && ft_istoken(input[*i]) == 0)
+    {
+        j++;
+        (*i)++;
+    }
+    buffer = ft_calloc(j + 1, sizeof(char));
+    *i = *i - j;
+    j = 0;
+    while (input[*i] && !ft_isspace(input[*i]) && ft_istoken(input[*i]) == 0)
+        buffer[j++] = input[(*i)++];
+    *token = WORD;
+    return (buffer);
+}
+
+char    *fill_buffer_meta(int *i, char *input, t_tokens *token)
+{
+    int j;
+    char *buffer;
+
+    j = 0;
+    while (input[*i] && ft_istoken(input[*i]) == 1)
+    {
+        j++;
+        (*i)++;
+    }
+    buffer = ft_calloc(j + 1, sizeof(char));
+    *i = *i - j;
+    j = 0;
+    while (input[*i] && ft_istoken(input[*i]) == 1)
+        buffer[j++] = input[(*i)++];
+    *token = chose_token(buffer);
+	if (*token == 0)
+		printf("Erreur a faire bien plus tard\n");
+    return (buffer);
+}
+
+
+// IL FAUT ENCORE GERER LES QUOTES NON FERMEES !!!!
+
 t_lexer *ft_lexer(char *input, t_tools *tools)
 {
     t_lexer *head;
@@ -71,86 +138,25 @@ t_lexer *ft_lexer(char *input, t_tools *tools)
 	t_tokens token;
     char *buffer;
     int i;
-	int	j;
 	int	k;
 	
     head = 0;
     tail = 0;
     i = 0;
 	k = 1;
-    if (check_closed_quotes(input) == 1)
-        return (0);
     input = expander(tools, input);
     while (input[i])
     {
         while (ft_isspace(input[i]) && input[i])
             i++;
         if (input[i] == '\'')
-        {
-            i++;
-        	j = 0;
-			while (input[i] && input[i] != '\'')
-			{
-				j++;
-				i++;
-			}
-			buffer = ft_calloc(j, sizeof(char));
-			i = i - j;
-			j = 0;
-			while (input[i] && input[i] != '\'')
-				buffer[j++] = input[i++];
-            i++;
-			token = WORD;
-        }
+            buffer = fill_buffer_quote(&i, input, '\'', &token);
         else if (input[i] == '\"')
-        {
-        	j = 0;
-            i++;
-			while (input[i] && input[i] != '\"')
-			{
-				j++;
-				i++;
-			}
-			buffer = ft_calloc(j + 1, sizeof(char));
-			i = i - j;
-			j = 0;
-			while (input[i] && input[i] != '\"')
-				buffer[j++] = input[i++];
-            i++;
-			token = WORD;
-        }
+            buffer = fill_buffer_quote(&i, input, '\"', &token);
 		else if (ft_istoken(input[i]) == 0)
-		{
-        	j = 0;
-			while (input[i] && !ft_isspace(input[i]) && ft_istoken(input[i]) == 0)
-			{
-				j++;
-				i++;
-			}
-			buffer = ft_calloc(j + 1, sizeof(char));
-			i = i - j;
-			j = 0;
-			while (input[i] && !ft_isspace(input[i]) && ft_istoken(input[i]) == 0)
-				buffer[j++] = input[i++];
-			token = WORD;
-		}
+            buffer = fill_buffer_word(&i, input, &token);
 		else 
-		{
-			j = 0;
-			while (input[i] && ft_istoken(input[i]) == 1)
-			{
-				j++;
-				i++;
-			}
-			buffer = ft_calloc(j + 1, sizeof(char));
-			i = i - j;
-			j = 0;
-			while (input[i] && ft_istoken(input[i]) == 1)
-				buffer[j++] = input[i++];
-			token = chose_token(buffer);
-			if (token == 0)
-				printf("Erreur a faire bien plus tard\n");
-		}
+            buffer = fill_buffer_meta(&i, input, &token);
 		while (ft_isspace(input[i]) && input[i])
             i++;
         new = new_token(ft_strdup(buffer), token, k++);
