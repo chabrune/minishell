@@ -65,8 +65,8 @@ t_tokens chose_token(char *str)
 
 t_lexer *ft_lexer(char *input, t_tools *tools)
 {
-    t_lexer *head;
-    t_lexer *tail;
+    t_lexer *head = NULL;
+    t_lexer *tail = NULL;
     t_lexer *new;
 	t_tokens token;
     char *buffer;
@@ -74,8 +74,6 @@ t_lexer *ft_lexer(char *input, t_tools *tools)
 	int	j;
 	int	k;
 	
-    head = 0;
-    tail = 0;
     i = 0;
 	k = 1;
     if (check_closed_quotes(input) == 1)
@@ -85,43 +83,7 @@ t_lexer *ft_lexer(char *input, t_tools *tools)
     {
         while (ft_isspace(input[i]) && input[i])
             i++;
-        // printf("INPUT ::::: %s\n", input);
-        if (input[i] == '\'')
-        {
-        	j = 0;
-			while (input[i] && input[i] != '\'')
-			{
-				j++;
-				i++;
-			}
-            i++;
-			buffer = ft_calloc(j, sizeof(char));
-			i = i - j;
-			j = 0;
-			while (input[i] && input[i] != '\'')
-				buffer[j++] = input[i++];
-            // i++;
-			token = WORD;
-        }
-        else if (input[i] == '\"')
-        {
-        	j = 0;
-			while (input[i] && input[i] != '\"')
-			{
-				j++;
-				i++;
-			}
-            j += 2;
-			buffer = ft_calloc(j, sizeof(char));
-			i = i - j;
-            printf("tessssssst ::: %c\n", input[i]);
-			j = 0;
-			while (input[i] && input[i] != '\"')
-				buffer[j++] = input[i++];
-            i++;
-			token = WORD;
-        }
-		else if (ft_istoken(input[i]) == 0)
+		if (ft_istoken(input[i]) == 0)
 		{
         	j = 0;
 			while (input[i] && !ft_isspace(input[i]) && ft_istoken(input[i]) == 0)
@@ -136,7 +98,7 @@ t_lexer *ft_lexer(char *input, t_tools *tools)
 				buffer[j++] = input[i++];
 			token = WORD;
 		}
-		else 
+		else
 		{
 			j = 0;
 			while (input[i] && ft_istoken(input[i]) == 1)
