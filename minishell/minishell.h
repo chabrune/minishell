@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/02 14:35:26 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:17:52 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_simple_cmds
 # include "parser/parser.h"
 # include "executor/exec.h"
 # include "expander/expander.h"
+# include "lexer/lexer.h"
 
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input, t_tools *tool);

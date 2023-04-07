@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/06 16:25:51 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:55:18 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	free_pipes_and_pids(t_simple_cmds **head, int **pipes, int *pids)
 	free(pipes);
 	free(pids);
 }
+
 int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 {
 	t_simple_cmds *tmp;
@@ -151,7 +152,6 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 	free_pipes_and_pids(head, pipes, pids);
 	return(0);
 }
-
 
 int	child_process(t_simple_cmds *curr, t_tools *tools, t_simple_cmds **head, int **pipes, int *i)
 {

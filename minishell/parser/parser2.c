@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/25 17:59:38 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/07 18:39:24 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void    last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
         while(tmplex && tmplex->token != PIPE )
         {
             tmpcmd->str[i] = tmplex->str;
-            printf("rest of lexer : %s\n", tmpcmd->str[i]);
+            // printf("rest of lexer : %s\n", tmpcmd->str[i]);
             tmplex = tmplex->next;
             i++;
         }

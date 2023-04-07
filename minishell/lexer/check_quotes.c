@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 13:21:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/04 14:00:06 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:06:40 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "lexer.h"
 
 int check_closed_quotes(char *input)
 {

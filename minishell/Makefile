@@ -6,7 +6,7 @@
 #    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/04/01 18:51:00 by emuller          ###   ########.fr        #
+#    Updated: 2023/04/07 18:06:22 by emuller          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,14 @@ OBJS    	=       $(SRCS:.c=.o)
 ###### SOURCES
 
 SRCS       	=	main.c \
-				lexer.c \
+				get_env.c \
+				lst_utils.c \
+				lexer/lexer.c \
 				parser/parser1.c \
 				parser/parser2.c \
 				parser/parser3.c \
 				parser/parser_utils.c \
-				check_quotes.c \
-				get_env.c \
-				lst_utils.c \
+				lexer/check_quotes.c \
 				builtins/builtins.c \
 				builtins/my_cd.c \
 				builtins/my_echo.c \
