@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/10 14:02:38 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:39:05 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,35 @@
 	// 	multiple_commands(head, tools);
 // }
 
-int	one_command(t_simple_cmds **head, t_tools *tools)
-{
-	t_simple_cmds *curr;
-	int pid;
-	curr = *head;
+// int	one_command(t_simple_cmds **head, t_tools *tools)
+// {
+// 	t_simple_cmds *curr;
+// 	int pid;
+// 	curr = *head;
 	
-	//if cmd == cd / exit / export / unset --> Exec without child
-	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
-	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
-	// 	redir_is_fun(head);
-	tools->path = find_path(tools->envp); //check unset path
-	tools->paths = ft_split(tools->path, ':');
-	tools->cmd = get_cmd(tools->paths, curr->str[0]);
-	pid = fork();
-	if(pid == -1)
-	{
-		perror("Fork : ");
-		return(EXIT_FAILURE);
-	}
-	else if(pid == 0)
-	{
-		execve(tools->cmd, curr->str, tools->envp);
-		perror("Exceve : ");
-		exit(EXIT_FAILURE);
-	}
-	else
-		waitpid(pid, NULL, 0);
-	return(0);
-}
+// 	//if cmd == cd / exit / export / unset --> Exec without child
+// 	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
+// 	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
+// 	// 	redir_is_fun(head);
+// 	tools->path = find_path(tools->envp); //check unset path
+// 	tools->paths = ft_split(tools->path, ':');
+// 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
+// 	pid = fork();
+// 	if(pid == -1)
+// 	{
+// 		perror("Fork : ");
+// 		return(EXIT_FAILURE);
+// 	}
+// 	else if(pid == 0)
+// 	{
+// 		execve(tools->cmd, curr->str, tools->envp);
+// 		perror("Exceve : ");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	else
+// 		waitpid(pid, NULL, 0);
+// 	return(0);
+// }
 
 int **alloc_pipes(t_simple_cmds **head)
 {
@@ -97,34 +97,46 @@ int *alloc_pids(t_simple_cmds **head)
 	return(pids);
 }
 
-void	free_pipes_and_pids(t_simple_cmds **head, int **pipes, int *pids)
+int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 {
-	int i;
-	int j;
+	static int i = 0;
 
-	j = count_cmd(head);
-	i = -1;
-	while(++i < j - 1)
+	tools->pid[i] = fork();
+	if(tools->pid[i] == -1)
 	{
-    	free(pipes[i]);
+		perror("fork");
+		return(EXIT_FAILURE);
 	}
-	free(pipes);
-	free(pids);
+	if(tools->pid[i] == 0)
+		dup_cmd(curr, fd_in, pipes, tools);
+	i++;
+	return(EXIT_SUCCESS);
+}
+
+int	ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd)
+{
+	int fd_in;
+	(void)tools;
+	if(0)
+	{
+		printf("COUCOU\n");
+		close(tools->pipes[0]);
+		fd_in = open(cmd->hd_file_name, O_RDONLY);
+	}
+	else
+		fd_in = tools->pipes[0];
+	return(fd_in);
 }
 
 int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 {
 	t_simple_cmds *tmp;
-	int i;
+	int fd_in;
 	int j;
 	int pipes[2];
-	int fd_in;
-	int *pids;
 
-	// pipes = alloc_pipes(head);
-	// pids = alloc_pids(head);
-	// j = count_cmd(head);
-	i = 0;
+	j = count_cmd(head);
+	tools->pid = ft_calloc(sizeof(int), j + 1);
 	fd_in = STDIN_FILENO;
 	tmp = *head;
 	while(tmp)
@@ -137,76 +149,97 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 				return(EXIT_FAILURE);
 			}
 		}
-		pids = fork();
-		if(pids[i] == -1)
-		{
-			perror("fork");
-			return(EXIT_FAILURE);
-		}
-		else if(pids[i] == 0)
-		{
-			child_process(tmp, tools, head, pipes, &i);
-		}
-		else
-			parent_process(pipes, pids);
+		ft_fork(tools, tmp, fd_in, pipes);
+		close(pipes[1]);
+		if(tmp->prev)
+			close(fd_in);
+		fd_in = ft_check_heredoc(tools, tmp);
 		if(tmp->next)
 			tmp = tmp->next;
-		i++;
+		else
+			break;
 	}
-	free_pipes_and_pids(head, pipes, pids);
+	wait_process(tools);
 	return(0);
 }
 
-int	child_process(t_simple_cmds *curr, t_tools *tools, t_simple_cmds **head, int **pipes, int *i)
+int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
-	int j;
-	int **save;
-	int k;
+	int exit_code;
 
-	k = *i - 1;
-	save = ft_calloc(sizeof(int *), 3);
-	save = pipes;
-	j = count_cmd(head);
-	if(curr->prev && dup2(pipes[*i][0], STDIN_FILENO) == -1)
+	exit_code = 0;
+	if(curr->str[0][0] != '\0')
+	{
+		tools->cmd = get_cmd(tools->paths, curr->str[0]);
+		if(tools->cmd)
+		{
+			execve(tools->cmd, curr->str, tools->envp);
+			free(tools->path);
+			free(tools->paths);
+			free(tools->cmd);
+			perror("Execve :");
+			exit(EXIT_FAILURE);
+		}
+	}
+	exit(exit_code);
+}
+
+int	dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools)
+{
+	if(curr->prev && dup2(pipes[0], STDIN_FILENO) == -1)
 	{
 		perror("dup2-1");
 		return(EXIT_FAILURE);
 	}
-	close(pipes[*i][0]);
-	if(curr->next && dup2(pipes[*i][1], STDOUT_FILENO) == -1)
+	close(pipes[0]);
+	if(curr->next && dup2(pipes[1], STDOUT_FILENO) == -1)
 	{
 		perror("dup2-2");
 		return(EXIT_FAILURE);
 	}
-	close(pipes[*i][1]);
-	tools->path = find_path(tools->envp);
-	tools->paths = ft_split(tools->path, ':');
-	tools->cmd = get_cmd(tools->paths, curr->str[0]);
-	execve(tools->cmd, curr->str, tools->envp);
-	free(tools->path);
-	free(tools->paths);
-	free(tools->cmd);
-	perror("Execve :");
-	exit(EXIT_FAILURE);
+	close(pipes[1]);
+	if(curr->prev)
+		close(fd_in);
+	handle_cmd(curr, tools);
 	return(0);
 }
 
-void	parent_process(int **pipes, int *pids)
+// int	child_process(t_simple_cmds *curr, t_tools *tools, int fd_in)
+// {
+// 	if(curr->prev && dup2(fd_in, STDIN_FILENO) == -1)
+// 	{
+// 		perror("dup2-1");
+// 		return(EXIT_FAILURE);
+// 	}
+// 	close(tools->pipes[0]);
+// 	if(curr->next && dup2(tools->pipes[1], STDOUT_FILENO) == -1)
+// 	{
+// 		perror("dup2-2");
+// 		return(EXIT_FAILURE);
+// 	}
+// 	close(tools->pipes[1]);
+// 	if(curr->prev)
+// 		close(fd_in);
+// 	tools->path = find_path(tools->envp);
+// 	tools->paths = ft_split(tools->path, ':');
+// 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
+// 	execve(tools->cmd, curr->str, tools->envp);
+// 	free(tools->path);
+// 	free(tools->paths);
+// 	free(tools->cmd);
+// 	perror("Execve :");
+// 	exit(EXIT_FAILURE);
+// 	return(0);
+// }
+
+void	wait_process(t_tools *tools)
 {
-	int j;
-	int k;
 	int i;
 
 	i = -1;
-	j = -1;
-	while(pipes[++j])
-	{
-		k = -1;
-		while(pipes[j][++k])
-			close(pipes[j][k]);
-	}
-	while(pids[++i])
-		waitpid(pids[i], NULL, 0);
+	while(tools->pid[++i])
+		waitpid(tools->pid[i], NULL, 0);
+	waitpid(tools->pid[i], NULL, 0);
 }
 
 char	*find_path(char **env)
@@ -215,6 +248,34 @@ char	*find_path(char **env)
 		env++;
 	return (*env + 5);
 }
+
+// char	*get_cmd(t_simple_cmds *curr, t_tools *tools)
+// {
+// 	char *tmp;
+// 	char *command;
+// 	int i;
+
+// 	i = -1;
+// 	tools->paths = ft_split(tools->path, ':');
+// 	tools->path = find_path(tools->envp);
+// 	while (tools->paths[++i])
+// 	{
+// 		tmp = ft_strjoin(tools->paths[i], "/");
+// 		command = ft_strjoin(tmp, curr->str[0]);
+// 		free(tmp);
+// 		if (access(command, F_OK) == 0)
+// 		{
+// 			execve(command, curr->str, tools->envp);
+// 			free(tools->path);
+// 			free(tools->paths);
+// 			free(tools->cmd);
+// 			free(command);
+// 			perror("Execve :");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 	}
+// 	return (NULL);
+// }
 
 char	*get_cmd(char **paths, char *cmd)
 {
