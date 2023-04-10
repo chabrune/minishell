@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/07 18:06:52 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:32:30 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ t_tokens chose_token(char *str)
 	return (token);
 }
 
+// Il faut aussi modifier cette fonction pour que a la fin d'un quote, si il n'y a pas d'espace ca reste ensemble
+// exemple: "mdr"=coucou doit etre un seul noeud
 char     *fill_buffer_quote(int *i, char *input, int c, t_tokens *token)
 {
     int j;
@@ -100,19 +102,36 @@ char     *fill_buffer_quote(int *i, char *input, int c, t_tokens *token)
 char    *fill_buffer_word(int *i, char *input, t_tokens *token)
 {
     int j;
+    int len;
     char *buffer;
 
     j = 0;
-    while (input[*i] && !ft_isspace(input[*i]) && ft_istoken(input[*i]) == 0)
+    while (input[*i])
     {
-        j++;
+        if (input[*i] == '\"')
+        {
+            (*i)++;
+            j++;
+            while (input[*i] && input[*i] != '\"')
+            {
+                (*i)++;
+                j++;
+            }
+        }
+        if (ft_isspace(input[*i]) || ft_istoken(input[*i]))
+            break;
         (*i)++;
+        j++;
     }
     buffer = ft_calloc(j + 1, sizeof(char));
     *i = *i - j;
+    len = j;
     j = 0;
-    while (input[*i] && !ft_isspace(input[*i]) && ft_istoken(input[*i]) == 0)
+    while (len > 0)
+    {
         buffer[j++] = input[(*i)++];
+        len--;
+    }
     *token = WORD;
     return (buffer);
 }
