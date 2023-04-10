@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/07 16:55:18 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/10 14:02:38 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
 	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
 	// 	redir_is_fun(head);
-	tools->path = find_path(tools->envp);
+	tools->path = find_path(tools->envp); //check unset path
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
 	pid = fork();
@@ -117,25 +117,27 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 	t_simple_cmds *tmp;
 	int i;
 	int j;
-	int **pipes;
+	int pipes[2];
+	int fd_in;
 	int *pids;
 
-	pipes = alloc_pipes(head);
-	pids = alloc_pids(head);
-	j = count_cmd(head);
-	i = -1;
+	// pipes = alloc_pipes(head);
+	// pids = alloc_pids(head);
+	// j = count_cmd(head);
+	i = 0;
+	fd_in = STDIN_FILENO;
 	tmp = *head;
-	while(++i < j)
+	while(tmp)
 	{
-		if(i < j - 1)
+		if(tmp->next)
 		{
-			if(pipe(pipes[i]) == -1)
+			if(pipe(pipes) == -1)
 			{
 				perror("pipe");
 				return(EXIT_FAILURE);
 			}
 		}
-		pids[i] = fork();
+		pids = fork();
 		if(pids[i] == -1)
 		{
 			perror("fork");
@@ -147,7 +149,9 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 		}
 		else
 			parent_process(pipes, pids);
-		tmp = tmp->next;
+		if(tmp->next)
+			tmp = tmp->next;
+		i++;
 	}
 	free_pipes_and_pids(head, pipes, pids);
 	return(0);
@@ -156,7 +160,12 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 int	child_process(t_simple_cmds *curr, t_tools *tools, t_simple_cmds **head, int **pipes, int *i)
 {
 	int j;
+	int **save;
+	int k;
 
+	k = *i - 1;
+	save = ft_calloc(sizeof(int *), 3);
+	save = pipes;
 	j = count_cmd(head);
 	if(curr->prev && dup2(pipes[*i][0], STDIN_FILENO) == -1)
 	{
