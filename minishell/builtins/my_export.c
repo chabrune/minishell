@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/19 17:53:54 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:34:14 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,19 @@ void    my_export(t_tools *tools, t_simple_cmds *cmd)
             j++;
         var_name[i] = ft_calloc(j + 2, sizeof(char));
         ft_strlcpy(var_name[i], cmd->str[i + 1], j + 1);
-        var_content[i] = ft_strdup(cmd->str[i + 1] + j);
+		if (cmd->str[i + 1][j] == '\"')
+			j++;
+		var_content[i] = ft_strdup(cmd->str[i + 1] + j);
+		j = 0;
+		while (var_content[i][j])
+			j++;
+		if (var_content[i][j - 1] == '\"')
+			var_content[i][j - 1] = 0;
         i++;
     }
     add_lines_to_env(tools, var_name, var_content);
     free_tab(var_content, i);
     free_tab(var_name, i);
 }
+
+// Il faut aussi test si mdr="coucou"test donne bien mdr="coucoutest"
