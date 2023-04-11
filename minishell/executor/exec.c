@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/10 17:39:05 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:48:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,36 @@
 	// 	multiple_commands(head, tools);
 // }
 
-// int	one_command(t_simple_cmds **head, t_tools *tools)
-// {
-// 	t_simple_cmds *curr;
-// 	int pid;
-// 	curr = *head;
+int	one_command(t_simple_cmds **head, t_tools *tools)
+{
+	t_simple_cmds *curr;
+	int pid;
+	curr = *head;
 	
-// 	//if cmd == cd / exit / export / unset --> Exec without child
-// 	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
-// 	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
-// 	// 	redir_is_fun(head);
-// 	tools->path = find_path(tools->envp); //check unset path
-// 	tools->paths = ft_split(tools->path, ':');
-// 	tools->cmd = get_cmd(tools->paths, curr->str[0]);
-// 	pid = fork();
-// 	if(pid == -1)
-// 	{
-// 		perror("Fork : ");
-// 		return(EXIT_FAILURE);
-// 	}
-// 	else if(pid == 0)
-// 	{
-// 		execve(tools->cmd, curr->str, tools->envp);
-// 		perror("Exceve : ");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	else
-// 		waitpid(pid, NULL, 0);
-// 	return(0);
-// }
+	//if cmd == cd / exit / export / unset --> Exec without child
+	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
+	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
+	// 	redir_is_fun(head);
+	pid = fork();
+	if(pid == -1)
+	{
+		perror("Fork : ");
+		return(EXIT_FAILURE);
+	}
+	else if(pid == 0)
+	{
+		tools->path = find_path(tools->envp); //check unset path
+		tools->paths = ft_split(tools->path, ':');
+		tools->cmd = get_cmd(tools->paths, curr->str[0]);
+		if(tools->cmd)
+			execve(tools->cmd, curr->str, tools->envp);
+		perror("Exceve : ");
+		exit(EXIT_FAILURE);
+	}
+	else
+		waitpid(pid, NULL, 0);
+	return(0);
+}
 
 int **alloc_pipes(t_simple_cmds **head)
 {
@@ -97,34 +98,78 @@ int *alloc_pids(t_simple_cmds **head)
 	return(pids);
 }
 
-int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
+// int	dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools, int *i)
+// {
+// 	if(curr->prev && dup2(pipes[0], STDIN_FILENO) == -1)
+// 	{
+// 		perror("dup2-1");
+// 		return(EXIT_FAILURE);
+// 	}
+// 	if(curr->next && dup2(pipes[1], STDOUT_FILENO) == -1)
+// 	{
+// 		perror("dup2-2");
+// 		return(EXIT_FAILURE);
+// 	}
+// 	if(curr->prev)
+// 		close(fd_in);
+// 	handle_cmd(curr, tools);
+// 	return(0);
+// }
+
+int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2], t_simple_cmds **head)
 {
 	static int i = 0;
+	int j;
 
+	j = 0;
 	tools->pid[i] = fork();
 	if(tools->pid[i] == -1)
 	{
 		perror("fork");
 		return(EXIT_FAILURE);
 	}
-	if(tools->pid[i] == 0)
-		dup_cmd(curr, fd_in, pipes, tools);
+	else if(tools->pid[i] == 0)
+	{
+		close(pipes[0]);
+		if(i > 0)
+		{
+          dup2(fd_in, STDIN_FILENO); // Redirect input from previous pipe
+          close(fd_in);
+		}
+		if(i < count_cmd(head))
+		{
+			dup2(pipes[1], STDOUT_FILENO); // Redirect output to next pipe
+          	close(pipes[1]);
+		}
+		// dup_cmd(curr, fd_in, pipes, tools);
+		handle_cmd(curr, tools);
+	}
+	else
+	{
+        // Parent process
+        close(pipes[1]); // Close unused write end
+        if (i > 0)
+          close(fd_in); // Close previous pipe
+        fd_in = pipes[0]; // Save read end for next command
+    }
 	i++;
+	while(j < count_cmd(head))
+		wait(NULL);
 	return(EXIT_SUCCESS);
 }
 
-int	ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd)
+int	ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2])
 {
 	int fd_in;
 	(void)tools;
 	if(0)
 	{
 		printf("COUCOU\n");
-		close(tools->pipes[0]);
+		close(pipes[0]);
 		fd_in = open(cmd->hd_file_name, O_RDONLY);
 	}
 	else
-		fd_in = tools->pipes[0];
+		fd_in = pipes[0];
 	return(fd_in);
 }
 
@@ -135,10 +180,12 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 	int j;
 	int pipes[2];
 
+	memset(pipes, 0, sizeof(pipes));
 	j = count_cmd(head);
 	tools->pid = ft_calloc(sizeof(int), j + 1);
 	fd_in = STDIN_FILENO;
 	tmp = *head;
+	print_cmd(head);
 	while(tmp)
 	{
 		if(tmp->next)
@@ -149,17 +196,13 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 				return(EXIT_FAILURE);
 			}
 		}
-		ft_fork(tools, tmp, fd_in, pipes);
-		close(pipes[1]);
-		if(tmp->prev)
-			close(fd_in);
-		fd_in = ft_check_heredoc(tools, tmp);
+		ft_fork(tools, tmp, fd_in, pipes, head);
+		fd_in = ft_check_heredoc(tools, tmp, pipes);
 		if(tmp->next)
 			tmp = tmp->next;
 		else
 			break;
 	}
-	wait_process(tools);
 	return(0);
 }
 
@@ -170,6 +213,8 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 	exit_code = 0;
 	if(curr->str[0][0] != '\0')
 	{
+		tools->path = find_path(tools->envp); //check unset path
+		tools->paths = ft_split(tools->path, ':');
 		tools->cmd = get_cmd(tools->paths, curr->str[0]);
 		if(tools->cmd)
 		{
@@ -184,25 +229,6 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 	exit(exit_code);
 }
 
-int	dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools)
-{
-	if(curr->prev && dup2(pipes[0], STDIN_FILENO) == -1)
-	{
-		perror("dup2-1");
-		return(EXIT_FAILURE);
-	}
-	close(pipes[0]);
-	if(curr->next && dup2(pipes[1], STDOUT_FILENO) == -1)
-	{
-		perror("dup2-2");
-		return(EXIT_FAILURE);
-	}
-	close(pipes[1]);
-	if(curr->prev)
-		close(fd_in);
-	handle_cmd(curr, tools);
-	return(0);
-}
 
 // int	child_process(t_simple_cmds *curr, t_tools *tools, int fd_in)
 // {
@@ -232,15 +258,6 @@ int	dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools)
 // 	return(0);
 // }
 
-void	wait_process(t_tools *tools)
-{
-	int i;
-
-	i = -1;
-	while(tools->pid[++i])
-		waitpid(tools->pid[i], NULL, 0);
-	waitpid(tools->pid[i], NULL, 0);
-}
 
 char	*find_path(char **env)
 {
