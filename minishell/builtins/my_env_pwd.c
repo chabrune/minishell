@@ -12,15 +12,15 @@
 
 #include "builtins.h"
 
-void	my_pwd(t_tools *tools) 
+void	my_pwd(t_tools *tools)
 {
-	int	i;
-	char *pwd;
+	int		i;
+	char	*pwd;
 
 	i = -1;
 	pwd = 0;
 	while (tools->envp[++i])
-		if(ft_strncmp(tools->envp[i], "PWD=", 4) == 0)
+		if (ft_strncmp(tools->envp[i], "PWD=", 4) == 0)
 			pwd = ft_strdup(tools->envp[i]);
 	if (pwd == 0)
 		return ;
@@ -28,9 +28,9 @@ void	my_pwd(t_tools *tools)
 	free(pwd);
 }
 
-void	my_env(t_tools *tools, t_simple_cmds *cmd) 
+void	my_env(t_tools *tools, t_simple_cmds *cmd)
 {
-	int	i;
+	int i;
 
 	i = -1;
 	if (cmd->str[1])

@@ -41,14 +41,14 @@ void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
 {
 	if (lst == NULL)
 		return ;
-	if(del)
+	if (del)
 		del(lst->str);
 	del(lst);
 }
 
 void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
 {
-	t_simple_cmds	*temp;
+	t_simple_cmds *temp;
 
 	if (lst)
 	{

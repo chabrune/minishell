@@ -20,9 +20,10 @@ void	my_exit(t_tools *tools, t_simple_cmds *cmds)
 	exit(0);
 }
 
-int		is_builtins(t_simple_cmds *cmds)
+int	is_builtins(t_simple_cmds *cmds)
 {
-	t_simple_cmds *tmp;
+	t_simple_cmds	*tmp;
+
 	tmp = cmds;
 	while (tmp)
 	{
@@ -46,7 +47,7 @@ int		is_builtins(t_simple_cmds *cmds)
 }
 
 void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
- {
+{
 	t_simple_cmds *tmp;
 	tmp = cmds;
 	while (tmp)
@@ -67,4 +68,4 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 			my_exit(tools, cmds);
 		tmp = tmp->next;
 	}
- }
+}

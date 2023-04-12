@@ -21,8 +21,8 @@ void	my_pwd(t_tools *tools);
 void	my_echo(t_simple_cmds *cmd);
 void	my_env(t_tools *tools, t_simple_cmds *cmd);
 void	my_cd(t_tools *tools, t_simple_cmds *cmds);
-void    my_export(t_tools *tools, t_simple_cmds *cmd);
-void    my_unset(t_tools *tools, t_simple_cmds *cmd);
+void	my_export(t_tools *tools, t_simple_cmds *cmd);
+void	my_unset(t_tools *tools, t_simple_cmds *cmd);
 void	*free_old_env(char **tab);
 
 #endif

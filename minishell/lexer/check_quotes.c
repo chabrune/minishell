@@ -12,24 +12,24 @@
 
 #include "lexer.h"
 
-int check_closed_quotes(char *input)
+int	check_closed_quotes(char *input)
 {
-    int i;
-    int single_quote;
-    int double_quote;
+	int	i;
+	int	single_quote;
+	int	double_quote;
 
-    i = 0;
-    single_quote = 0;
-    double_quote = 0;
-    while (input[i])
-    {
-        if (input[i] == 39)
-            single_quote++;
-        else if (input[i] == 34)
-            double_quote++;
-        i++;
-    }
-    if (single_quote % 2 != 0 || double_quote % 2 != 0)
-        return (1);
-    return (0);
+	i = 0;
+	single_quote = 0;
+	double_quote = 0;
+	while (input[i])
+	{
+		if (input[i] == 39)
+			single_quote++;
+		else if (input[i] == 34)
+			double_quote++;
+		i++;
+	}
+	if (single_quote % 2 != 0 || double_quote % 2 != 0)
+		return (1);
+	return (0);
 }

@@ -28,8 +28,8 @@ void	*free_tab(char **tab, int j)
 
 char	**dup_env(char **tab)
 {
-	char	**new_tab;
-	int		i;
+	char **new_tab;
+	int i;
 
 	i = 0;
 	while (tab[i])

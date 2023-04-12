@@ -14,7 +14,7 @@
 
 int	count_dollar(char *str)
 {
-	int i;
+	int	i;
 	int	count;
 
 	i = 0;
@@ -28,18 +28,18 @@ int	count_dollar(char *str)
 	return (count);
 }
 
-char *coupe_le_debut(char *env)
+char	*coupe_le_debut(char *env)
 {
-	int i;
-	int j;
-	int k;
-	char *result;
+	int		i;
+	int		j;
+	int		k;
+	char	*result;
 
 	j = 0;
 	i = 0;
 	k = 0;
 	if (!env)
-		return(NULL);
+		return (NULL);
 	while (env[i++] != '=' && env[i])
 		k++;
 	if (env[i])
@@ -47,35 +47,37 @@ char *coupe_le_debut(char *env)
 		i++;
 		k++;
 	}
-	while(env[i++])
+	while (env[i++])
 		j++;
 	i = 0;
 	result = ft_calloc(sizeof(char), (j + 2));
 	if (!result)
 		return (0);
-	while(env[k]) 
+	while (env[k])
 		result[i++] = env[k++];
 	free(env);
-	return(result);
+	return (result);
 }
 
-int    check_var_name_exit(char *var_name, t_tools *tools)
+int	check_var_name_exit(char *var_name, t_tools *tools)
 {
-    int i = 0;
-    while (tools->envp[i])
-    {
-        if (ft_strncmp(tools->envp[i], var_name, ft_strlen(var_name)) == 0)
-            return (1);
+	int	i;
+
+	i = 0;
+	while (tools->envp[i])
+	{
+		if (ft_strncmp(tools->envp[i], var_name, ft_strlen(var_name)) == 0)
+			return (1);
 		i++;
-    }   
-    return (0);
+	}
+	return (0);
 }
 
 char	*copy_var_name(int pos, char *str)
 {
-	int	i;
+	int i;
 	int n;
-	char	*var_name;
+	char *var_name;
 
 	pos++;
 	i = pos;

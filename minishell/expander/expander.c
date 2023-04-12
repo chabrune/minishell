@@ -12,18 +12,19 @@
 
 #include "expander.h"
 
-char   *find_var_env(t_tools *tools, char *var_name)
+char	*find_var_env(t_tools *tools, char *var_name)
 {
-    int i;
-    char    *result = NULL;
+	int		i;
+	char	*result;
 
-    i = 0;
-    while (tools->envp[i])
-    {
-        if (ft_strncmp(tools->envp[i], var_name, ft_strlen(var_name)) == 0)
-            result = ft_strdup(tools->envp[i]);
+	result = NULL;
+	i = 0;
+	while (tools->envp[i])
+	{
+		if (ft_strncmp(tools->envp[i], var_name, ft_strlen(var_name)) == 0)
+			result = ft_strdup(tools->envp[i]);
 		i++;
-    }
+	}
 	if (result)
 		result = coupe_le_debut(result);
 	return (result);
@@ -31,8 +32,8 @@ char   *find_var_env(t_tools *tools, char *var_name)
 
 char	*find_var_name(char *str, int dollar_pos)
 {
-    int i;
-	char *var_name;
+	int		i;
+	char	*var_name;
 
 	i = 0;
 	while (str[i])
@@ -41,10 +42,10 @@ char	*find_var_name(char *str, int dollar_pos)
 			var_name = copy_var_name(i, str);
 		i++;
 	}
-    return (var_name);
+	return (var_name);
 }
 
-int		find_len_result(char *str, char **var_name, char **var_content, int count)
+int	find_len_result(char *str, char **var_name, char **var_content, int count)
 {
 	int	len;
 	int	i;
@@ -60,7 +61,8 @@ int		find_len_result(char *str, char **var_name, char **var_content, int count)
 	return (len);
 }
 
-char	*replace_name_with_content(char *str, char **var_name, char **var_content, int count)
+char	*replace_name_with_content(char *str, char **var_name,
+		char **var_content, int count)
 {
 	char	*result;
 	int		i;
@@ -73,7 +75,8 @@ char	*replace_name_with_content(char *str, char **var_name, char **var_content, 
 	l = -1;
 	if (!var_content || !var_name)
 		return (str);
-	result = ft_calloc(find_len_result(str, var_name, var_content, count), sizeof(char));
+	result = ft_calloc(find_len_result(str, var_name, var_content, count),
+			sizeof(char));
 	if (!result)
 		return (0);
 	while (++l <= count)
@@ -81,7 +84,7 @@ char	*replace_name_with_content(char *str, char **var_name, char **var_content, 
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
 		while (str[k] == '$' && (!ft_isalnum(str[k + 1]) && str[k + 1] != '_'))
-            result[i++] = str[k++];
+			result[i++] = str[k++];
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
 		if (str[k] == '$' && (ft_isalnum(str[k + 1]) || str[k + 1] == '_'))
@@ -109,14 +112,14 @@ void	free_expanded(char **var_name, char **var_content, int j)
 
 char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools)
 {
-	char **var_name;
-	char **var_content;
-	int	i;
-	int	j;
+	char	**var_name;
+	char	**var_content;
+	int		i;
+	int		j;
 
 	i = -1;
 	j = 0;
-	var_name  = ft_calloc(nb_dollar + 1, sizeof(char *));
+	var_name = ft_calloc(nb_dollar + 1, sizeof(char *));
 	var_content = ft_calloc(nb_dollar + 1, sizeof(char *));
 	if (!var_name || !var_content)
 		return (0);
@@ -136,7 +139,7 @@ char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools)
 
 char	*sub_dollar_in_quotes(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -160,7 +163,7 @@ char	*sub_dollar_in_quotes(char *str)
 
 char	*sub_back_dollar_in_quotes(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -172,10 +175,10 @@ char	*sub_back_dollar_in_quotes(char *str)
 	return (str);
 }
 
-char    *expander(t_tools *tools, char *str)
+char	*expander(t_tools *tools, char *str)
 {
-    char *result = 0;
-	int	count;
+	char *result = 0;
+	int count;
 
 	str = sub_dollar_in_quotes(str);
 	count = count_dollar(str);
@@ -185,6 +188,6 @@ char    *expander(t_tools *tools, char *str)
 	{
 		result = expand_str(count, result, str, tools);
 		result = sub_back_dollar_in_quotes(result);
-		return(result);
+		return (result);
 	}
 }

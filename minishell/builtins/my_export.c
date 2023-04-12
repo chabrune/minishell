@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "builtins.h"
+#include "builtins.h"
 
 // Il faut check si la variable existe deja (strcmp)
 // gerer les simple quotes
@@ -29,7 +29,8 @@ void	*free_old_env(char **tab)
 	return (0);
 }
 
-char	**fill_env(char **tab, int nb_new_lines, char **var_name, char **var_content)
+char	**fill_env(char **tab, int nb_new_lines, char **var_name,
+		char **var_content)
 {
 	char	**new_tab;
 	int		i;
@@ -57,23 +58,26 @@ char	**fill_env(char **tab, int nb_new_lines, char **var_name, char **var_conten
 	return (new_tab);
 }
 
-void    add_lines_to_env(t_tools *tools, char **var_name, char **var_content)
+void	add_lines_to_env(t_tools *tools, char **var_name, char **var_content)
 {
-    int count_newlines = 0;
-    int i = -1;
+	int	count_newlines;
+	int	i;
 
-    while (var_name[++i])
+	count_newlines = 0;
+	i = -1;
+	while (var_name[++i])
 	{
-        count_newlines++;
+		count_newlines++;
 	}
 	tools->envp = fill_env(tools->envp, count_newlines, var_name, var_content);
 }
 
-void    print_export(t_tools *tools)
+void	print_export(t_tools *tools)
 {
 	char	*tmp;
 	int		i;
 	char	**sorted_env;
+	int		j;
 
 	sorted_env = dup_env(tools->envp);
 	tmp = 0;
@@ -93,7 +97,7 @@ void    print_export(t_tools *tools)
 	i = -1;
 	while (sorted_env[++i])
 	{
-		int	j = 0;
+		j = 0;
 		write(1, "declare -x ", 11);
 		while (sorted_env[i][j] && sorted_env[i][j] != '=')
 			write(1, &sorted_env[i][j++], 1);
@@ -108,37 +112,40 @@ void    print_export(t_tools *tools)
 		else
 			write(1, "\n", 1);
 	}
-    return ;
+	return ;
 }
 
-void    my_export(t_tools *tools, t_simple_cmds *cmd)
+void	my_export(t_tools *tools, t_simple_cmds *cmd)
 {
-    int i = 0;
-    int j = 0;
-    int nb_var = 0;
-    char **var_name;
-    char **var_content;
+	int		i;
+	int		j;
+	int		nb_var;
+	char	**var_name;
+	char	**var_content;
 
-    if (!cmd->str[1])
+	i = 0;
+	j = 0;
+	nb_var = 0;
+	if (!cmd->str[1])
 	{
 		print_export(tools);
-		return;
+		return ;
 	}
 	while (cmd->str[i])
-        i++;
-    nb_var = i - 1;
-    var_name = ft_calloc(nb_var + 1, sizeof(char*));
-    var_content = ft_calloc(nb_var + 1, sizeof(char*));
-    i = 0;
-    while (i < nb_var)
-    {
-        j = 0;
-        while (cmd->str[i + 1][j] && cmd->str[i + 1][j] != '=')
-            j++;
-        if (cmd->str[i + 1][j] == '=')
-            j++;
-        var_name[i] = ft_calloc(j + 2, sizeof(char));
-        ft_strlcpy(var_name[i], cmd->str[i + 1], j + 1);
+		i++;
+	nb_var = i - 1;
+	var_name = ft_calloc(nb_var + 1, sizeof(char *));
+	var_content = ft_calloc(nb_var + 1, sizeof(char *));
+	i = 0;
+	while (i < nb_var)
+	{
+		j = 0;
+		while (cmd->str[i + 1][j] && cmd->str[i + 1][j] != '=')
+			j++;
+		if (cmd->str[i + 1][j] == '=')
+			j++;
+		var_name[i] = ft_calloc(j + 2, sizeof(char));
+		ft_strlcpy(var_name[i], cmd->str[i + 1], j + 1);
 		if (cmd->str[i + 1][j] == '\"' || cmd->str[i + 1][j] == '\'')
 			j++;
 		var_content[i] = ft_strdup(cmd->str[i + 1] + j);
@@ -148,14 +155,14 @@ void    my_export(t_tools *tools, t_simple_cmds *cmd)
 			{
 				while (var_content[i][j] && var_content[i][j + 1])
 				{
-					var_content[i][j] =  var_content[i][j + 1];
+					var_content[i][j] = var_content[i][j + 1];
 					j++;
 				}
 				var_content[i][j] = 0;
 			}
-        i++;
-    }
-    add_lines_to_env(tools, var_name, var_content);
-    free_tab(var_content, i);
-    free_tab(var_name, i);
+		i++;
+	}
+	add_lines_to_env(tools, var_name, var_content);
+	free_tab(var_content, i);
+	free_tab(var_name, i);
 }

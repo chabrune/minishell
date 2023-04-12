@@ -12,24 +12,24 @@
 
 #include "parser.h"
 
-void    find_redir(t_simple_cmds **head, t_lexer **lexer)
+void	find_redir(t_simple_cmds **head, t_lexer **lexer)
 {
-    add_redir(head, lexer);
-    if(*lexer)
-        last_lexer_to_strs_cmd(lexer, head);
+	add_redir(head, lexer);
+	if (*lexer)
+		last_lexer_to_strs_cmd(lexer, head);
 }
 
-int count_cmd(t_simple_cmds **head)
+int	count_cmd(t_simple_cmds **head)
 {
-	t_simple_cmds *tmp;
-    int i;
+	t_simple_cmds	*tmp;
+	int				i;
 
-    i = 0;
-    tmp = *head;
-    while(tmp)
-    {
-        i++;
-        tmp = tmp->next;
-    }
-    return(i);
+	i = 0;
+	tmp = *head;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }

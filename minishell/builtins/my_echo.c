@@ -14,8 +14,8 @@
 
 void	my_echo(t_simple_cmds *cmd)
 {
-	int		i;
-	bool	n;
+	int i;
+	bool n;
 
 	i = 1;
 	n = 0;
@@ -23,14 +23,14 @@ void	my_echo(t_simple_cmds *cmd)
 	{
 		i++;
 		if (cmd->str[1][i] == 0)
-			n = 1;	
+			n = 1;
 	}
 	if (i > 1)
 		i = 2;
 	while (cmd->str[i])
 	{
 		ft_putstr_fd(cmd->str[i], 1);
-		i++; 
+		i++;
 		if (cmd->str[i])
 			ft_putchar_fd(' ', 1);
 	}

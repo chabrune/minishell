@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/12 11:51:18 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:55:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,4 @@ int main(int argc, char **argv, char **envp)
 	else
 		return(1);
 	return(0);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5e2d3013784535b3a6a72db3163cbaf24b5dc488

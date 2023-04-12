@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "builtins.h"
+#include "builtins.h"
 
 char	*find_parent_dir(char *pwd)
 {
 	char	*str;
 	int		i;
-	
+
 	i = 0;
 	while (pwd[i])
 		i++;
@@ -50,7 +50,7 @@ void	change_env(t_tools *tools, char *path, char *old_pwd)
 
 char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 {
-	int i;
+	int		i;
 	char	*path;
 
 	i = 0;
@@ -72,7 +72,6 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 		*pwd = ft_strjoin(*pwd, "/");
 	path = ft_strjoin(*pwd, cmds->str[1] + i);
 	return (path);
-
 	// if (pwd)
 	// 	free(pwd);
 	// if (path)
@@ -81,20 +80,20 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 
 void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 {
-	char    *home;
+	char	*home;
 	char	*pwd;
 	char	*old_pwd;
-    int     i;
-    int     check_err;
+	int		i;
+	int		check_err;
 
-    i = -1;
+	i = -1;
 	check_err = 0;
 	while (tools->envp[++i])
 	{
-        if (ft_strncmp(tools->envp[i], "HOME=", 5) == 0)
-            home = tools->envp[i] + 5;
+		if (ft_strncmp(tools->envp[i], "HOME=", 5) == 0)
+			home = tools->envp[i] + 5;
 		else if (ft_strncmp(tools->envp[i], "PWD=", 4) == 0)
-            pwd = tools->envp[i] + 4;
+			pwd = tools->envp[i] + 4;
 	}
 	old_pwd = ft_strdup(pwd);
 	if (!(cmds->str[1]))
@@ -113,9 +112,9 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 		check_err = chdir(home);
 		change_env(tools, home, old_pwd);
 	}
-    if (check_err == -1)
+	if (check_err == -1)
 	{
-        ft_putendl_fd("No such file or directory", 2);
+		ft_putendl_fd("No such file or directory", 2);
 	}
 	free(old_pwd);
 }
