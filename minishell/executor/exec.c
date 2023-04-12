@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/13 16:34:41 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:24:50 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,56 +42,57 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	return(0);
 }
 
-int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2], t_simple_cmds **head, int *i)
+int ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 {
-	int j;
-	j = -1;
-	tools->pid[*i] = fork();
-	if(tools->pid[*i] == -1)
-	{
-		perror("fork");
-		return(EXIT_FAILURE);
-	}
-	else if(tools->pid[*i] == 0)
-	{
-		close(pipes[0]);
-		if(curr->prev)
-		{
-          dup2(fd_in, STDIN_FILENO); // Redirect input from previous pipe
-          close(fd_in);
-		}
-		if(curr->next)
-		{
-			dup2(pipes[1], STDOUT_FILENO); // Redirect output to next pipe
-          	close(pipes[1]);
-		}
-		handle_cmd(curr, tools);
-	}
-	else
-	{
-        // Parent process
-        close(pipes[1]); // Close unused write end
-        if (*i > 0)
-        	close(fd_in); // Close previous pipe
-        fd_in = pipes[0]; // Save read end for next command
+    pid_t pid = fork();
+    if (pid == -1)
+    {
+        perror("fork");
+        return (EXIT_FAILURE);
     }
-	while(++j < count_cmd(head))
-		wait(NULL);
-	return(EXIT_SUCCESS);
+    else if (pid == 0)
+    {
+		if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
+			return(1);
+		close(pipes[0]);
+		if (curr->next && dup2(pipes[1], STDOUT_FILENO) < 0)
+			return(2);
+		close(pipes[1]);
+		if (curr->prev)
+			close(fd_in);
+        handle_cmd(curr, tools);
+    }
+    return (EXIT_SUCCESS);
 }
 
-int	ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2])
+int ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2])
 {
-	int fd_in;
 	(void)tools;
-	if(0)
-	{
-		close(pipes[0]);
-		fd_in = open(cmd->hd_file_name, O_RDONLY);
-	}
-	else
-		fd_in = pipes[0];
-	return(fd_in);
+    int fd_in;
+
+    if (cmd->hd_file_name)
+    {
+        close(pipes[0]);
+        fd_in = open(cmd->hd_file_name, O_RDONLY);
+    }
+    else
+        fd_in = pipes[0];
+    return (fd_in);
+}
+
+int wait_process(t_tools *tools, t_simple_cmds **head)
+{
+    int i;
+    int status;
+
+    i = -1;
+    while (++i < count_cmd(head))
+    {
+        if (kill(tools->pid[i], 0) == 0)
+            waitpid(tools->pid[i], &status, 0);
+   		waitpid(tools->pid[i], &status, 0);
+    }
+    return (EXIT_SUCCESS);
 }
 
 int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
@@ -100,9 +101,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 	int fd_in;
 	int j;
 	int pipes[2];
-	int i;
 
-	i = 0;
 	ft_memset(pipes, 0, sizeof(pipes));
 	j = count_cmd(head);
 	tools->pid = ft_calloc(sizeof(int), j + 1);
@@ -118,38 +117,36 @@ int	multiple_commands(t_simple_cmds **head, t_tools	*tools)
 				return(EXIT_FAILURE);
 			}
 		}
-		ft_fork(tools, tmp, fd_in, pipes, head, &i);
+		ft_fork(tools, tmp, fd_in, pipes);
+		close(pipes[1]);
+		if (tmp->prev)
+			close(fd_in);
 		fd_in = ft_check_heredoc(tools, tmp, pipes);
 		if(tmp->next)
 			tmp = tmp->next;
 		else
 			break;
-		i++;
 	}
+	wait_process(tools, head);
+	free(tools->pid);
 	return(0);
 }
 
 int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
-	int exit_code;
-
-	exit_code = 0;
-	if(curr->str[0][0] != '\0')
+	tools->path = find_path(tools->envp); //check unset path
+	tools->paths = ft_split(tools->path, ':');
+	tools->cmd = get_cmd(curr, tools);
+	if(tools->cmd)
 	{
-		tools->path = find_path(tools->envp); //check unset path
-		tools->paths = ft_split(tools->path, ':');
-		tools->cmd = get_cmd(curr, tools);
-		if(tools->cmd)
-		{
-			execve(tools->cmd, curr->str, tools->envp);
-			free(tools->path);
-			free(tools->paths);
-			free(tools->cmd);
-			perror("Execve :");
-			exit(EXIT_FAILURE);
-		}
+		execve(tools->cmd, curr->str, tools->envp);
+		free(tools->path);
+		free(tools->paths);
+		free(tools->cmd);
+		perror("Execve :");
+		exit(1);
 	}
-	exit(exit_code);
+	return(0);
 }
 
 char	*find_path(char **env)

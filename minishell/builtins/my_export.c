@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/13 12:36:30 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/12 08:40:31 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ void    add_lines_to_env(t_tools *tools, char **var_name, char **var_content)
     int i = -1;
 
     while (var_name[++i])
+	{
         count_newlines++;
+	}
 	tools->envp = fill_env(tools->envp, count_newlines, var_name, var_content);
 }
 

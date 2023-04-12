@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/13 14:51:41 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:18:53 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ char 	*get_word_after_hd(char *line);
 int		ft_whitespaces(char c);
 int		multiple_commands(t_simple_cmds **head, t_tools	*tools);
 int		child_process(t_simple_cmds *curr, t_tools *tools, int fd_in);
-void	wait_process(t_tools *tools);
+int     wait_process(t_tools *tools, t_simple_cmds **head);
 int		dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools);
 int		handle_cmd(t_simple_cmds *curr, t_tools *tools);
 int		ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2]);
-int		ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2], t_simple_cmds **head, int *i);
+int     ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2]);
 
 #endif

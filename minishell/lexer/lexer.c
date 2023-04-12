@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/13 15:42:15 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/12 08:35:25 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ t_tokens chose_token(char *str)
     else if (ft_strncmp(str, ">", 2) == 0)
         token = GREAT;
     else if (ft_strncmp(str, ">>", 3) == 0)
+    {
         token = GREATGREAT;
+    }
 	return (token);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/13 13:49:13 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/12 08:31:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 {
-	int i;
-
-	i = 0;
 	if (lst == NULL)
 		return ;
 	if (del)
@@ -52,9 +49,7 @@ void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
 void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
 {
 	t_simple_cmds	*temp;
-	int i;
 
-	i = -1;
 	if (lst)
 	{
 		while (*lst)

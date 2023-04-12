@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/18 14:08:17 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/12 08:35:49 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 		change_env(tools, home, old_pwd);
 	}
     if (check_err == -1)
+	{
         ft_putendl_fd("No such file or directory", 2);
+	}
 	free(old_pwd);
 }
