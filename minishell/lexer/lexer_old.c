@@ -63,7 +63,7 @@ t_tokens chose_token(char *str)
 	return (token);
 }
 
-t_lexer *ft_lexer(char *input, t_tools *tools)
+t_lexer **ft_lexer(char *input, t_tools *tools)
 {
     t_lexer *head = NULL;
     t_lexer *tail = NULL;
@@ -131,5 +131,5 @@ t_lexer *ft_lexer(char *input, t_tools *tools)
         }
 		free(buffer);
     }
-	return(head);
+	return(&head);
 }

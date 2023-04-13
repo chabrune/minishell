@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/10 17:35:00 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:51:41 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int		one_command(t_simple_cmds **head, t_tools *tools);
 char	*find_path(char **env);
-char	*get_cmd(char **paths, char *cmd);
+char	*get_cmd(t_simple_cmds *cmd, t_tools *tools);
 int		redir_is_fun(t_simple_cmds **head);
 void	fill_cmd_heredoc(t_simple_cmds **head, char *input);
 void	heredoc(char *filename, char *input);
@@ -29,7 +29,7 @@ int		child_process(t_simple_cmds *curr, t_tools *tools, int fd_in);
 void	wait_process(t_tools *tools);
 int		dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools);
 int		handle_cmd(t_simple_cmds *curr, t_tools *tools);
-int		ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd);
-int		ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2]);
+int		ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2]);
+int		ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2], t_simple_cmds **head, int *i);
 
 #endif

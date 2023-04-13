@@ -74,7 +74,6 @@ t_simple_cmds *group_command(t_lexer **lexer)
         new->str = lexer_to_str_array(tmp1, NULL, &(new->num_redirections));
         add_back(&head, new);
     }
-    // print_cmd(&head);
     return head;
 }
 
