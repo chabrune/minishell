@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/12 11:55:59 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/14 13:36:58 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input, tool);
 		scmds = group_command(&lexer);
-		// find_redir(&scmds, &lexer); // <-- C CE TRUC DE MERDE QUI NOUS A BLOQUE
+		find_redir(&scmds, &lexer); // <-- C CE TRUC DE MERDE QUI NOUS A BLOQUE
 		fill_cmd_heredoc(&scmds, tool->input);
 		// print_tokens(lexer);
 		// print_t_lexer_list(scmds);

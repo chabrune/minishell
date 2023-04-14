@@ -14,7 +14,7 @@
 #include "parser.h"
 
 //rempli le **str de simple cmd
-char	**lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir)
+char	**lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir, t_lexer **head)
 {
 	t_lexer	*tmp;
 	char	**arr;
@@ -23,13 +23,13 @@ char	**lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir)
 
 	i = 0;
 	len = 0;
-	tmp = curr;
+	tmp = *head;
 	while (tmp && tmp != stop)
 	{
 		len++;
 		tmp = tmp->next;
 	}
-	arr = ft_calloc(sizeof(char *), (len + 5));
+	arr = ft_calloc(sizeof(char *), (len + 1));
 	tmp = curr;
 	while (tmp && (tmp != stop || stop == NULL))
 	{
@@ -63,7 +63,7 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 		if (tmp->token == PIPE)
 		{
 			new = new_node();
-			new->str = lexer_to_str_array(tmp1, tmp, &(new->num_redirections));
+			new->str = lexer_to_str_array(tmp1, tmp, &(new->num_redirections), lexer);
 			add_back(&head, new);
 			tmp1 = tmp->next;
 		}
@@ -73,7 +73,7 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 	if (prev && prev->token != PIPE)
 	{
 		new = new_node();
-		new->str = lexer_to_str_array(tmp1, NULL, &(new->num_redirections));
+		new->str = lexer_to_str_array(tmp1, NULL, &(new->num_redirections), lexer);
 		add_back(&head, new);
 	}
 	return (head);

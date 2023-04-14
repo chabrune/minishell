@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:16:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/13 16:23:17 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/14 13:43:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../minishell.h"
 
-char			**lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir);
+char			**lexer_to_str_array(t_lexer *curr, t_lexer *stop, int *redir, t_lexer **head);
 t_simple_cmds	*group_command(t_lexer **lexer);
 void			print_t_lexer_list(t_simple_cmds *head);
 void			del_node(t_lexer **head, t_lexer *delone);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:16:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/13 16:22:52 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/14 13:51:08 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	find_redir(t_simple_cmds **head, t_lexer **lexer)
 {
 	add_redir(head, lexer);
-	if (*lexer)
-		last_lexer_to_strs_cmd(lexer, head);
+	// if (*lexer)
+	// 	last_lexer_to_strs_cmd(lexer, head);
 }
 
 int	count_cmd(t_simple_cmds **head)
