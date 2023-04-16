@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/12 11:56:44 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/16 18:30:47 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,32 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	int				pid;
 
 	curr = *head;
-	//if cmd == cd / exit / export / unset --> Exec without child
-	// // BAH NON si cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
+	// // cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
 	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
 	// 	redir_is_fun(head);
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("Fork : ");
-		return (EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		tools->path = find_path(tools->envp); //check unset path
-		tools->paths = ft_split(tools->path, ':');
-		tools->cmd = get_cmd(curr, tools);
-		if (tools->cmd)
-			execve(tools->cmd, curr->str, tools->envp);
-		perror("Exceve : ");
-		exit(EXIT_FAILURE);
-	}
+	if (is_builtins(curr) == 1)			// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+			choose_bultins(tools, curr);
 	else
-		waitpid(pid, NULL, 0);
+	{
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("Fork : ");
+			return (EXIT_FAILURE);
+		}
+		else if (pid == 0)
+		{
+			tools->path = find_path(tools->envp); //check unset path
+			tools->paths = ft_split(tools->path, ':');
+			tools->cmd = get_cmd(curr, tools);
+			if (tools->cmd)
+				execve(tools->cmd, curr->str, tools->envp);
+			perror("Exceve : ");
+			exit(EXIT_FAILURE);
+		}
+		else
+			waitpid(pid, NULL, 0);
+	}
 	return (0);
 }
 
@@ -63,7 +67,10 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 		close(pipes[1]);
 		if (curr->prev)
 			close(fd_in);
-		handle_cmd(curr, tools);
+		if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+			choose_bultins(tools, curr);
+		else
+			handle_cmd(curr, tools);
 	}
 	return (EXIT_SUCCESS);
 }

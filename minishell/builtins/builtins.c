@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/09 12:54:40 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/16 18:30:15 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,15 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 	while (tmp)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
+		{
 			my_pwd(tools);
+			exit (1);
+		}
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
+		{
 			my_echo(cmds);
+			exit (1);
+		}
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
 			my_cd(tools, cmds);
 		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
@@ -63,7 +69,10 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
 			my_unset(tools, cmds);
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
+		{
 			my_env(tools, cmds);
+			exit (1);
+		}
 		else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
 			my_exit(tools, cmds);
 		tmp = tmp->next;
