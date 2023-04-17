@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parser3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:16:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/14 13:51:08 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/17 20:19:16 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	find_redir(t_simple_cmds **head, t_lexer **lexer)
-{
-	add_redir(head, lexer);
-	// if (*lexer)
-	// 	last_lexer_to_strs_cmd(lexer, head);
-}
+// void	find_redir(t_simple_cmds **head, t_lexer **lexer)
+// {
+// 	add_redir(head, lexer);
+// 	if (*lexer)
+// 		last_lexer_to_strs_cmd(lexer, head);
+// }
 
 int	count_cmd(t_simple_cmds **head)
 {
