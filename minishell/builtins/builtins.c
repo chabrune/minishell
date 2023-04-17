@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/16 18:30:15 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/17 12:20:22 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,24 @@ void	my_exit(t_tools *tools, t_simple_cmds *cmds)
 	(void)tools;
 	(void)cmds;
 	exit(0);
+}
+
+int builtins_to_fork(t_simple_cmds *cmds)
+{
+	t_simple_cmds	*tmp;
+
+	tmp = cmds;
+	while (tmp)
+	{
+		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
+			return (1);
+		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
+			return (1);
+		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 int	is_builtins(t_simple_cmds *cmds)

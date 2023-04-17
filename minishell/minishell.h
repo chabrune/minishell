@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/13 15:42:46 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/17 14:57:54 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include "libft/libft.h"
 # include <sys/wait.h>
 # include <sys/types.h>
@@ -28,6 +26,9 @@
 # include <string.h>
 # include <ctype.h>
 # include <stdbool.h>
+# include <errno.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef enum s_tokens
 {
@@ -94,5 +95,6 @@ char	        **dup_env(char **tab);
 void	        *free_tab(char **tab, int j);
 int             ft_istoken(int c);
 t_tokens        chose_token(char *str);
+void            handle_signal();
 
 #endif

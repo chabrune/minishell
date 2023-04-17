@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/12 08:40:31 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:07:52 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 // Il faut check si la variable existe deja (strcmp)
-// gerer les simple quotes
+// Il faut aussi gerer les += 
+// verifier aue les quotes soient bien gerer
 
 void	*free_old_env(char **tab)
 {

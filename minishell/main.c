@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/16 17:35:10 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/17 15:33:12 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 
 	while(42)
 	{
+		// dire q'on est dans une commande
 		tool->input = readline("Charles_a_le_pouvoir_mais_pas_pour_longtemps> ");
 		tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input, tool);
@@ -48,8 +49,10 @@ int main(int argc, char **argv, char **envp)
 	t_tools tool;
 	t_lexer	lexer;
 	t_simple_cmds scmds;
+	
 	if (argc == 1 || argv[1])
 	{
+		handle_signal();
 		tool.envp = dup_env(envp); // il faudra penser a free
 		minishell_loop(&tool, &lexer, &scmds);
 	}

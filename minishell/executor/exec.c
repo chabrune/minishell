@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/16 18:30:47 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/17 12:23:48 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 	// // cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
 	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
 	// 	redir_is_fun(head);
-	if (is_builtins(curr) == 1)			// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-			choose_bultins(tools, curr);
+	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)			// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+		choose_bultins(tools, curr);
 	else
 	{
 		pid = fork();
@@ -33,13 +33,18 @@ int	one_command(t_simple_cmds **head, t_tools *tools)
 		}
 		else if (pid == 0)
 		{
-			tools->path = find_path(tools->envp); //check unset path
-			tools->paths = ft_split(tools->path, ':');
-			tools->cmd = get_cmd(curr, tools);
-			if (tools->cmd)
-				execve(tools->cmd, curr->str, tools->envp);
-			perror("Exceve : ");
-			exit(EXIT_FAILURE);
+			if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 1)
+				choose_bultins(tools, curr);
+			else
+			{
+				tools->path = find_path(tools->envp); //check unset path
+				tools->paths = ft_split(tools->path, ':');
+				tools->cmd = get_cmd(curr, tools);
+				if (tools->cmd)
+					execve(tools->cmd, curr->str, tools->envp);
+				perror("Exceve : ");
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 			waitpid(pid, NULL, 0);
