@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 14:02:00 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:38:01 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 		}
 		tmpcmd = tmpcmd->next;
 	}
-	print_t_lexer_list(*head);
 }
 
 void	ft_free_cmd(t_simple_cmds **head)

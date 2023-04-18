@@ -6,13 +6,13 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/18 14:03:29 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:10:38 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	heredoc(char *filename, char *input)
+void	heredoc(char *filename, char *input, t_lexer *curr)
 {
 	int		fd;
 	char	*line;
@@ -20,14 +20,13 @@ void	heredoc(char *filename, char *input)
 
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	delimit = get_word_after_hd(input);
-	while (42)
+	line = readline("heredoc> ");
+	while (line && ft_strncmp(curr->str, line, ft_strlen(curr->str)))
 	{
-		line = readline("heredoc> ");
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
-		if (ft_strncmp(line, delimit, ft_strlen(delimit)) == 0)
-			break ;
 		free(line);
+		line = readline("heredoc> ");
 	}
 	free(line);
 	close(fd);
@@ -85,22 +84,23 @@ char	*create_filename(void)
 	return (filename);
 }
 
-void	fill_cmd_heredoc(t_simple_cmds **head, char *input)
+void	fill_cmd_heredoc(t_simple_cmds *curr, char *input)
 {
 	char *filename;
-	t_simple_cmds *cmds;
-	cmds = *head;
-	if (!cmds)
+
+	if (!curr)
 		return ;
-	if (!cmds->redirections)
+	if (!curr->redirections)
 		return ;
-	while (cmds->redirections)
+	while (curr->redirections)
 	{
-		if (cmds->redirections->token == LESSLESS)
+		if (curr->redirections->token == LESSLESS)
 		{
 			filename = create_filename();
-			heredoc(filename, input);
+			curr->hd_file_name = ft_strdup(filename);
+			free(filename);
+			heredoc(curr->hd_file_name, input, curr->redirections);
 		}
-		cmds->redirections = cmds->redirections->next;
+		curr->redirections = curr->redirections->next;
 	}
 }

@@ -3,52 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/17 12:23:48 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/18 19:48:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	one_command(t_simple_cmds **head, t_tools *tools)
+int one_command(t_simple_cmds **head, t_tools *tools)
 {
 	t_simple_cmds	*curr;
 	int				pid;
+    int             fd;
 
 	curr = *head;
-	// // cmd == cd / exit / export / unset  --> tu appelles le builtins que Emma a coder
-	// if(curr->redirections->str || curr->redirections->token == GREAT || curr->redirections->token == LESS)
-	// 	redir_is_fun(head);
-	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)			// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+	fd = 0;
+	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
 		choose_bultins(tools, curr);
-	else
+	pid = fork();
+	if(pid == 0)
 	{
-		pid = fork();
-		if (pid == -1)
+		fill_cmd_heredoc(curr, tools->input);
+		if(curr->hd_file_name)
 		{
-			perror("Fork : ");
-			return (EXIT_FAILURE);
+			fd = open(curr->hd_file_name, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
 		}
-		else if (pid == 0)
-		{
-			if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 1)
-				choose_bultins(tools, curr);
-			else
-			{
-				tools->path = find_path(tools->envp); //check unset path
-				tools->paths = ft_split(tools->path, ':');
-				tools->cmd = get_cmd(curr, tools);
-				if (tools->cmd)
-					execve(tools->cmd, curr->str, tools->envp);
-				perror("Exceve : ");
-				exit(EXIT_FAILURE);
-			}
-		}
+		if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+			choose_bultins(tools, curr);
 		else
-			waitpid(pid, NULL, 0);
+			handle_cmd(curr, tools);
+		close(fd);
 	}
+	waitpid(pid, NULL, 0);
 	return (0);
 }
 
@@ -124,6 +113,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	tmp = *head;
 	while (tmp)
 	{
+		fill_cmd_heredoc(tmp, tools->input);
 		if (tmp->next)
 		{
 			if (pipe(pipes) == -1)

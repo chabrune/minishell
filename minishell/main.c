@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 14:03:06 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:46:20 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,21 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 	while(42)
 	{
 		// dire q'on est dans une commande
-		tool->input = readline("Charles_a_le_pouvoir_mais_pas_pour_longtemps> ");
+		tool->input = readline("MiniPROUT> ");
 		tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input, tool);
 		scmds = group_command(&lexer);
 		add_redir(&scmds, &lexer);
 		last_lexer_to_strs_cmd(&lexer, &scmds);
-		print_cmd(&scmds);
-		print_tokens(lexer);
-		fill_cmd_heredoc(&scmds, tool->input);
-		print_t_lexer_list(scmds);
+		// print_cmd(&scmds);
+		// print_tokens(lexer);
+		// print_t_lexer_list(scmds);
 		i = count_cmd(&scmds);
 		if(i == 1)
 			one_command(&scmds, tool);
 		else
-			multiple_commands(&scmds, tool);
-		if(tool->input)
+		multiple_commands(&scmds, tool);
+		if(tool->input[0] != '\0' && tool->inputs[0][0] != '\0')
 			add_history(tool->input);
 		lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);
