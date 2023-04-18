@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:08:43 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/17 21:35:02 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 13:57:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ void	print_cmd(t_simple_cmds **head)
 	tmp = *head;
 	while (tmp)
 	{
-		i = -1;
-		while(tmp->str[++i])
+		i = 0;
+		while(tmp->str[i])
 		{
 			printf("cmd == %s\n", tmp->str[i]);
+			i++;
 		}
 		tmp = tmp->next;
 	}

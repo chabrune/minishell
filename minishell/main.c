@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/17 21:37:43 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:03:06 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,8 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		last_lexer_to_strs_cmd(&lexer, &scmds);
 		print_cmd(&scmds);
 		print_tokens(lexer);
-		// fill_cmd_heredoc(&scmds, tool->input);
-		// print_t_lexer_list(scmds);
-		// IL FAUDRAIT METTRE LA FONCTION CHOOSE BUILTINS DANS ONE CMD ET MULTIPLE CMDS, MAIS JE COMPREND PAS COMMENT ELLES FONCTIONNENT DONC JE SAIS PAS OU
-		// if (is_builtins(scmds) == 1)
-		// 	choose_bultins(tool, scmds);
-		// else
+		fill_cmd_heredoc(&scmds, tool->input);
+		print_t_lexer_list(scmds);
 		i = count_cmd(&scmds);
 		if(i == 1)
 			one_command(&scmds, tool);

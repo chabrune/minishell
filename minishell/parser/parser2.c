@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/17 22:34:52 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:02:00 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 	{
 		if (tmplex->token == PIPE && tmplex->next && tmplex->prev)
 			tmplex = tmplex->next;
-		while (tmplex && tmplex->next) //&& tmplex->token != PIPE)
+		while (tmplex && tmplex->next)
 		{
 			if (tmplex->token == GREAT || tmplex->token == GREATGREAT
 				|| tmplex->token == LESS || tmplex->token == LESSLESS)
@@ -71,8 +71,6 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 				del_node(lexer, tmplex->next);
 				del_node(lexer, tmplex);
 				tmplex = *lexer;
-				// printf("redir str = %s\n", tmpcmd->redirections->next->str);
-				// printf("redir token = %d\n", tmpcmd->redirections->token);
 			}
 			else
 				tmplex = tmplex->next;
@@ -97,6 +95,19 @@ void	ft_free_cmd(t_simple_cmds **head)
 	}
 }
 
+int	count_t_lexer(t_lexer *curr)
+{
+	int i;
+
+	i = 0;
+	while(curr && curr->token != PIPE)
+	{
+		i++;
+		curr = curr->next;
+	}
+	return(i);
+}
+
 void	last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
 {
 	t_lexer *tmplex;
@@ -104,31 +115,18 @@ void	last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
 	tmplex = *headlex;
 	tmpcmd = *headcmd;
 	int i;
-	// int j;
-	// print_cmd(headcmd);
-	// print_t_lexer_list(*headcmd);
-	// ft_free_cmd(&tmpcmd);
 	while (tmpcmd)
 	{
-		i = 0;
-		// free_all_tab(tmpcmd->str);
-		// int count = 0;
-		// while (tmplex)
-		// 	count++;
-		// tmp->str = ft_calloc(sizeof(char *), );
+		tmpcmd->str = ft_calloc(sizeof(char *), count_t_lexer(tmplex) + 3);
 		if (tmplex->token == PIPE && tmplex->next && tmplex->prev)
 			tmplex = tmplex->next;
-		while (tmplex && tmplex->next && tmplex->token != PIPE)
+		i = 0;
+		while (tmplex && tmplex->token != PIPE)
 		{
-			// printf("lexer = %s\n", tmplex->str);
 			tmpcmd->str[i] = ft_strdup(tmplex->str);
 			i++;
-			// printf("rest of lexer : %s\n", tmpcmd->str[i]);
 			tmplex = tmplex->next;
 		}
-		// j = -1;
-		// while(tmpcmd->str[++j])
-		// 	printf("cmd = %s\n", tmpcmd->str[j]);
 		tmpcmd = tmpcmd->next;
 	}
 }
