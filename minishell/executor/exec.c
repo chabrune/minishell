@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 19:48:56 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:25:12 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int one_command(t_simple_cmds **head, t_tools *tools)
 	pid = fork();
 	if(pid == 0)
 	{
-		fill_cmd_heredoc(curr, tools->input);
+		fill_cmd_heredoc(curr);
 		if(curr->hd_file_name)
 		{
 			fd = open(curr->hd_file_name, O_RDONLY);
@@ -113,7 +113,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	tmp = *head;
 	while (tmp)
 	{
-		fill_cmd_heredoc(tmp, tools->input);
+		fill_cmd_heredoc(tmp);
 		if (tmp->next)
 		{
 			if (pipe(pipes) == -1)

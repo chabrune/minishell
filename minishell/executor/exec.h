@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 16:09:59 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:24:50 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int		one_command(t_simple_cmds **head, t_tools *tools);
 char	*find_path(char **env);
 char	*get_cmd(t_simple_cmds *cmd, t_tools *tools);
 int		redir_is_fun(t_simple_cmds **head);
-void	fill_cmd_heredoc(t_simple_cmds *curr, char *input);
-void	heredoc(char *filename, char *input, t_lexer *curr);
+void	fill_cmd_heredoc(t_simple_cmds *curr);
+void	heredoc(char *filename, t_lexer *curr);
 char	*create_filename(void);
 char	*get_word_after_hd(char *line);
 int		ft_whitespaces(char c);

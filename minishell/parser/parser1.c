@@ -19,13 +19,11 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 	t_lexer			*tmp;
 	t_simple_cmds	*head;
 	t_simple_cmds	*new;
-	t_lexer			*tmp1;
 	t_lexer			*prev;
 
 	head = NULL;
 	new = NULL;
 	tmp = *lexer;
-	tmp1 = *lexer;
 	prev = NULL;
 	while (tmp)
 	{
@@ -33,7 +31,6 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 		{
 			new = new_node();
 			add_back(&head, new);
-			tmp1 = tmp->next;
 		}
 		prev = tmp;
 		tmp = tmp->next;
