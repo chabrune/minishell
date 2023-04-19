@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/18 18:31:18 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/19 14:13:02 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,16 @@ int		count_var(t_simple_cmds *cmd) // Il faut aussi verfier qur la variable n'ex
 	return (i - 1);
 }
 
+int		var_name_is_new(t_tools *tools, char	*var)
+{
+	int	i;
+
+	i = 0;
+	while (tools->envp[i])
+		i++;
+	
+}
+
 void	my_export(t_tools *tools, t_simple_cmds *cmd)
 {
 	int		i;
@@ -206,7 +216,10 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	while (++i < nb_var)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
-		fill_var_content(cmd, i, j, &var_content[i]);
+		if (var_name_is_new(tools, var_name[i]))
+			fill_var_content(cmd, i, j, &var_content[i]);
+		else 
+			free(var_name[i]);
 	}
 	add_lines_to_env(tools, var_name, var_content);
 	free_tab(var_content, i);
