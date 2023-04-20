@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   my_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/18 18:51:20 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/20 16:47:14 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	my_echo(t_simple_cmds *cmd)
+void	my_echo(t_simple_cmds *cmd, int fd)
 {
 	int i;
 	bool n;
@@ -29,11 +29,11 @@ void	my_echo(t_simple_cmds *cmd)
 		i = 2;
 	while (cmd->str[i])
 	{
-		ft_putstr_fd(cmd->str[i], 1);
+		ft_putstr_fd(cmd->str[i], fd);
 		i++;
 		if (cmd->str[i])
-			ft_putchar_fd(' ', 1);
+			ft_putchar_fd(' ', fd);
 	}
 	if (n == 0)
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 20:24:50 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:43:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ int		dup_cmd(t_simple_cmds *curr, int fd_in, int pipes[2], t_tools *tools);
 int		handle_cmd(t_simple_cmds *curr, t_tools *tools);
 int		ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2]);
 int		ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2]);
+int		check_append(t_lexer *redir);
+int		check_infile(char *file);
+int 	check_redir(t_simple_cmds *cmd);
+
 
 #endif

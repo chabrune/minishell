@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 20:25:12 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:51:19 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,32 @@ int one_command(t_simple_cmds **head, t_tools *tools)
 	curr = *head;
 	fd = 0;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
-		choose_bultins(tools, curr);
-	pid = fork();
-	if(pid == 0)
+		choose_bultins(tools, curr, fd);
+	else
 	{
-		fill_cmd_heredoc(curr);
-		if(curr->hd_file_name)
+		pid = fork();
+		if(pid == 0)
 		{
-			fd = open(curr->hd_file_name, O_RDONLY);
-			dup2(fd, STDIN_FILENO);
+			fill_cmd_heredoc(curr);
+			if(curr->hd_file_name)
+			{
+				fd = open(curr->hd_file_name, O_RDONLY);
+				if(fd < 0)
+					return(EXIT_FAILURE);
+				if(dup2(fd, STDIN_FILENO) < 0)
+					return(EXIT_FAILURE);
+			}
+			if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+				choose_bultins(tools, curr, fd);
+			else
+			{
+				handle_cmd(curr, tools);
+			}
+			if(fd > 0)
+				close(fd);
 		}
-		if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-			choose_bultins(tools, curr);
-		else
-			handle_cmd(curr, tools);
-		close(fd);
+		waitpid(pid, NULL, 0);
 	}
-	waitpid(pid, NULL, 0);
 	return (0);
 }
 
@@ -61,10 +70,13 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 		close(pipes[1]);
 		if (curr->prev)
 			close(fd_in);
-		if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-			choose_bultins(tools, curr);
-		else
+		// if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+		// 	choose_bultins(tools, curr);
+		// else
+		{
 			handle_cmd(curr, tools);
+			// exit(1);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
@@ -113,7 +125,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	tmp = *head;
 	while (tmp)
 	{
-		fill_cmd_heredoc(tmp);
+		// fill_cmd_heredoc(tmp);
 		if (tmp->next)
 		{
 			if (pipe(pipes) == -1)
@@ -139,16 +151,19 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 
 int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
+	check_redir(curr);
 	tools->path = find_path(tools->envp); //check unset path
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(curr, tools);
+	if(tools->cmd == NULL)
+		perror("Execve ");
 	if (tools->cmd)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
 		free(tools->path);
 		free(tools->paths);
 		free(tools->cmd);
-		perror("Execve :");
+		perror("Execve ");
 		exit(1);
 	}
 	return (0);

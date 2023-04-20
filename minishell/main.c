@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 19:46:20 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:31:28 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 {
 	int i;
-
 	while(42)
 	{
 		// dire q'on est dans une commande
