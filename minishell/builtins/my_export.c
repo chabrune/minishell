@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/19 14:13:02 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/20 18:43:05 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,14 @@ void	fill_var_content(t_simple_cmds *cmd, int i, int j, char **var_content)
 			j++;
 			check_quote = 2;
 		}
+		if (*var_content)
+			free(*var_content);
 		*var_content = ft_strdup(cmd->str[i + 1] + j);
 		remove_useless_dquotes(var_content, check_quote, i);
 		remove_useless_squotes(var_content, check_quote, i);
 }
 
-int	fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
+int		fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 {
 	int j;
 
@@ -191,12 +193,29 @@ int		count_var(t_simple_cmds *cmd) // Il faut aussi verfier qur la variable n'ex
 
 int		var_name_is_new(t_tools *tools, char	*var)
 {
+	int j;
+	char *tmp_env;
 	int	i;
 
 	i = 0;
 	while (tools->envp[i])
+	{
+		j = 0;
+		while (tools->envp[i][j] && tools->envp[i][j] != '=')
+			j++;
+		if (tools->envp[i][j] == '=')
+			j++; 
+		tmp_env = ft_calloc(j + 2, sizeof(char));
+		ft_strlcpy(tmp_env, tools->envp[i], j + 1);
+		if (ft_strncmp(var, tmp_env, ft_strlen(var)) == 0 && var[ft_strlen(var)] == '=')
+		{
+			free(tmp_env);
+			return (1);
+		}
+		free(tmp_env);
 		i++;
-	
+	}
+	return (0);
 }
 
 void	my_export(t_tools *tools, t_simple_cmds *cmd)
@@ -208,7 +227,10 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	char	**var_content;
 
 	if (!cmd->str[1])
-		return (print_export(tools));
+	{
+		print_export(tools);
+		return ;
+	}
 	nb_var = count_var(cmd);
 	var_name = ft_calloc(nb_var + 1, sizeof(char *)); 
 	var_content = ft_calloc(nb_var + 1, sizeof(char *));
@@ -216,11 +238,9 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	while (++i < nb_var)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
-		if (var_name_is_new(tools, var_name[i]))
 			fill_var_content(cmd, i, j, &var_content[i]);
-		else 
-			free(var_name[i]);
 	}
+		// if (var_name_is_new(tools, var_name[i]) == 0) il faut peut etre creer un tableau avec les index a ne pas changer
 	add_lines_to_env(tools, var_name, var_content);
 	free_tab(var_content, i);
 	free_tab(var_name, i);
