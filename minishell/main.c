@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/20 18:31:28 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:52:07 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,18 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// print_t_lexer_list(scmds);
 		i = count_cmd(&scmds);
 		if(i == 1)
-			one_command(&scmds, tool);
+			one_command(scmds, tool);
 		else
-		multiple_commands(&scmds, tool);
-		if(tool->input[0] != '\0' && tool->inputs[0][0] != '\0')
-			add_history(tool->input);
+			multiple_commands(&scmds, tool);
+		if(tool->input[0] == 4)
+			exit(1);
+		if(tool->input && tool->inputs)
+			if(tool->input[0] != '\0' && tool->inputs[0][0] != '\0')
+				add_history(tool->input);
 		lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);
 		free(tool->input);
+		free(tool->inputs);
 	}
 }
 int main(int argc, char **argv, char **envp)

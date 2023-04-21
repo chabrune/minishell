@@ -46,21 +46,21 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 void	print_t_lexer_list(t_simple_cmds *head)
 {
 	t_lexer			*current;
-	t_simple_cmds	*tmp;
+	// t_simple_cmds	*tmp;
 
 	if (!head)
 		return ;
 	current = head->redirections;
-	tmp = head;
-	while (tmp)
-	{
+	// tmp = head;
+	// while (tmp)
+	// {
 		while (current)
 		{
 			printf("Token: %d, Filename: %s\n", current->token, current->str);
 			current = current->next;
 		}
-		tmp = tmp->next;
-	}
+		// tmp = tmp->next;
+	// }
 }
 
 void	ft_lstdelone_lexer(t_lexer *lst, void (*del)(void *))

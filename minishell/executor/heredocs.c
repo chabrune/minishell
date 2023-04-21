@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/18 20:24:39 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:38:50 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ char	*create_filename(void)
 void	fill_cmd_heredoc(t_simple_cmds *curr)
 {
 	char *filename;
+	t_lexer *tmp;
 
+	tmp = curr->redirections;
 	if (!curr)
 		return ;
 	if (!curr->redirections)
@@ -101,4 +103,5 @@ void	fill_cmd_heredoc(t_simple_cmds *curr)
 		}
 		curr->redirections = curr->redirections->next;
 	}
+	curr->redirections = tmp;
 }

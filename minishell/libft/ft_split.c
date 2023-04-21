@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:31:47 by chabrune          #+#    #+#             */
-/*   Updated: 2023/02/22 17:15:29 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:55:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	ft_count_word(char const *s, char c)
 
 	i = 0;
 	word = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 	{
 		if (s[i] != c)

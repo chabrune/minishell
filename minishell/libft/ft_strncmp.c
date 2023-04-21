@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:49:25 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/01 15:58:22 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:51:01 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	ft_strncmp(const char *first, const char *second, size_t length)
 	i = 0;
 	if(length == 0)
 		return (0);
+	
 	while ((prem[i] || snd[i]) && i < length)
 	{
 		if (prem[i] > snd[i])

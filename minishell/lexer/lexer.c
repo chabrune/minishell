@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/12 11:56:19 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:55:42 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,8 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 	i = 0;
 	k = 1;
 	input = expander(tools, input);
+	if (!input)
+		return(NULL);
 	while (input[i])
 	{
 		while (ft_isspace(input[i]) && input[i])

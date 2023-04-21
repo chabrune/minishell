@@ -6,19 +6,19 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/20 18:51:19 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:43:44 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int one_command(t_simple_cmds **head, t_tools *tools)
+int one_command(t_simple_cmds *head, t_tools *tools)
 {
 	t_simple_cmds	*curr;
 	int				pid;
     int             fd;
 
-	curr = *head;
+	curr = head;
 	fd = 0;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
 		choose_bultins(tools, curr, fd);
@@ -32,22 +32,47 @@ int one_command(t_simple_cmds **head, t_tools *tools)
 			{
 				fd = open(curr->hd_file_name, O_RDONLY);
 				if(fd < 0)
+				{
+					perror("open ");
 					return(EXIT_FAILURE);
+				}
 				if(dup2(fd, STDIN_FILENO) < 0)
+				{
+					perror("dup2 ");
 					return(EXIT_FAILURE);
+				}
 			}
-			if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-				choose_bultins(tools, curr, fd);
-			else
+			// if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+			// 	choose_bultins(tools, curr, fd);
+			// else
 			{
 				handle_cmd(curr, tools);
 			}
-			if(fd > 0)
+			if(fd >= 0)
 				close(fd);
 		}
 		waitpid(pid, NULL, 0);
 	}
 	return (0);
+}
+
+int	check_redir_cmd(t_simple_cmds *curr)
+{
+	t_lexer *start;
+	int i;
+
+	i = 0;
+	start = curr->redirections;
+	while(curr->redirections)
+	{
+		if(curr->redirections->token == GREAT || curr->redirections->token == GREATGREAT || curr->redirections->token == LESS)
+			i++;
+		curr->redirections = curr->redirections->next;
+	}
+	curr->redirections = start;
+	if(i > 0)
+		return(1);
+	return(0);
 }
 
 int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
@@ -63,10 +88,16 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 	else if (pid == 0)
 	{
 		if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
-			return (1);
+		{
+			perror("dup2 ");
+			return (EXIT_FAILURE);
+		}
 		close(pipes[0]);
 		if (curr->next && dup2(pipes[1], STDOUT_FILENO) < 0)
-			return (2);
+		{
+			perror("dup2 ");
+			return (EXIT_FAILURE);
+		}
 		close(pipes[1]);
 		if (curr->prev)
 			close(fd_in);
@@ -90,6 +121,11 @@ int	ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2])
 	{
 		close(pipes[0]);
 		fd_in = open(cmd->hd_file_name, O_RDONLY);
+		if(fd_in == -1)
+		{
+			perror("open ");
+			return(EXIT_FAILURE);
+		}
 	}
 	else
 		fd_in = pipes[0];
@@ -125,7 +161,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	tmp = *head;
 	while (tmp)
 	{
-		// fill_cmd_heredoc(tmp);
+		fill_cmd_heredoc(tmp);
 		if (tmp->next)
 		{
 			if (pipe(pipes) == -1)
@@ -151,7 +187,8 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 
 int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
-	check_redir(curr);
+	if(check_redir(curr) == 1)
+		exit(1);
 	tools->path = find_path(tools->envp); //check unset path
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(curr, tools);
@@ -160,7 +197,7 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 	if (tools->cmd)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
-		free(tools->path);
+		// free(tools->path);
 		free(tools->paths);
 		free(tools->cmd);
 		perror("Execve ");

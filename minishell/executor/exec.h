@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/20 16:43:04 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:31:18 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../minishell.h"
 
-int		one_command(t_simple_cmds **head, t_tools *tools);
+int		one_command(t_simple_cmds *head, t_tools *tools);
 char	*find_path(char **env);
 char	*get_cmd(t_simple_cmds *cmd, t_tools *tools);
 int		redir_is_fun(t_simple_cmds **head);

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 17:38:01 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:43:44 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,26 @@ t_lexer	*init_redir(t_lexer *curr)
 	if (!curr->next)
 		return (NULL);
 	else
-		redir->str = ft_strdup(curr->next->str);
+	redir->str = ft_strdup(curr->next->str);
 	redir->next = NULL;
 	return (redir);
+}
+
+void	add_back_redir(t_simple_cmds *curr, t_lexer *new)
+{
+	t_lexer	*tmp;
+
+	if (!curr->redirections) // si *head est vide (si la chaine est vide)
+	{
+		new->prev = NULL;
+		curr->redirections = new;
+		return ;
+	}
+	tmp = curr->redirections;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	new->prev = tmp;
 }
 
 void	add_node_redir(t_simple_cmds *curr, t_lexer *redir)
