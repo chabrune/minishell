@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/21 13:52:07 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/22 17:11:41 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 	{
 		// dire q'on est dans une commande
 		tool->input = readline("MiniPROUT> ");
+		if (!tool->input)
+			exit(1);
 		tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input, tool);
 		scmds = group_command(&lexer);
@@ -32,10 +34,8 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 			one_command(scmds, tool);
 		else
 			multiple_commands(&scmds, tool);
-		if(tool->input[0] == 4)
-			exit(1);
-		if(tool->input && tool->inputs)
-			if(tool->input[0] != '\0' && tool->inputs[0][0] != '\0')
+		if (tool->input && tool->inputs)
+			if (tool->input[0] != '\0' && tool->inputs[0][0] != '\0')
 				add_history(tool->input);
 		lstclear_lexer(&lexer, free);
 		lstclear_cmds(&scmds, free);
