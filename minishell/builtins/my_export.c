@@ -6,14 +6,16 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/20 18:43:05 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/22 17:01:18 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 // Il faut check si la variable existe deja (strcmp)
+// normalemet ca marche sauf quand je commence par declaerer sans le =
 // Il faut aussi gerer les += 
+
 
 void	*free_old_env(char **tab)
 {
@@ -29,8 +31,36 @@ void	*free_old_env(char **tab)
 	return (0);
 }
 
-char	**fill_env(char **tab, int nb_new_lines, char **var_name,
-		char **var_content)
+int		var_name_is_new(t_tools *tools, char	*var)
+{
+	int j;
+	char *tmp_env;
+	int	i;
+
+	i = 0;
+	while (tools->envp[i])
+	{
+		j = 0;
+		while (tools->envp[i][j] && tools->envp[i][j] != '=')
+			j++;
+		if (tools->envp[i][j] == '=')
+			j++; 
+		tmp_env = ft_calloc(j + 2, sizeof(char));
+		ft_strlcpy(tmp_env, tools->envp[i], j + 1);
+		if (ft_strncmp(var, tmp_env, ft_strlen(var)) == 0)// && var[ft_strlen(var) - 1] == '=')
+		{
+			free(tmp_env);
+			if (var[ft_strlen(var) - 1] != '=')
+				return (2);
+			return (1);
+		}
+		free(tmp_env);
+		i++;
+	}
+	return (0);
+}
+
+char	**fill_env(char **tab, int nb_new_lines, char **var_name, char **var_content)
 {
 	char	**new_tab;
 	int		i;
@@ -62,14 +92,14 @@ void	add_lines_to_env(t_tools *tools, char **var_name, char **var_content)
 {
 	int	count_newlines;
 	int	i;
+	int j;
 
+	j = 0;
 	count_newlines = 0;
 	i = -1;
 	while (var_name[++i])
-	{
 		count_newlines++;
-	}
-	tools->envp = fill_env(tools->envp, count_newlines, var_name, var_content);
+	tools->envp = fill_env(tools->envp, count_newlines - j, var_name, var_content);
 }
 
 void	print_export(t_tools *tools)
@@ -181,7 +211,7 @@ int		fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 	return (j);
 }
 
-int		count_var(t_simple_cmds *cmd) // Il faut aussi verfier qur la variable n'existe pas deja 
+int		count_var(t_simple_cmds *cmd) 
 {
 	int i;
 
@@ -191,31 +221,81 @@ int		count_var(t_simple_cmds *cmd) // Il faut aussi verfier qur la variable n'ex
 	return (i - 1);
 }
 
-int		var_name_is_new(t_tools *tools, char	*var)
+void	remove_a_var_from_env_2(t_tools *tools, char *str)
 {
-	int j;
-	char *tmp_env;
-	int	i;
+	int		i;
+	int		k;
+	char	**new_tab;
 
+	i = 0;
+	k = 0;
+	while (tools->envp[i])
+		i++;
+	new_tab = ft_calloc(i, sizeof(char *));
+	if (!new_tab)
+		return ;
 	i = 0;
 	while (tools->envp[i])
 	{
-		j = 0;
-		while (tools->envp[i][j] && tools->envp[i][j] != '=')
-			j++;
-		if (tools->envp[i][j] == '=')
-			j++; 
-		tmp_env = ft_calloc(j + 2, sizeof(char));
-		ft_strlcpy(tmp_env, tools->envp[i], j + 1);
-		if (ft_strncmp(var, tmp_env, ft_strlen(var)) == 0 && var[ft_strlen(var)] == '=')
-		{
-			free(tmp_env);
+		if (ft_strncmp(tools->envp[i], str, ft_strlen(str)) == 0)
+			// && (tools->envp[i][ft_strlen(str)-1] == '='
+			// 	|| tools->envp[i][ft_strlen(str)-1] == 0))
+			i++;
+		else
+			new_tab[k++] = ft_strdup(tools->envp[i++]);
+	}
+	free_old_env(tools->envp);
+	tools->envp = new_tab;
+}
+
+int	is_removable_2(t_tools *tools, char *str)
+{
+	int	i;
+
+	i = -1;
+	while (tools->envp[++i])
+	{
+		if (ft_strncmp(tools->envp[i], str, ft_strlen(str)) == 0)
+			// && (tools->envp[i][ft_strlen(str)-1] == '='
+			// 	|| tools->envp[i][ft_strlen(str)-1] == 0))
 			return (1);
-		}
-		free(tmp_env);
-		i++;
 	}
 	return (0);
+}
+
+void	my_unset_2(t_tools *tools, char *var)
+{
+	if (!var)
+		return ;
+	if (is_removable_2(tools, var) == 1)
+		remove_a_var_from_env_2(tools, var);
+}
+
+void	ignore_var(char ***var_name, char ***var_content, int i)
+{
+	int	j;
+
+	j = 0;
+	while ((*var_name)[j])
+	{
+		if (j == i)
+		{
+			while ((*var_name)[j])
+			{
+				free((*var_name)[j]);
+				(*var_name)[j] = 0;
+				free((*var_content)[j]);
+				(*var_content)[j] = 0;
+				if ((*var_name)[j + 1])
+				{
+					(*var_name)[j] = ft_strdup((*var_name)[j + 1]);
+					(*var_content)[j] = ft_strdup((*var_content)[j + 1]);
+				}
+				j++;
+			}
+		}
+		j++;
+	}
 }
 
 void	my_export(t_tools *tools, t_simple_cmds *cmd)
@@ -238,9 +318,12 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	while (++i < nb_var)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
-			fill_var_content(cmd, i, j, &var_content[i]);
+		if (var_name_is_new(tools, var_name[i]) == 1)
+			my_unset_2(tools, var_name[i]);
+		fill_var_content(cmd, i, j, &var_content[i]);
+		if (var_name_is_new(tools, var_name[i]) == 2)
+			ignore_var(&var_name, &var_content, i);
 	}
-		// if (var_name_is_new(tools, var_name[i]) == 0) il faut peut etre creer un tableau avec les index a ne pas changer
 	add_lines_to_env(tools, var_name, var_content);
 	free_tab(var_content, i);
 	free_tab(var_name, i);

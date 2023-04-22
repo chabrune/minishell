@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:44:52 by emuller           #+#    #+#             */
-/*   Updated: 2023/03/19 16:41:31 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/22 16:56:20 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	*free_tab(char **tab, int j)
 	k = 0;
 	while (k < j)
 	{
-		free(tab[k]);
+		if (tab[k])
+			free(tab[k]);
 		k++;
 	}
 	free(tab);
