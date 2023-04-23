@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/20 16:47:42 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/23 18:52:17 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	is_builtins(t_simple_cmds *cmds)
 	return (0);
 }
 
-void	choose_bultins(t_tools *tools, t_simple_cmds *cmds, int fd)
+void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 {
 	t_simple_cmds *tmp;
 	tmp = cmds;
@@ -77,7 +77,7 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds, int fd)
 		}
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
 		{
-			my_echo(cmds, fd);
+			my_echo(cmds);
 			exit (1);
 		}
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)

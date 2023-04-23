@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/18 18:32:22 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/23 19:07:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_simple_cmds
 	char                    **str;
 	int                     (*builtin)(t_tools *, struct s_simple_cmds *); // je l'utilise pas
 	int                     num_redirections;
-	char                    *hd_file_name; // du coup c'est quoi
+	char                    *hd_file_name; 
 	t_lexer                 *redirections;
 	struct s_simple_cmds	*next;
 	struct s_simple_cmds	*prev;

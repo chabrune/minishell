@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/21 18:43:44 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/23 19:25:14 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	add_node_redir(t_simple_cmds *curr, t_lexer *redir)
 		tmp_redir = redir;
 	}
 }
-
+// INVALID READ OF SIZE A GERER
 void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 {
 	t_simple_cmds	*tmpcmd;
@@ -74,18 +74,22 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 
 	tmpcmd = *head;
 	tmplex = *lexer;
+	if(!tmpcmd || !tmplex)
+		return;
 	while (tmpcmd)
 	{
-		if (tmplex->token == PIPE && tmplex->next && tmplex->prev)
+		if (tmplex->token == PIPE && tmplex->next)
 			tmplex = tmplex->next;
-		while (tmplex && tmplex->next)
+		while (tmplex && tmplex->next && tmplex->token != PIPE)
 		{
 			if (tmplex->token == GREAT || tmplex->token == GREATGREAT
 				|| tmplex->token == LESS || tmplex->token == LESSLESS)
 			{
+				tmpcmd->num_redirections++;
 				redir = init_redir(tmplex);
 				add_node_redir(tmpcmd, redir);
-				del_node(lexer, tmplex->next);
+				if(tmplex->next)
+					del_node(lexer, tmplex->next);
 				del_node(lexer, tmplex);
 				tmplex = *lexer;
 			}
@@ -135,7 +139,10 @@ void	last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
 	{
 		tmpcmd->str = ft_calloc(sizeof(char *), count_t_lexer(tmplex) + 3);
 		if (tmplex->token == PIPE && tmplex->next && tmplex->prev)
+		{
 			tmplex = tmplex->next;
+			tmpcmd->num_redirections += 1;
+		}
 		i = 0;
 		while (tmplex && tmplex->token != PIPE)
 		{

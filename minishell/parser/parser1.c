@@ -43,21 +43,21 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 	return (head);
 }
 
-void	print_t_lexer_list(t_simple_cmds *head)
+void	print_t_lexer_list(t_simple_cmds *curr)
 {
-	t_lexer			*current;
+	t_lexer			*tmp;
 	// t_simple_cmds	*tmp;
 
-	if (!head)
-		return ;
-	current = head->redirections;
+	tmp = curr->redirections;
 	// tmp = head;
 	// while (tmp)
 	// {
-		while (current)
+	int i = 0;
+		while (tmp)
 		{
-			printf("Token: %d, Filename: %s\n", current->token, current->str);
-			current = current->next;
+			printf("cmd: %d Token: %d, Filename: %s\n", i, tmp->token, tmp->str);
+			i++;
+			tmp = tmp->next;
 		}
 		// tmp = tmp->next;
 	// }

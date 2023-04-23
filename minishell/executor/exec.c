@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/21 18:43:44 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/23 18:51:53 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 	curr = head;
 	fd = 0;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
-		choose_bultins(tools, curr, fd);
+		choose_bultins(tools, curr);
 	else
 	{
 		pid = fork();
@@ -42,9 +42,9 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 					return(EXIT_FAILURE);
 				}
 			}
-			// if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-			// 	choose_bultins(tools, curr, fd);
-			// else
+			if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+				choose_bultins(tools, curr);
+			else
 			{
 				handle_cmd(curr, tools);
 			}
@@ -75,6 +75,25 @@ int	check_redir_cmd(t_simple_cmds *curr)
 	return(0);
 }
 
+int	dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in)
+{
+	if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
+	{
+		perror("dup2 ");
+		return (EXIT_FAILURE);
+	}
+	close(pipes[0]);
+	if (curr->next && dup2(pipes[1], STDOUT_FILENO) < 0)
+	{
+		perror("dup2 ");
+		return (EXIT_FAILURE);
+	}
+	close(pipes[1]);
+	if (curr->prev)
+		close(fd_in);
+	return (EXIT_SUCCESS);
+}
+
 int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 {
 	pid_t	pid;
@@ -87,27 +106,12 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 	}
 	else if (pid == 0)
 	{
-		if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
-		{
-			perror("dup2 ");
-			return (EXIT_FAILURE);
-		}
-		close(pipes[0]);
-		if (curr->next && dup2(pipes[1], STDOUT_FILENO) < 0)
-		{
-			perror("dup2 ");
-			return (EXIT_FAILURE);
-		}
-		close(pipes[1]);
-		if (curr->prev)
-			close(fd_in);
-		// if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-		// 	choose_bultins(tools, curr);
-		// else
-		{
+		if(dup_two_cmd(curr, pipes, fd_in) == 1)
+			exit(1);
+		if(is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+			choose_bultins(tools, curr);
+		else
 			handle_cmd(curr, tools);
-			// exit(1);
-		}
 	}
 	return (EXIT_SUCCESS);
 }
@@ -187,13 +191,17 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 
 int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
-	if(check_redir(curr) == 1)
-		exit(1);
+	if (curr->redirections)
+		if (check_redir(curr) == 1)
+			exit(1);
 	tools->path = find_path(tools->envp); //check unset path
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(curr, tools);
-	if(tools->cmd == NULL)
+	if(!tools->cmd || !curr->str)
+	{
 		perror("Execve ");
+		exit(1);
+	}
 	if (tools->cmd)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
@@ -233,36 +241,4 @@ char	*get_cmd(t_simple_cmds *cmd, t_tools *tools)
 		i++;
 	}
 	return (NULL);
-}
-
-//appel si redir
-int	redir_is_fun(t_simple_cmds **head)
-{
-	t_simple_cmds	*tmp;
-	int				fdout;
-
-	tmp = *head;
-	while (tmp)
-	{
-		while (tmp->redirections)
-		{
-			if (tmp->redirections->token == LESS)
-			{
-				fdout = open(tmp->redirections->prev->str, O_RDONLY);
-				if (fdout == -1)
-				{
-					perror("Open : ");
-					return (EXIT_FAILURE);
-				}
-				if (dup2(fdout, STDIN_FILENO) == -1)
-				{
-					perror("Dup2 :");
-					return (EXIT_FAILURE);
-				}
-			}
-			tmp->redirections = tmp->redirections->next;
-		}
-		tmp = tmp->next;
-	}
-	return (0);
 }

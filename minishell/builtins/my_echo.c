@@ -6,13 +6,13 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/20 16:47:14 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/23 18:50:13 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	my_echo(t_simple_cmds *cmd, int fd)
+void	my_echo(t_simple_cmds *cmd)
 {
 	int i;
 	bool n;
@@ -29,11 +29,11 @@ void	my_echo(t_simple_cmds *cmd, int fd)
 		i = 2;
 	while (cmd->str[i])
 	{
-		ft_putstr_fd(cmd->str[i], fd);
+		ft_putstr_fd(cmd->str[i], STDOUT_FILENO);
 		i++;
 		if (cmd->str[i])
-			ft_putchar_fd(' ', fd);
+			ft_putchar_fd(' ', STDOUT_FILENO);
 	}
 	if (n == 0)
-		ft_putchar_fd('\n', fd);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 }

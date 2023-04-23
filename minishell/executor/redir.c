@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/21 18:17:53 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/23 18:13:47 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	check_append(t_lexer *redir)
 	{
 		fd = open(redir->str, O_CREAT | O_RDWR | O_APPEND, 0644);
 		if(fd == -1)
-			perror("open1 ");
+			perror("open ");
 	}
 	else
 	{
 		fd = open(redir->str, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if(fd == -1)
-			perror("open2 ");
+			perror("open ");
 	}
 	return(fd);
 }
@@ -36,7 +36,7 @@ int	check_infile(char *file)
 	fd = open(file, O_RDONLY);
 	if(fd < 0)
 	{
-		perror("open3 ");
+		perror("open ");
 		return(EXIT_FAILURE);
 	}
 	if(dup2(fd, STDIN_FILENO) == -1)
@@ -44,7 +44,7 @@ int	check_infile(char *file)
 		perror("dup2 ");
 		return(EXIT_FAILURE);
 	}
-	if(fd >= 0)
+	if(fd > 0)
 		close(fd);
 	return(EXIT_SUCCESS);
 }
@@ -55,7 +55,7 @@ int check_outfile(t_lexer *redir)
 	fd = check_append(redir);
 	if(fd < 0)
 	{
-		perror("open4 ");
+		perror("open ");
 		return(EXIT_FAILURE);
 	}
 	if(dup2(fd, STDOUT_FILENO) == -1)
@@ -63,7 +63,7 @@ int check_outfile(t_lexer *redir)
 		perror("dup2 ");
 		return(EXIT_FAILURE);
 	}
-	if(fd >= 0)
+	if(fd > 0)
 		close(fd);
 	return(EXIT_SUCCESS);
 }
@@ -79,8 +79,6 @@ int check_redir(t_simple_cmds *cmd)
 	tmp = cmd;
 	while(current)
 	{
-		// printf("token = %d\n", current->token);
-		// printf("str = %s\n", current->str);
 		if(current->token == LESS)
 			check_infile(current->str);
 		else if(current->token == GREAT || current->token == GREATGREAT)
