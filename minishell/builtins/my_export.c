@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/22 17:01:18 by emuller          ###   ########.fr       */
+/*   Updated: 2023/04/23 19:28:10 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,8 +238,6 @@ void	remove_a_var_from_env_2(t_tools *tools, char *str)
 	while (tools->envp[i])
 	{
 		if (ft_strncmp(tools->envp[i], str, ft_strlen(str)) == 0)
-			// && (tools->envp[i][ft_strlen(str)-1] == '='
-			// 	|| tools->envp[i][ft_strlen(str)-1] == 0))
 			i++;
 		else
 			new_tab[k++] = ft_strdup(tools->envp[i++]);
@@ -256,8 +254,6 @@ int	is_removable_2(t_tools *tools, char *str)
 	while (tools->envp[++i])
 	{
 		if (ft_strncmp(tools->envp[i], str, ft_strlen(str)) == 0)
-			// && (tools->envp[i][ft_strlen(str)-1] == '='
-			// 	|| tools->envp[i][ft_strlen(str)-1] == 0))
 			return (1);
 	}
 	return (0);
@@ -318,7 +314,12 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	while (++i < nb_var)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
-		if (var_name_is_new(tools, var_name[i]) == 1)
+		char *tmp;
+		tmp = ft_calloc(sizeof(char), ft_strlen(var_name[i]));
+		ft_strlcpy(tmp, var_name[i], ft_strlen(var_name[i]));
+		if (var_name_is_new(tools, tmp) == 2)
+			my_unset_2(tools, tmp);
+  		if (var_name_is_new(tools, var_name[i]) == 1)
 			my_unset_2(tools, var_name[i]);
 		fill_var_content(cmd, i, j, &var_content[i]);
 		if (var_name_is_new(tools, var_name[i]) == 2)
