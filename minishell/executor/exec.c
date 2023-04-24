@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/23 18:51:53 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:07:03 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 
 	curr = head;
 	fd = 0;
-	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
-		choose_bultins(tools, curr);
-	else
+	// if (is_builtins(curr) == 1)
+	// 	choose_bultins(tools, curr);
+	// else
 	{
 		pid = fork();
 		if(pid == 0)
@@ -42,37 +42,19 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 					return(EXIT_FAILURE);
 				}
 			}
-			if (is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
+			if (builtins_to_fork(curr) == 1)
 				choose_bultins(tools, curr);
 			else
-			{
 				handle_cmd(curr, tools);
-			}
+			if (curr->redirections)
+				if (check_redir(curr) == 1)
+					exit(1);
 			if(fd >= 0)
 				close(fd);
 		}
 		waitpid(pid, NULL, 0);
 	}
 	return (0);
-}
-
-int	check_redir_cmd(t_simple_cmds *curr)
-{
-	t_lexer *start;
-	int i;
-
-	i = 0;
-	start = curr->redirections;
-	while(curr->redirections)
-	{
-		if(curr->redirections->token == GREAT || curr->redirections->token == GREATGREAT || curr->redirections->token == LESS)
-			i++;
-		curr->redirections = curr->redirections->next;
-	}
-	curr->redirections = start;
-	if(i > 0)
-		return(1);
-	return(0);
 }
 
 int	dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in)
@@ -108,10 +90,7 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 	{
 		if(dup_two_cmd(curr, pipes, fd_in) == 1)
 			exit(1);
-		if(is_builtins(curr) == 1) 		// J'ai rajouté ce if, faut verifier aue ca casse pas tout
-			choose_bultins(tools, curr);
-		else
-			handle_cmd(curr, tools);
+		handle_cmd(curr, tools);
 	}
 	return (EXIT_SUCCESS);
 }
