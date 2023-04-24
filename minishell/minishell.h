@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/23 19:07:56 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:04:08 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ typedef struct s_tools
 
 typedef struct s_simple_cmds
 {
+    int                     fd;
 	char                    **str;
-	int                     (*builtin)(t_tools *, struct s_simple_cmds *); // je l'utilise pas
 	int                     num_redirections;
 	char                    *hd_file_name; 
 	t_lexer                 *redirections;
@@ -81,6 +81,9 @@ typedef struct s_simple_cmds
 # include "executor/exec.h"
 # include "expander/expander.h"
 # include "lexer/lexer.h"
+
+int in_cmd;
+int stop_heredoc;
 
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input, t_tools *tool);

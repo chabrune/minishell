@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/23 18:52:17 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:09:50 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	choose_bultins(t_tools *tools, t_simple_cmds *cmds)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
 		{
-			my_pwd(tools);
+			my_pwd(tools, cmds);
 			exit (1);
 		}
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)

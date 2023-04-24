@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:38:43 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/17 16:14:37 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:38:37 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 
 void    control_c()
 {
-    // if () // check si on est dans une commande
+    printf("\n");
+    if (in_cmd) // check si on est dans une commande
     {
-        printf("\n");
-        rl_on_new_line();
+        // stop_heredoc = 1;
         rl_replace_line("", 0);
         rl_redisplay();
+        return ;
     }
-    
+    rl_replace_line("", 0);
+    rl_redisplay();
+    rl_on_new_line();   
 }
 
 void    handle_signal()

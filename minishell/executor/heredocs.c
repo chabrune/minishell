@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/21 11:38:50 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:38:35 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ void	heredoc(char *filename, t_lexer *curr)
 
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline("heredoc> ");
-	while (line && ft_strncmp(curr->str, line, ft_strlen(curr->str)))
+	while (line && ft_strncmp(curr->str, line, ft_strlen(curr->str)) ) //&& stop_heredoc == 0)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 		line = readline("heredoc> ");
 	}
+	// stop_heredoc = 0;
 	free(line);
 	close(fd);
 }

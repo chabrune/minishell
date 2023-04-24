@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/23 18:13:47 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:07:45 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,61 +30,57 @@ int	check_append(t_lexer *redir)
 	return(fd);
 }
 
-int	check_infile(char *file)
+int	check_infile(char *file, t_simple_cmds *cmd)
 {
-	int fd;
-	fd = open(file, O_RDONLY);
-	if(fd < 0)
+	cmd->fd = open(file, O_RDONLY);
+	if(cmd->fd < 0)
 	{
 		perror("open ");
 		return(EXIT_FAILURE);
 	}
-	if(dup2(fd, STDIN_FILENO) == -1)
+	if(dup2(cmd->fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 ");
 		return(EXIT_FAILURE);
 	}
-	if(fd > 0)
-		close(fd);
+	if(cmd->fd > 0)
+		close(cmd->fd);
 	return(EXIT_SUCCESS);
 }
 
-int check_outfile(t_lexer *redir)
+int check_outfile(t_lexer *redir, t_simple_cmds *cmd)
 {
-	int fd;
-	fd = check_append(redir);
-	if(fd < 0)
+	cmd->fd = check_append(redir);
+	if(cmd->fd < 0)
 	{
 		perror("open ");
 		return(EXIT_FAILURE);
 	}
-	if(dup2(fd, STDOUT_FILENO) == -1)
+	if(dup2(cmd->fd, STDOUT_FILENO) == -1)
 	{
 		perror("dup2 ");
 		return(EXIT_FAILURE);
 	}
-	if(fd > 0)
-		close(fd);
+	if(cmd->fd > 0)
+		close(cmd->fd);
 	return(EXIT_SUCCESS);
 }
 
 int check_redir(t_simple_cmds *cmd)
 {
 	t_lexer			*current;
-	t_simple_cmds	*tmp;
 
 	if (!cmd)
 		return (EXIT_FAILURE);
 	current = cmd->redirections;
-	tmp = cmd;
 	while(current)
 	{
 		if(current->token == LESS)
-			check_infile(current->str);
+			check_infile(current->str, cmd);
 		else if(current->token == GREAT || current->token == GREATGREAT)
-			check_outfile(current);
+			check_outfile(current, cmd);
 		else if(current->token == LESSLESS)
-			check_infile(cmd->hd_file_name);
+			check_infile(cmd->hd_file_name, cmd);
 		current = current->next;
 	}
 	return(EXIT_SUCCESS);

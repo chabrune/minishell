@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/24 15:07:03 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:13:47 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 
 	curr = head;
 	fd = 0;
-	// if (is_builtins(curr) == 1)
-	// 	choose_bultins(tools, curr);
-	// else
+	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
+		choose_bultins(tools, curr);
+	else
 	{
 		pid = fork();
 		if(pid == 0)
@@ -42,13 +42,13 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 					return(EXIT_FAILURE);
 				}
 			}
+			if (curr->redirections)
+				if (check_redir(curr) == 1)
+					exit(1);
 			if (builtins_to_fork(curr) == 1)
 				choose_bultins(tools, curr);
 			else
 				handle_cmd(curr, tools);
-			if (curr->redirections)
-				if (check_redir(curr) == 1)
-					exit(1);
 			if(fd >= 0)
 				close(fd);
 		}
@@ -88,9 +88,15 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 	}
 	else if (pid == 0)
 	{
+		if (curr->redirections)
+			if (check_redir(curr) == 1)
+				exit(1);
 		if(dup_two_cmd(curr, pipes, fd_in) == 1)
 			exit(1);
-		handle_cmd(curr, tools);
+		if(is_builtins(curr) == 1)
+			choose_bultins(tools, curr);
+		else
+			handle_cmd(curr, tools);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -170,9 +176,6 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 
 int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
-	if (curr->redirections)
-		if (check_redir(curr) == 1)
-			exit(1);
 	tools->path = find_path(tools->envp); //check unset path
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(curr, tools);
