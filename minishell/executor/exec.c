@@ -3,58 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/24 17:13:47 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:29:02 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
+int dup_heredoc(t_simple_cmds *curr)
+{
+	int fd;
+
+	if(curr->hd_file_name)
+	{
+		fd = open(curr->hd_file_name, O_RDONLY);
+		if(fd < 0)
+		{
+			perror("open ");
+			return(EXIT_FAILURE);
+		}
+		if(dup2(fd, STDIN_FILENO) < 0)
+		{
+			perror("dup2 ");
+			return(EXIT_FAILURE);
+		}
+		if(fd >= 0)
+			close(fd);
+	}
+	return(EXIT_SUCCESS);
+}
+
 int one_command(t_simple_cmds *head, t_tools *tools)
 {
 	t_simple_cmds	*curr;
 	int				pid;
-    int             fd;
 
 	curr = head;
-	fd = 0;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
-		choose_bultins(tools, curr);
-	else
 	{
-		pid = fork();
-		if(pid == 0)
-		{
-			fill_cmd_heredoc(curr);
-			if(curr->hd_file_name)
-			{
-				fd = open(curr->hd_file_name, O_RDONLY);
-				if(fd < 0)
-				{
-					perror("open ");
-					return(EXIT_FAILURE);
-				}
-				if(dup2(fd, STDIN_FILENO) < 0)
-				{
-					perror("dup2 ");
-					return(EXIT_FAILURE);
-				}
-			}
-			if (curr->redirections)
-				if (check_redir(curr) == 1)
-					exit(1);
-			if (builtins_to_fork(curr) == 1)
-				choose_bultins(tools, curr);
-			else
-				handle_cmd(curr, tools);
-			if(fd >= 0)
-				close(fd);
-		}
-		waitpid(pid, NULL, 0);
+		if (curr->redirections)
+			if (check_redir(curr) == 1)
+				exit (1);
+		choose_bultins_one(tools, curr);
+		return(EXIT_SUCCESS);
 	}
-	return (0);
+	pid = fork();
+	if(pid == 0)
+	{
+		fill_cmd_heredoc(curr);
+		dup_heredoc(curr);
+		if (curr->redirections)
+			if (check_redir(curr) == 1)
+				exit(1);
+		if (builtins_to_fork(curr) == 1)
+			choose_bultins_one(tools, curr);
+		else
+			handle_cmd(curr, tools);
+	}
+	waitpid(pid, NULL, 0);
+	return (EXIT_SUCCESS);
 }
 
 int	dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in)
@@ -94,7 +103,7 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 		if(dup_two_cmd(curr, pipes, fd_in) == 1)
 			exit(1);
 		if(is_builtins(curr) == 1)
-			choose_bultins(tools, curr);
+			choose_bultins_multiple(tools, curr);
 		else
 			handle_cmd(curr, tools);
 	}

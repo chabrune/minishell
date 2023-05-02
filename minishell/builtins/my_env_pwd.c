@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   my_env_pwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:59 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/24 17:08:02 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 13:51:53 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	my_pwd(t_tools *tools, t_simple_cmds *cmd)
+void	my_pwd(t_tools *tools)
 {
 	int		i;
 	char	*pwd;
@@ -24,7 +24,7 @@ void	my_pwd(t_tools *tools, t_simple_cmds *cmd)
 			pwd = ft_strdup(tools->envp[i]);
 	if (pwd == 0)
 		return ;
-	ft_putendl_fd(pwd + 4, cmd->fd);
+	ft_putendl_fd(pwd + 4, STDOUT_FILENO);
 	free(pwd);
 }
 
@@ -42,5 +42,5 @@ void	my_env(t_tools *tools, t_simple_cmds *cmd)
 		return ;
 	while (tools->envp[++i])
 		if (ft_strchr(tools->envp[i], '=') != 0)
-			ft_putendl_fd(tools->envp[i], cmd->fd);
+			ft_putendl_fd(tools->envp[i], STDOUT_FILENO);
 }

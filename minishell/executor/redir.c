@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/24 17:07:45 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:34:23 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,39 +30,43 @@ int	check_append(t_lexer *redir)
 	return(fd);
 }
 
-int	check_infile(char *file, t_simple_cmds *cmd)
+int	check_infile(char *file)
 {
-	cmd->fd = open(file, O_RDONLY);
-	if(cmd->fd < 0)
+	int fd;
+
+	fd = open(file, O_RDONLY);
+	if(fd < 0)
 	{
 		perror("open ");
 		return(EXIT_FAILURE);
 	}
-	if(dup2(cmd->fd, STDIN_FILENO) == -1)
+	if(dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 ");
 		return(EXIT_FAILURE);
 	}
-	if(cmd->fd > 0)
-		close(cmd->fd);
+	if(fd > 0)
+		close(fd);
 	return(EXIT_SUCCESS);
 }
 
-int check_outfile(t_lexer *redir, t_simple_cmds *cmd)
+int check_outfile(t_lexer *redir)
 {
-	cmd->fd = check_append(redir);
-	if(cmd->fd < 0)
+	int fd;
+
+	fd = check_append(redir);
+	if(fd < 0)
 	{
 		perror("open ");
 		return(EXIT_FAILURE);
 	}
-	if(dup2(cmd->fd, STDOUT_FILENO) == -1)
+	if(dup2(fd, STDOUT_FILENO) == -1)
 	{
 		perror("dup2 ");
 		return(EXIT_FAILURE);
 	}
-	if(cmd->fd > 0)
-		close(cmd->fd);
+	if(fd > 0)
+		close(fd);
 	return(EXIT_SUCCESS);
 }
 
@@ -76,11 +80,11 @@ int check_redir(t_simple_cmds *cmd)
 	while(current)
 	{
 		if(current->token == LESS)
-			check_infile(current->str, cmd);
+			check_infile(current->str);
 		else if(current->token == GREAT || current->token == GREATGREAT)
-			check_outfile(current, cmd);
+			check_outfile(current);
 		else if(current->token == LESSLESS)
-			check_infile(cmd->hd_file_name, cmd);
+			check_infile(cmd->hd_file_name);
 		current = current->next;
 	}
 	return(EXIT_SUCCESS);

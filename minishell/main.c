@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/24 15:51:39 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:25:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 {
 	int i;
+
 	while(42)
 	{
 		tool->input = readline("MiniPROUT> ");
@@ -32,12 +33,12 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds)
 		// print_tokens(lexer);
 		// print_t_lexer_list(scmds);
 		i = count_cmd(&scmds);
-		in_cmd = 1;
+		// in_cmd = 1;
 		if(i == 1)
 			one_command(scmds, tool);
 		else
 			multiple_commands(&scmds, tool);
-		in_cmd = 0;
+		// in_cmd = 0;
 		if (tool->input[0] != '\0')
 			add_history(tool->input);
 		lstclear_lexer(&lexer, free);
@@ -54,9 +55,9 @@ int main(int argc, char **argv, char **envp)
 	
 	if (argc == 1 || argv[1])
 	{
-		handle_signal();
+		// handle_signal();
 		tool.envp = dup_env(envp); // il faudra penser a free
-		in_cmd = 0;
+		// in_cmd = 0;
 		// stop_heredoc = 0;
 		minishell_loop(&tool, &lexer, &scmds);
 	}

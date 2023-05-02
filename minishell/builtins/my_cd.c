@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/24 17:30:41 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 16:35:43 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,39 +74,39 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 	return (path);
 }
 
-// char	*find_path_ret(t_tools *tools)
-// {
-// 	int	i;
+char	*find_path_ret(t_tools *tools)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (tools->envp[i])
-// 	{
-// 		if (!ft_strncmp(tools->envp[i], "OLDPWD=", 7))
-// 			return (ft_substr(tools->envp[i], 7,
-// 					ft_strlen(tools->envp[i]) - 7));
-// 		i++;
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	while (tools->envp[i])
+	{
+		if (!ft_strncmp(tools->envp[i], "OLDPWD=", 7))
+			return (ft_substr(tools->envp[i], 7,
+					ft_strlen(tools->envp[i]) - 7));
+		i++;
+	}
+	return (0);
+}
 
-// int	change_old_pwd(t_tools *tools)
-// {
-// 	char	*tmp;
-// 	int		ret;
-// 	char	*str;
+int	change_old_pwd(t_tools *tools)
+{
+	char	*tmp;
+	int		ret;
+	char	*str;
 
-// 	tmp = find_path_ret(tools);
-// 	ret = chdir(tmp);
-// 	free(tmp);
-// 	if (ret != 0)
-// 	{
-// 		str = ft_substr("OLDPWD=", 0, 6);
-// 		ft_putstr_fd(str, STDERR_FILENO);
-// 		free(str);
-// 		ft_putendl_fd(" not set", STDERR_FILENO);
-// 	}
-// 	return (ret);
-// }
+	tmp = find_path_ret(tools);
+	ret = chdir(tmp);
+	free(tmp);
+	if (ret != 0)
+	{
+		str = ft_substr("OLDPWD=", 0, 6);
+		ft_putstr_fd(str, STDERR_FILENO);
+		free(str);
+		ft_putendl_fd(" not set", STDERR_FILENO);
+	}
+	return (ret);
+}
 
 void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 {
@@ -133,7 +133,9 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 			change_env(tools, home, old_pwd);
 	}
 	// else if (ft_strncmp(cmds->str[1], "-", 1) == 0)
-	// 	check_err = change_old_pwd(tools);
+	// {
+	// 	change_old_pwd(tools);
+	// }
 	else if (cmds->str[1][0] == '/')
 	{
 		check_err = chdir(cmds->str[1]);
