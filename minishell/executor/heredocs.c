@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/24 15:38:35 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 20:19:34 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,37 +38,6 @@ int	ft_whitespaces(char c)
 	else
 		return (0);
 }
-
-// char	*get_word_after_hd(char *line)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		k;
-// 	char	*res;
-
-// 	res = NULL;
-// 	k = 0;
-// 	j = 0;
-// 	i = 0;
-// 	while (line[i] && line[i] != '<')
-// 		i++;
-// 	if (line[i] && line[i + 1] == '<')
-// 	{
-// 		i += 2;
-// 		while (line[i] && ft_whitespaces(line[i]))
-// 			i++;
-// 		while (line[i++] && !ft_whitespaces(line[i]))
-// 			j++;
-// 		i = i - j - 1;
-// 		res = ft_calloc(sizeof(char), j + 1);
-// 		while (j > 0)
-// 		{
-// 			res[k++] = line[i++];
-// 			j--;
-// 		}
-// 	}
-// 	return (res);
-// }
 
 char	*create_filename(void)
 {

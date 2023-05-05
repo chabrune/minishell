@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/02 19:34:23 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:30:07 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ int	check_infile(char *file)
 	fd = open(file, O_RDONLY);
 	if(fd < 0)
 	{
-		perror("open ");
-		return(EXIT_FAILURE);
+		ft_putstr_fd("minishell: infile: No such file or directory\n",
+			STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
-	if(dup2(fd, STDIN_FILENO) == -1)
+	if (fd > 0 && dup2(fd, STDIN_FILENO) < 0)
 	{
-		perror("dup2 ");
-		return(EXIT_FAILURE);
+		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
 	if(fd > 0)
 		close(fd);
@@ -52,22 +53,22 @@ int	check_infile(char *file)
 
 int check_outfile(t_lexer *redir)
 {
-	int fd;
+	int	fd;
 
 	fd = check_append(redir);
-	if(fd < 0)
+	if (fd < 0)
 	{
-		perror("open ");
-		return(EXIT_FAILURE);
+		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
-	if(dup2(fd, STDOUT_FILENO) == -1)
+	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
 	{
-		perror("dup2 ");
-		return(EXIT_FAILURE);
+		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
-	if(fd > 0)
+	if (fd > 0)
 		close(fd);
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 int check_redir(t_simple_cmds *cmd)

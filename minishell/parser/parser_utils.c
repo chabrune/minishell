@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:08:43 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/24 17:04:27 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/02 20:30:18 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_simple_cmds	*new_node(void)
 	new = ft_calloc(1, sizeof(t_simple_cmds));
 	if (!new)
 		return (NULL);
-	new->fd	= 0;
 	new->next = NULL;
 	new->prev = NULL;
 	new->redirections = NULL;

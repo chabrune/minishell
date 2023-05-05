@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/02 13:15:00 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:30:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_tools
 
 typedef struct s_simple_cmds
 {
-    int                     fd;
 	char                    **str;
 	int                     num_redirections;
 	char                    *hd_file_name; 

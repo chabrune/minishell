@@ -6,7 +6,7 @@
 /*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/02 19:29:02 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/04 11:29:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 	curr = head;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
 	{
-		if (curr->redirections)
-			if (check_redir(curr) == 1)
-				exit (1);
+		printf("BUILTINS\n");
+		// if (curr->redirections)
+		// 	if (check_redir(curr) == 1)
+		// 		exit (1);
 		choose_bultins_one(tools, curr);
 		return(EXIT_SUCCESS);
 	}
