@@ -35,5 +35,4 @@ int		check_outfile(t_lexer *redir);
 void	free_child(t_tools **tools);
 void	fill_tools_param(t_simple_cmds *curr, t_tools *tools);
 
-
 #endif

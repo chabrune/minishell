@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 19:12:38 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/05 22:39:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,27 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		if (tool->input[0] != '\0')
 			add_history(tool->input);
 		lexer = ft_lexer(tool->input, tool);
-		if(check_pipe(lexer) == 1)
+		if (check_pipe(lexer) == 1)
 		{
 			lstclear_all(&lexer, &scmds, tool);
-			continue;
+			continue ;
 		}
 		if (!lexer)
 		{
 			lstclear_all(&lexer, &scmds, tool);
-			continue;
+			continue ;
 		}
 		scmds = group_command(&lexer);
 		add_redir(&scmds, &lexer);
 		last_lexer_to_strs_cmd(&lexer, &scmds);
-		if(scmds->redirections)
+		if (scmds->redirections)
 		{
-			if(!scmds->redirections->str)
+			if (!scmds->redirections->str)
 			{
 				lstclear_all(&lexer, &scmds, tool);
 				ft_putendl_fd("bash: syntax error", 2);
 				g_global.error_num = 258;
-				continue;
+				continue ;
 			}
 		}
 		i = count_cmd(&scmds);
@@ -89,6 +89,8 @@ int	init_tool(t_tools **tools, char **env)
 	(*tools)->pid = NULL;
 	return (EXIT_SUCCESS);
 }
+
+t_global	g_global;
 
 int	main(int argc, char **argv, char **envp)
 {

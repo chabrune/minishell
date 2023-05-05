@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:57:21 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 00:58:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 	if (lst == NULL)
 		return ;
 	if (del)
-		del(lst->str);
+		free(lst->str);
 	free(lst);
 	lst = NULL;
 }
@@ -37,36 +37,35 @@ void	lstclear_lexer(t_lexer **lst, void (*del)(void *))
 	}
 }
 
-void lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
+void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
 {
-    int i;
-    t_lexer *tmp;
-    t_lexer *next;
+	int		i;
+	t_lexer	*tmp;
+	t_lexer	*next;
 
-    if (lst == NULL)
-        return ;
-    i = -1;
-    if (lst->str)
-        while (lst->str[++i])
-            free(lst->str[i]);
-    free(lst->str);
-    if (lst->hd_file_name)
-        free(lst->hd_file_name);
-    if (lst->redirections)
-    {
-        tmp = lst->redirections;
-        while (tmp)
-        {
-            next = tmp->next;
-            if (tmp->str)
-                free(tmp->str);
-            free(tmp);
-            tmp = next;
-        }
-    }
-    del(lst);
+	if (lst == NULL)
+		return ;
+	i = -1;
+	if (lst->str)
+		while (lst->str[++i])
+			free(lst->str[i]);
+	free(lst->str);
+	if (lst->hd_file_name)
+		free(lst->hd_file_name);
+	if (lst->redirections)
+	{
+		tmp = lst->redirections;
+		while (tmp)
+		{
+			next = tmp->next;
+			if (tmp->str)
+				free(tmp->str);
+			free(tmp);
+			tmp = next;
+		}
+	}
+	del(lst);
 }
-
 
 void	lstclear_tools(t_tools *tools)
 {
@@ -91,8 +90,6 @@ void	lstclear_tools_two(t_tools *tools)
 		free(tools->cmd);
 	if (tools->input)
 		free(tools->input);
-	if (tools->path)
-		free(tools->path);
 	if (tools->pid)
 		free(tools->pid);
 }

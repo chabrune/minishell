@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
+#    By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/05/08 16:48:30 by chabrune         ###   ########.fr        #
+#    Updated: 2023/05/06 00:14:15 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,8 @@ SRCS       	=	main.c \
 				error.c \
 				executor/exec3.c \
 				lexer/lexer3.c \
+				builtins/my_export2.c \
+				builtins/my_export3.c \
 
 #######################################################
 ###### RULES

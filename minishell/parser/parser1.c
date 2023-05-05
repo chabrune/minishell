@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 18:48:32 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 01:02:00 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	del_node(t_lexer **head, t_lexer *node_to_delete)
 	if (*head == node_to_delete)
 	{
 		*head = node_to_delete->next;
+		free(node_to_delete->str);
 		free(node_to_delete);
 		return ;
 	}
@@ -68,5 +69,6 @@ void	del_node(t_lexer **head, t_lexer *node_to_delete)
 	if (!current)
 		return ;
 	current->next = node_to_delete->next;
+	free(node_to_delete->str);
 	free(node_to_delete);
 }

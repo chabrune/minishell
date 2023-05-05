@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:47:04 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/05 22:13:03 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,9 @@
 int	check_pipe(t_lexer *lexer)
 {
 	t_lexer *tmp;
-	int i;
-	int j;
 
-	j = 0;
-	i = 0;
 	tmp = lexer;
-	if(!tmp)
+	if (!tmp)
 		return (0);
 	if (tmp->token == PIPE)
 	{

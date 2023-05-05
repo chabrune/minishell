@@ -42,7 +42,7 @@ void	control_c(int sig)
 
 void	handle_signal(void)
 {
-	if(g_global.in_child == 0)
+	if (g_global.in_child == 0)
 	{
 		signal(SIGINT, control_c);
 		signal(SIGQUIT, SIG_IGN);

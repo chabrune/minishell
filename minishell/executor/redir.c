@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 13:57:51 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 00:10:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_infile(char *file)
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: infile: No such file or directory\n",
-						STDERR_FILENO);
+			STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	if (fd > 0 && dup2(fd, STDIN_FILENO) < 0)

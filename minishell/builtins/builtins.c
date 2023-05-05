@@ -33,7 +33,7 @@ void	my_exit_2(t_tools *tools, t_simple_cmds *cmds)
 		lstclear_cmds(&cmds, free);
 	if (tools)
 		lstclear_tools(tools);
-	exit (g_global.error_num);
+	exit(g_global.error_num);
 }
 
 int	builtins_to_fork(t_simple_cmds *cmds)

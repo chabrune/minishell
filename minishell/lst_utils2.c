@@ -14,7 +14,7 @@
 
 void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
 {
-	t_simple_cmds *temp;
+	t_simple_cmds	*temp;
 
 	if (lst)
 	{
@@ -29,10 +29,10 @@ void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
 
 void	lstclear_all(t_lexer **lexer, t_simple_cmds **cmds, t_tools *tools)
 {
-	if(lexer)
+	if (lexer)
 		lstclear_lexer(lexer, free);
-	if(cmds)
+	if (cmds)
 		lstclear_cmds(cmds, free);
-	if(tools)
+	if (tools)
 		lstclear_tools(tools);
 }

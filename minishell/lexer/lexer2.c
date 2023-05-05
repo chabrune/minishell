@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:00:33 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 01:14:57 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		}
 		while (ft_isspace(input[i]) && input[i])
 			i++;
-		new = new_token(ft_strdup(buffer), token, k++);
+		new = new_token(buffer, token, k++);
 		if (head == NULL)
 		{
 			head = new;

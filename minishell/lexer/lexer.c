@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 15:48:42 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 00:52:00 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_lexer	*new_token(char *str, t_tokens token, int i)
 	new = ft_calloc(1, sizeof(t_lexer));
 	if (!new)
 		return (NULL);
-	new->str = str;
+	new->str = ft_strdup(str);
 	new->token = token;
 	new->i = i;
 	new->next = NULL;
