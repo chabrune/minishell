@@ -45,21 +45,22 @@ t_simple_cmds	*group_command(t_lexer **lexer)
 
 void	print_t_lexer_list(t_simple_cmds *curr)
 {
-	t_lexer			*tmp;
-	// t_simple_cmds	*tmp;
+	t_lexer	*tmp;
+	int		i;
 
+	// t_simple_cmds	*tmp;
 	tmp = curr->redirections;
 	// tmp = head;
 	// while (tmp)
 	// {
-	int i = 0;
-		while (tmp)
-		{
-			printf("cmd: %d Token: %d, Filename: %s\n", i, tmp->token, tmp->str);
-			i++;
-			tmp = tmp->next;
-		}
-		// tmp = tmp->next;
+	i = 0;
+	while (tmp)
+	{
+		printf("cmd: %d Token: %d, Filename: %s\n", i, tmp->token, tmp->str);
+		i++;
+		tmp = tmp->next;
+	}
+	// tmp = tmp->next;
 	// }
 }
 
@@ -78,12 +79,12 @@ void	del_node(t_lexer **head, t_lexer *delone)
 		return ;
 	if (*head == delone) // si le noeud à supprimer est la tête de la liste
 		*head = delone;
-	if (delone && delone->prev != NULL) // si le noeud à supprimer n'est pas la tête de la liste
+	if (delone && delone->prev != NULL)
+		// si le noeud à supprimer n'est pas la tête de la liste
 		delone->prev->next = delone->next;
-	if (delone && delone->next != NULL) // si le noeud à supprimer n'est pas la queue de la liste
+	if (delone && delone->next != NULL)
+		// si le noeud à supprimer n'est pas la queue de la liste
 		delone->next->prev = delone->prev;
 	free(delone);
 	delone = NULL;
 }
-
-

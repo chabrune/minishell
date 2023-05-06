@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/23 19:28:10 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/06 11:10:42 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 // Il faut check si la variable existe deja (strcmp)
 // normalemet ca marche sauf quand je commence par declaerer sans le =
-// Il faut aussi gerer les += 
-
+// Il faut aussi gerer les +=
 
 void	*free_old_env(char **tab)
 {
@@ -31,11 +30,11 @@ void	*free_old_env(char **tab)
 	return (0);
 }
 
-int		var_name_is_new(t_tools *tools, char	*var)
+int	var_name_is_new(t_tools *tools, char *var)
 {
-	int j;
-	char *tmp_env;
-	int	i;
+	int		j;
+	char	*tmp_env;
+	int		i;
 
 	i = 0;
 	while (tools->envp[i])
@@ -44,10 +43,10 @@ int		var_name_is_new(t_tools *tools, char	*var)
 		while (tools->envp[i][j] && tools->envp[i][j] != '=')
 			j++;
 		if (tools->envp[i][j] == '=')
-			j++; 
+			j++;
 		tmp_env = ft_calloc(j + 2, sizeof(char));
 		ft_strlcpy(tmp_env, tools->envp[i], j + 1);
-		if (ft_strncmp(var, tmp_env, ft_strlen(var)) == 0)// && var[ft_strlen(var) - 1] == '=')
+		if (ft_strncmp(var, tmp_env, ft_strlen(var)) == 0)
 		{
 			free(tmp_env);
 			if (var[ft_strlen(var) - 1] != '=')
@@ -60,7 +59,8 @@ int		var_name_is_new(t_tools *tools, char	*var)
 	return (0);
 }
 
-char	**fill_env(char **tab, int nb_new_lines, char **var_name, char **var_content)
+char	**fill_env(char **tab, int nb_new_lines, char **var_name,
+		char **var_content)
 {
 	char	**new_tab;
 	int		i;
@@ -92,14 +92,15 @@ void	add_lines_to_env(t_tools *tools, char **var_name, char **var_content)
 {
 	int	count_newlines;
 	int	i;
-	int j;
+	int	j;
 
 	j = 0;
 	count_newlines = 0;
 	i = -1;
 	while (var_name[++i])
 		count_newlines++;
-	tools->envp = fill_env(tools->envp, count_newlines - j, var_name, var_content);
+	tools->envp = fill_env(tools->envp, count_newlines - j, var_name,
+			var_content);
 }
 
 void	print_export(t_tools *tools)
@@ -147,7 +148,9 @@ void	print_export(t_tools *tools)
 
 void	remove_useless_dquotes(char **var_content, int check_quote, int i)
 {
-	int j = -1;
+	int	j;
+
+	j = -1;
 	while (var_content[i][++j])
 		if (var_content[i][j] == '\"' && check_quote == 1)
 		{
@@ -162,8 +165,8 @@ void	remove_useless_dquotes(char **var_content, int check_quote, int i)
 
 void	remove_useless_squotes(char **var_content, int check_quote, int i)
 {
-	int j;
-	
+	int	j;
+
 	j = -1;
 	while (var_content[i][++j])
 		if (var_content[i][j] == '\'' && check_quote == 2)
@@ -179,27 +182,29 @@ void	remove_useless_squotes(char **var_content, int check_quote, int i)
 
 void	fill_var_content(t_simple_cmds *cmd, int i, int j, char **var_content)
 {
-		int	check_quote = 0;
-		if (cmd->str[i + 1][j] == '\"')
-		{
-			j++;
-			check_quote = 1;
-		}
-		else if (cmd->str[i + 1][j] == '\'')
-		{
-			j++;
-			check_quote = 2;
-		}
-		if (*var_content)
-			free(*var_content);
-		*var_content = ft_strdup(cmd->str[i + 1] + j);
-		remove_useless_dquotes(var_content, check_quote, i);
-		remove_useless_squotes(var_content, check_quote, i);
+	int	check_quote;
+
+	check_quote = 0;
+	if (cmd->str[i + 1][j] == '\"')
+	{
+		j++;
+		check_quote = 1;
+	}
+	else if (cmd->str[i + 1][j] == '\'')
+	{
+		j++;
+		check_quote = 2;
+	}
+	if (*var_content)
+		free(*var_content);
+	*var_content = ft_strdup(cmd->str[i + 1] + j);
+	remove_useless_dquotes(var_content, check_quote, i);
+	remove_useless_squotes(var_content, check_quote, i);
 }
 
-int		fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
+int	fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	while (cmd->str[i + 1][j] && cmd->str[i + 1][j] != '=')
@@ -211,9 +216,9 @@ int		fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 	return (j);
 }
 
-int		count_var(t_simple_cmds *cmd) 
+int	count_var(t_simple_cmds *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->str[i])
@@ -301,6 +306,7 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	int		nb_var;
 	char	**var_name;
 	char	**var_content;
+	char	*tmp;
 
 	if (!cmd->str[1])
 	{
@@ -308,18 +314,17 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 		return ;
 	}
 	nb_var = count_var(cmd);
-	var_name = ft_calloc(nb_var + 1, sizeof(char *)); 
+	var_name = ft_calloc(nb_var + 1, sizeof(char *));
 	var_content = ft_calloc(nb_var + 1, sizeof(char *));
 	i = -1;
 	while (++i < nb_var)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
-		char *tmp;
 		tmp = ft_calloc(sizeof(char), ft_strlen(var_name[i]));
 		ft_strlcpy(tmp, var_name[i], ft_strlen(var_name[i]));
 		if (var_name_is_new(tools, tmp) == 2)
 			my_unset_2(tools, tmp);
-  		if (var_name_is_new(tools, var_name[i]) == 1)
+		if (var_name_is_new(tools, var_name[i]) == 1)
 			my_unset_2(tools, var_name[i]);
 		fill_var_content(cmd, i, j, &var_content[i]);
 		if (var_name_is_new(tools, var_name[i]) == 2)

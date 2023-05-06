@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+         #
+#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/05/02 13:14:42 by chabrune         ###   ########.fr        #
+#    Updated: 2023/05/06 12:34:31 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ SRCS       	=	main.c \
 				executor/redir.c \
 				expander/expander.c \
 				expander/expander_utils.c \
-				# signal.c \
+				signal.c \
 
 
 #######################################################

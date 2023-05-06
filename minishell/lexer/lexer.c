@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/23 16:53:58 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 15:10:05 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,6 @@ t_lexer	*new_token(char *str, t_tokens token, int i)
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
-}
-
-void	print_tokens(t_lexer *head)
-{
-	t_lexer	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		printf("=================\n");
-		printf("Token: %s\n", tmp->str);
-		printf("Token type: %d\n", tmp->token);
-		printf("Index: %d\n", tmp->i);
-		printf("=================\n");
-		tmp = tmp->next;
-	}
 }
 
 int	ft_isspace(int c)
@@ -82,9 +66,7 @@ t_tokens	chose_token(char *str)
 	return (token);
 }
 
-// Il faut aussi modifier cette fonction pour que a la fin d'un quote, si il n'y a pas d'espace ca reste ensemble
-// exemple: "mdr"=coucou doit etre un seul noeud
-char	*fill_buffer_quote(int *i, char *input, int c, t_tokens *token)
+char *fill_buffer_quote(int *i, char *input, int c, t_tokens *token)
 {
 	int		j;
 	char	*buffer;
@@ -183,7 +165,7 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 	k = 1;
 	input = expander(tools, input);
 	if (!input)
-		return(NULL);
+		return (NULL);
 	while (input[i])
 	{
 		while (ft_isspace(input[i]) && input[i])

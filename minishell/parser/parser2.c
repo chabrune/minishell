@@ -23,7 +23,7 @@ t_lexer	*init_redir(t_lexer *curr)
 	if (!curr->next)
 		return (NULL);
 	else
-	redir->str = ft_strdup(curr->next->str);
+		redir->str = ft_strdup(curr->next->str);
 	redir->next = NULL;
 	return (redir);
 }
@@ -74,8 +74,8 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 
 	tmpcmd = *head;
 	tmplex = *lexer;
-	if(!tmpcmd || !tmplex)
-		return;
+	if (!tmpcmd || !tmplex)
+		return ;
 	while (tmpcmd)
 	{
 		if (tmplex->token == PIPE && tmplex->next)
@@ -88,7 +88,7 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 				tmpcmd->num_redirections++;
 				redir = init_redir(tmplex);
 				add_node_redir(tmpcmd, redir);
-				if(tmplex->next)
+				if (tmplex->next)
 					del_node(lexer, tmplex->next);
 				del_node(lexer, tmplex);
 				tmplex = *lexer;
@@ -102,14 +102,14 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 
 void	ft_free_cmd(t_simple_cmds **head)
 {
-	t_simple_cmds *tmp;
-	int i;
+	t_simple_cmds	*tmp;
+	int				i;
 
 	tmp = *head;
 	while (tmp)
 	{
 		i = -1;
-		while(tmp->str[++i])
+		while (tmp->str[++i])
 			free(tmp->str[i]);
 		tmp = tmp->next;
 	}
@@ -117,15 +117,15 @@ void	ft_free_cmd(t_simple_cmds **head)
 
 int	count_t_lexer(t_lexer *curr)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(curr && curr->token != PIPE)
+	while (curr && curr->token != PIPE)
 	{
 		i++;
 		curr = curr->next;
 	}
-	return(i);
+	return (i);
 }
 
 void	last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)

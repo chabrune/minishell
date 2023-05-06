@@ -21,9 +21,8 @@ int	ft_strncmp(const char *first, const char *second, size_t length)
 	prem = (unsigned char *)first;
 	snd = (unsigned char *)second;
 	i = 0;
-	if(length == 0)
+	if (length == 0)
 		return (0);
-	
 	while ((prem[i] || snd[i]) && i < length)
 	{
 		if (prem[i] > snd[i])
@@ -37,9 +36,9 @@ int	ft_strncmp(const char *first, const char *second, size_t length)
 
 int	ft_strcmp(const char *first, const char *second)
 {
-	size_t			i;
-	unsigned char	*prem;
-	unsigned char	*snd;
+	size_t i;
+	unsigned char *prem;
+	unsigned char *snd;
 
 	prem = (unsigned char *)first;
 	snd = (unsigned char *)second;

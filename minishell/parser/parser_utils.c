@@ -58,7 +58,7 @@ void	print_cmd(t_simple_cmds **head)
 	while (tmp)
 	{
 		i = 0;
-		while(tmp->str[i])
+		while (tmp->str[i])
 		{
 			printf("cmd == %s\n", tmp->str[i]);
 			i++;

@@ -3,24 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/02 19:12:39 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 14:18:49 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	my_exit(t_tools *tools, t_simple_cmds *cmds)
+void	my_exit(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 {
-	//free_all();
-	(void)tools;
-	(void)cmds;
+	if(lexer)
+		lstclear_lexer(&lexer, free);
+	if(cmds)
+		lstclear_cmds(&cmds, free);
+	if(tools)
+		lstclear_tools(tools);
 	exit(0);
 }
 
-int builtins_to_fork(t_simple_cmds *cmds)
+int	builtins_to_fork(t_simple_cmds *cmds)
 {
 	t_simple_cmds	*tmp;
 
@@ -32,6 +35,8 @@ int builtins_to_fork(t_simple_cmds *cmds)
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
 			return (1);
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
+			return (1);
+		else if (ft_strncmp("export", cmds->str[0], 6) == 0 && !cmds->str[1])
 			return (1);
 		tmp = tmp->next;
 	}
@@ -51,7 +56,7 @@ int	is_builtins(t_simple_cmds *cmds)
 			return (1);
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
 			return (1);
-		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
+		else if (ft_strncmp("export", cmds->str[0], 6) == 0 && cmds->str[1])
 			return (1);
 		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
 			return (1);
@@ -64,40 +69,50 @@ int	is_builtins(t_simple_cmds *cmds)
 	return (0);
 }
 
-void	choose_bultins_one(t_tools *tools, t_simple_cmds *cmds)
+void	choose_bultins_one(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 {
-	t_simple_cmds *tmp;
+	t_simple_cmds	*tmp;
+
 	tmp = cmds;
 	while (tmp)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
 		{
 			my_pwd(tools);
-			exit (1);
+			exit(1);
 		}
 		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
 		{
 			my_echo(cmds);
-			exit (1);
+			exit(1);
 		}
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
 			my_cd(tools, cmds);
-		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
+		else if (ft_strncmp("export", cmds->str[0], 6) == 0 && !cmds->str[1])
+		{
+			my_export(tools, cmds);
+			exit(1);
+		}
+		else if (ft_strncmp("export", cmds->str[0], 6) == 0 && cmds->str[1])
 			my_export(tools, cmds);
 		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
 			my_unset(tools, cmds);
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
 		{
 			my_env(tools, cmds);
-			exit (1);
+			exit(1);
 		}
 		else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
-			my_exit(tools, cmds);
+		{
+			write(2, "exit\n", 5);
+			my_exit(tools, cmds, lexer);
+		}
 		tmp = tmp->next;
 	}
 }
 
-void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds)
+void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds,
+		t_lexer *lexer)
 {
 	t_simple_cmds *tmp;
 	tmp = cmds;
@@ -116,7 +131,7 @@ void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds)
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
 			my_env(tools, cmds);
 		else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
-			my_exit(tools, cmds);
+			my_exit(tools, cmds, lexer);
 		tmp = tmp->next;
 	}
 	exit(1);

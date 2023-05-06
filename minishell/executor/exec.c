@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/04 11:29:15 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 14:28:19 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int dup_heredoc(t_simple_cmds *curr)
+int	dup_heredoc(t_simple_cmds *curr)
 {
-	int fd;
+	int	fd;
 
-	if(curr->hd_file_name)
+	if (curr->hd_file_name)
 	{
 		fd = open(curr->hd_file_name, O_RDONLY);
-		if(fd < 0)
+		if (fd < 0)
 		{
 			perror("open ");
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
-		if(dup2(fd, STDIN_FILENO) < 0)
+		if (dup2(fd, STDIN_FILENO) < 0)
 		{
 			perror("dup2 ");
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
-		if(fd >= 0)
+		if (fd >= 0)
 			close(fd);
 	}
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
-int one_command(t_simple_cmds *head, t_tools *tools)
+int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 {
 	t_simple_cmds	*curr;
 	int				pid;
@@ -43,33 +43,29 @@ int one_command(t_simple_cmds *head, t_tools *tools)
 	curr = head;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
 	{
-		printf("BUILTINS\n");
-		// if (curr->redirections)
-		// 	if (check_redir(curr) == 1)
-		// 		exit (1);
-		choose_bultins_one(tools, curr);
-		return(EXIT_SUCCESS);
+		choose_bultins_one(tools, curr, lexer);
+		return (EXIT_SUCCESS);
 	}
 	pid = fork();
-	if(pid == 0)
+	if (pid == 0)
 	{
 		fill_cmd_heredoc(curr);
 		dup_heredoc(curr);
 		if (curr->redirections)
 			if (check_redir(curr) == 1)
-				exit(1);
+				my_exit(tools, curr, lexer);
 		if (builtins_to_fork(curr) == 1)
-			choose_bultins_one(tools, curr);
+			choose_bultins_one(tools, curr, lexer);
 		else
-			handle_cmd(curr, tools);
+			handle_cmd(curr, tools, lexer);
 	}
 	waitpid(pid, NULL, 0);
 	return (EXIT_SUCCESS);
 }
 
-int	dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in)
+int	dup_two_cmd(t_simple_cmds *curr, int pipes[2])
 {
-	if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
+	if (curr->prev && dup2(curr->fd_in, STDIN_FILENO) < 0)
 	{
 		perror("dup2 ");
 		return (EXIT_FAILURE);
@@ -82,11 +78,11 @@ int	dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in)
 	}
 	close(pipes[1]);
 	if (curr->prev)
-		close(fd_in);
+		close(curr->fd_in);
 	return (EXIT_SUCCESS);
 }
 
-int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
+int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], t_lexer *lexer)
 {
 	pid_t	pid;
 
@@ -100,13 +96,13 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int fd_in, int pipes[2])
 	{
 		if (curr->redirections)
 			if (check_redir(curr) == 1)
-				exit(1);
-		if(dup_two_cmd(curr, pipes, fd_in) == 1)
-			exit(1);
-		if(is_builtins(curr) == 1)
-			choose_bultins_multiple(tools, curr);
+				my_exit(tools, curr, lexer);
+		if (dup_two_cmd(curr, pipes) == 1)
+			my_exit(tools, curr, lexer);
+		if (is_builtins(curr) == 1)
+			choose_bultins_multiple(tools, curr, lexer);
 		else
-			handle_cmd(curr, tools);
+			handle_cmd(curr, tools, lexer);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -120,10 +116,10 @@ int	ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2])
 	{
 		close(pipes[0]);
 		fd_in = open(cmd->hd_file_name, O_RDONLY);
-		if(fd_in == -1)
+		if (fd_in == -1)
 		{
 			perror("open ");
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 	}
 	else
@@ -146,7 +142,7 @@ int	wait_process(t_tools *tools, t_simple_cmds **head)
 	return (EXIT_SUCCESS);
 }
 
-int	multiple_commands(t_simple_cmds **head, t_tools *tools)
+int	multiple_commands(t_simple_cmds **head, t_tools *tools, t_lexer *lexer)
 {
 	t_simple_cmds	*tmp;
 	int				fd_in;
@@ -169,7 +165,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 				return (EXIT_FAILURE);
 			}
 		}
-		ft_fork(tools, tmp, fd_in, pipes);
+		ft_fork(tools, tmp, pipes, lexer);
 		close(pipes[1]);
 		if (tmp->prev)
 			close(fd_in);
@@ -180,28 +176,25 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 			break ;
 	}
 	wait_process(tools, head);
-	free(tools->pid);
 	return (0);
 }
 
-int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
+int	handle_cmd(t_simple_cmds *curr, t_tools *tools, t_lexer *lexer)
 {
+	(void)lexer;
 	tools->path = find_path(tools->envp); //check unset path
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(curr, tools);
-	if(!tools->cmd || !curr->str)
+	if (!tools->cmd || !curr->str)
 	{
 		perror("Execve ");
-		exit(1);
+		exit(0);
 	}
 	if (tools->cmd)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
-		// free(tools->path);
-		free(tools->paths);
-		free(tools->cmd);
 		perror("Execve ");
-		exit(1);
+		exit(0);
 	}
 	return (0);
 }

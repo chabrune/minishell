@@ -76,7 +76,7 @@ char	*replace_name_with_content(char *str, char **var_name,
 	if (!var_content || !var_name)
 		return (str);
 	result = ft_calloc(find_len_result(str, var_name, var_content, count),
-			sizeof(char));
+						sizeof(char));
 	if (!result)
 		return (0);
 	while (++l <= count)
