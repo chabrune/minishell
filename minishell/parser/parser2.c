@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/23 19:25:14 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:26:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	add_node_redir(t_simple_cmds *curr, t_lexer *redir)
 		tmp_redir = redir;
 	}
 }
-// INVALID READ OF SIZE A GERER
+
 void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 {
 	t_simple_cmds	*tmpcmd;
@@ -132,12 +132,17 @@ void	last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
 {
 	t_lexer *tmplex;
 	t_simple_cmds *tmpcmd;
+	int i;
+
 	tmplex = *headlex;
 	tmpcmd = *headcmd;
-	int i;
+	if(!tmplex || !tmpcmd)
+		return ;
 	while (tmpcmd)
 	{
 		tmpcmd->str = ft_calloc(sizeof(char *), count_t_lexer(tmplex) + 3);
+		if(!tmpcmd->str)
+			return ;
 		if (tmplex->token == PIPE && tmplex->next && tmplex->prev)
 		{
 			tmplex = tmplex->next;

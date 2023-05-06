@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/02 20:30:07 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:52:46 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	check_redir(t_simple_cmds *cmd)
 	t_lexer	*current;
 
 	if (!cmd)
-		return (EXIT_FAILURE);
+		exit(0);
 	current = cmd->redirections;
 	while (current)
 	{
@@ -89,5 +89,5 @@ int	check_redir(t_simple_cmds *cmd)
 			check_infile(cmd->hd_file_name);
 		current = current->next;
 	}
-	return (EXIT_SUCCESS);
+	exit(0);
 }

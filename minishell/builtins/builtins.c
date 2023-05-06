@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 14:18:49 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:29:02 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	builtins_to_fork(t_simple_cmds *cmds)
 	t_simple_cmds	*tmp;
 
 	tmp = cmds;
+	if(!cmds->str)
+		return (1);
 	while (tmp)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
@@ -48,6 +50,8 @@ int	is_builtins(t_simple_cmds *cmds)
 	t_simple_cmds	*tmp;
 
 	tmp = cmds;
+	if(!cmds->str)
+		return (1);
 	while (tmp)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
@@ -74,6 +78,8 @@ void	choose_bultins_one(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 	t_simple_cmds	*tmp;
 
 	tmp = cmds;
+	if(!cmds->str)
+		return ;
 	while (tmp)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
@@ -116,6 +122,8 @@ void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds,
 {
 	t_simple_cmds *tmp;
 	tmp = cmds;
+	if(!cmds->str)
+		return ;
 	while (tmp)
 	{
 		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)

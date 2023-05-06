@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 13:54:55 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 16:08:07 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_simple_cmds
 
 int in_cmd;
 int stop_heredoc;
+int error_num;
 
 t_lexer         *new_token(char *str, t_tokens token, int i);
 t_lexer         *ft_lexer(char *input, t_tools *tool);
@@ -97,5 +98,7 @@ t_tokens        chose_token(char *str);
 void            handle_signal();
 void	        lstclear_tools(t_tools *tools);
 int	            init_tool(t_tools **tools, char **env);
+void        	ft_error(t_simple_cmds *cmd, t_lexer *lexer, t_tools *tools);
+void	        reset_tool(t_tools **tools);
 
 #endif

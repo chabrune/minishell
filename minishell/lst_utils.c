@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 13:52:33 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 16:24:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
 		tmp = lst->redirections;
 		while(tmp)
 		{
-			if(tmp->next)
-				next = lst->redirections->next;
+			next = lst->redirections->next;
 			if(tmp->str)
 				free(tmp->str);
 			free(tmp);
@@ -75,12 +74,6 @@ void	lstclear_tools(t_tools *tools)
 	int i;
 
 	i = -1;
-	if(tools->envp)
-	{
-		while(tools->envp[++i])
-			free(tools->envp[i]);
-		free(tools->envp);
-	}
 	if(tools->cmd)
 		free(tools->cmd);
 	if(tools->input)
@@ -104,8 +97,7 @@ void	lstclear_tools(t_tools *tools)
 	}
 	if(tools->pid)
 		free(tools->pid);
-	if(tools)
-		free(tools);
+	reset_tool(&tools);
 }
 
 void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))

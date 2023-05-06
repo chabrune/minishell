@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:08:43 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/02 20:30:18 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:49:17 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,18 @@ void	print_cmd(t_simple_cmds **head)
 	if (!head)
 		return ;
 	tmp = *head;
+	if(!tmp)
+		return ;
 	while (tmp)
 	{
-		i = 0;
-		while (tmp->str[i])
+		if(tmp->str)
 		{
-			printf("cmd == %s\n", tmp->str[i]);
-			i++;
+			i = 0;
+			while (tmp->str[i])
+			{
+				printf("cmd == %s\n", tmp->str[i]);
+				i++;
+			}
 		}
 		tmp = tmp->next;
 	}

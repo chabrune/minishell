@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 15:10:05 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 15:51:19 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,34 @@ char	*fill_buffer_meta(int *i, char *input, t_tokens *token)
 		buffer[j++] = input[(*i)++];
 	*token = chose_token(buffer);
 	if (*token == 0)
-		printf("Erreur a faire bien plus tard\n");
+	{
+		ft_putendl_fd("bash: syntax error", 2);
+		error_num = 258;
+	}
 	return (buffer);
 }
 
-// IL FAUT ENCORE GERER LES QUOTES NON FERMEES !!!!
+// void	check_token(t_lexer *lexer)
+// {
+// 	t_lexer *tmp;
+// 	int i;
 
+// 	tmp = lexer;
+// 	i = 0;
+// 	while(tmp)
+// 	{
+// 		if (tmp->token == GREAT || tmp->token == GREATGREAT || tmp->str == LESS || tmp->str == ' ')
+// 			i++;
+// 		tmp = tmp->next;
+// 	}
+// 	if(i == tmp->i)
+// 	{
+// 		ft_putendl_fd("bash: syntax error", 2)
+// 		error_num = 258;
+// 	}
+// }
+
+// IL FAUT ENCORE GERER LES QUOTES NON FERMEES !!!
 t_lexer	*ft_lexer(char *input, t_tools *tools)
 {
 	t_lexer		*head;
@@ -194,5 +216,6 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		}
 		free(buffer);
 	}
+	// check_token(head);
 	return (head);
 }

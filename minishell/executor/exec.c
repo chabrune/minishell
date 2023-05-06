@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 14:28:19 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:53:58 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,9 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools, t_lexer *lexer)
 	{
 		perror("Execve ");
 		exit(0);
+		return (1);
 	}
-	if (tools->cmd)
+	if (tools->cmd && curr->str)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
 		perror("Execve ");
