@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/21 12:55:48 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:23:46 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,38 +61,47 @@ int	find_len_result(char *str, char **var_name, char **var_content, int count)
 	return (len);
 }
 
+void	replace_name_with_content_utils(char **str, char **result, int *k, int *i)
+{
+	while ((*str)[*k] && (*str)[*k] != '$')
+		(*result)[(*i)++] = (*str)[(*k)++];
+	while ((*str)[*k] == '$' && (!ft_isalnum((*str)[*k + 1]) && (*str)[*k + 1] != '_'))
+		(*result)[(*i)++] = (*str)[(*k)++];
+	while ((*str)[*k] && (*str)[*k] != '$')
+		(*result)[(*i)++] = (*str)[(*k)++];
+}
+
+void	replace_name_with_content_utils2(char ***var_content, char **result, int *l, int *i)
+{
+	int j;
+
+	j = 0;
+	if ((*var_content)[*l])
+		while ((*var_content)[*l][j])
+			(*result)[(*i)++] = (*var_content)[*l][j++];
+}
+
 char	*replace_name_with_content(char *str, char **var_name,
 		char **var_content, int count)
 {
 	char	*result;
 	int		i;
-	int		j;
 	int		k;
 	int		l;
 
-	i = 0;
-	k = 0;
 	l = -1;
+	k = 0;
+	i = 0;
 	if (!var_content || !var_name)
 		return (str);
 	result = ft_calloc(find_len_result(str, var_name, var_content, count),
 						sizeof(char));
-	if (!result)
-		return (0);
 	while (++l <= count)
 	{
-		while (str[k] && str[k] != '$')
-			result[i++] = str[k++];
-		while (str[k] == '$' && (!ft_isalnum(str[k + 1]) && str[k + 1] != '_'))
-			result[i++] = str[k++];
-		while (str[k] && str[k] != '$')
-			result[i++] = str[k++];
+		replace_name_with_content_utils(&str, &result, &k, &i);
 		if (str[k] == '$' && (ft_isalnum(str[k + 1]) || str[k + 1] == '_'))
 			k = k + ft_strlen(var_name[l]) + 1;
-		j = 0;
-		if (var_content[l])
-			while (var_content[l][j])
-				result[i++] = var_content[l][j++];
+		replace_name_with_content_utils2(&var_content, &result, &l, &i);
 		while (str[k] && str[k] != '$')
 			result[i++] = str[k++];
 	}
