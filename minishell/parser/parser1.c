@@ -1,19 +1,17 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:47:39 by chabrune          #+#    #+#             */
-/*   Updated: 2023/03/13 17:10:26 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:48:32 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-// creer la liste chainee des commandes
 t_simple_cmds	*group_command(t_lexer **lexer)
 {
 	t_lexer			*tmp;
@@ -52,37 +50,23 @@ void	ft_lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 	free(lst);
 }
 
-void del_node(t_lexer **head, t_lexer *node_to_delete)
+void	del_node(t_lexer **head, t_lexer *node_to_delete)
 {
-    if (!head || !*head || !node_to_delete)
-        return;
-    if (*head == node_to_delete)
-	{
-        *head = node_to_delete->next;
-        free(node_to_delete);
-        return;
-    }
-    t_lexer *current;
-	
-	current = *head;
-    while (current && current->next != node_to_delete)
-        current = current->next;
-    if (!current)
-	    return;
-    current->next = node_to_delete->next;
-    free(node_to_delete);
-}
+	t_lexer	*current;
 
-// void	del_node(t_lexer **head, t_lexer *delone)
-// {
-// 	if (!head)
-// 		return ;
-// 	if (*head == delone) // si le noeud à supprimer est la tête de la liste
-// 		*head = delone;
-// 	if (delone && delone->prev != NULL) // si le noeud à supprimer n'est pas la tête de la liste
-// 		delone->prev->next = delone->next;
-// 	if (delone && delone->next != NULL) // si le noeud à supprimer n'est pas la queue de la liste
-// 		delone->next->prev = delone->prev;
-// 	free(delone);
-// 	delone = NULL;
-// }
+	if (!head || !*head || !node_to_delete)
+		return ;
+	if (*head == node_to_delete)
+	{
+		*head = node_to_delete->next;
+		free(node_to_delete);
+		return ;
+	}
+	current = *head;
+	while (current && current->next != node_to_delete)
+		current = current->next;
+	if (!current)
+		return ;
+	current->next = node_to_delete->next;
+	free(node_to_delete);
+}

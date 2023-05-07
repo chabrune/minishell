@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:50:01 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 11:35:25 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:29:33 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	j = 0;
 	i = 0;
-	if(!s)
-		return (NULL);
 	if (ft_strlen(s) < start)
 		return (ft_calloc(1, 1));
 	else if (len <= ft_strlen(s + start))

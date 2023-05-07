@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:47:22 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/21 12:55:50 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:01:29 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ char	*coupe_le_debut(char *env)
 		j++;
 	i = 0;
 	result = ft_calloc(sizeof(char), (j + 2));
-	if (!result)
-		return (0);
 	while (env[k])
 		result[i++] = env[k++];
 	free(env);
@@ -77,9 +75,9 @@ int	check_var_name_exit(char *var_name, t_tools *tools)
 
 char	*copy_var_name(int pos, char *str)
 {
-	int i;
-	int n;
-	char *var_name;
+	int		i;
+	int		n;
+	char	*var_name;
 
 	pos++;
 	i = pos;

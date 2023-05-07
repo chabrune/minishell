@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:49:25 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/21 12:51:01 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:30:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	ft_strncmp(const char *first, const char *second, size_t length)
 
 int	ft_strcmp(const char *first, const char *second)
 {
-	size_t i;
-	unsigned char *prem;
-	unsigned char *snd;
+	size_t			i;
+	unsigned char	*prem;
+	unsigned char	*snd;
 
 	prem = (unsigned char *)first;
 	snd = (unsigned char *)second;

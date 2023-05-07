@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 11:29:16 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:27:43 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,40 +74,6 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 	return (path);
 }
 
-// char	*find_path_ret(t_tools *tools)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (tools->envp[i])
-// 	{
-// 		if (!ft_strncmp(tools->envp[i], "OLDPWD=", 7))
-// 			return (ft_substr(tools->envp[i], 7, ft_strlen(tools->envp[i])
-// 					- 7));
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	change_old_pwd(t_tools *tools)
-// {
-// 	char	*tmp;
-// 	int		ret;
-// 	char	*str;
-
-// 	tmp = find_path_ret(tools);
-// 	ret = chdir(tmp);
-// 	free(tmp);
-// 	if (ret != 0)
-// 	{
-// 		str = ft_substr("OLDPWD=", 0, 6);
-// 		ft_putstr_fd(str, STDERR_FILENO);
-// 		free(str);
-// 		ft_putendl_fd(" not set", STDERR_FILENO);
-// 	}
-// 	return (ret);
-// }
-
 void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 {
 	char	*home;
@@ -132,10 +98,6 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 		if (check_err >= 0)
 			change_env(tools, home, old_pwd);
 	}
-	// else if (ft_strncmp(cmds->str[1], "-", 1) == 0)
-	// {
-	// 	change_old_pwd(tools);
-	// }
 	else if (cmds->str[1][0] == '/')
 	{
 		check_err = chdir(cmds->str[1]);
@@ -150,8 +112,6 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 			change_env(tools, home, old_pwd);
 	}
 	if (check_err == -1)
-	{
 		ft_putendl_fd("No such file or directory", 2);
-	}
 	free(old_pwd);
 }

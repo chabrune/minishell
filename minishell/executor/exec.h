@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 14:44:17 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:25:03 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	fill_cmd_heredoc(t_simple_cmds *curr);
 void	heredoc(char *filename, t_lexer *curr);
 char	*create_filename(void);
 int		ft_whitespaces(char c);
-int		multiple_commands(t_simple_cmds **head, t_tools *tools, t_lexer *lexer);
+int		multiple_commands(t_simple_cmds **head, t_tools *tools);
 int		wait_process(t_tools *tools, t_simple_cmds **head);
 int		dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in);
-int		handle_cmd(t_simple_cmds *curr, t_tools *tools, t_lexer *lexer);
+int		handle_cmd(t_simple_cmds *curr, t_tools *tools);
 int		ft_check_heredoc(t_tools *tools, t_simple_cmds *cmd, int pipes[2]);
-int		ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], t_lexer *lexer, int fd_in);
+int		ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], int fd_in);
 int		check_append(t_lexer *redir);
 int		check_infile(char *file);
 int		check_redir(t_simple_cmds *cmd);

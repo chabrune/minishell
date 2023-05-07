@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 13:37:21 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:37:01 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	check_redir(t_simple_cmds *cmd)
 {
 	t_lexer	*current;
 
-	// if (!cmd)
-		// return(EXIT_FAILURE);
+	if (!cmd)
+		return (EXIT_FAILURE);
 	current = cmd->redirections;
 	while (current)
 	{
@@ -89,5 +89,5 @@ int	check_redir(t_simple_cmds *cmd)
 			check_infile(cmd->hd_file_name);
 		current = current->next;
 	}
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

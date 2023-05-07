@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:08:43 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 13:04:47 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:28:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	add_back(t_simple_cmds **head, t_simple_cmds *new)
 {
 	t_simple_cmds	*tmp;
 
-	if (!head || !new) // si head n'existe pas
+	if (!head || !new)
 		return ;
 	new->next = NULL;
-	if (!*head) // si *head est vide (si la chaine est vide)
+	if (!*head)
 	{
 		new->prev = NULL;
 		*head = new;
@@ -55,11 +55,11 @@ void	print_cmd(t_simple_cmds **head)
 	if (!head)
 		return ;
 	tmp = *head;
-	if(!tmp)
+	if (!tmp)
 		return ;
 	while (tmp)
 	{
-		if(tmp->str)
+		if (tmp->str)
 		{
 			i = 0;
 			while (tmp->str[i])

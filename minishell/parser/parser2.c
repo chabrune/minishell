@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 17:26:15 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:46:12 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	add_back_redir(t_simple_cmds *curr, t_lexer *new)
 {
 	t_lexer	*tmp;
 
-	if (!curr->redirections) // si *head est vide (si la chaine est vide)
+	if (!curr->redirections)
 	{
 		new->prev = NULL;
 		curr->redirections = new;
@@ -72,6 +72,7 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 	t_lexer			*tmplex;
 	t_lexer			*redir;
 
+	redir = NULL;
 	tmpcmd = *head;
 	tmplex = *lexer;
 	if (!tmpcmd || !tmplex)
@@ -84,15 +85,7 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 		{
 			if (tmplex->token == GREAT || tmplex->token == GREATGREAT
 				|| tmplex->token == LESS || tmplex->token == LESSLESS)
-			{
-				tmpcmd->num_redirections++;
-				redir = init_redir(tmplex);
-				add_node_redir(tmpcmd, redir);
-				if (tmplex->next)
-					del_node(lexer, tmplex->next);
-				del_node(lexer, tmplex);
-				tmplex = *lexer;
-			}
+				add_redir_splitted(tmpcmd, &tmplex, &redir, lexer);
 			else
 				tmplex = tmplex->next;
 		}
@@ -112,49 +105,5 @@ void	ft_free_cmd(t_simple_cmds **head)
 		while (tmp->str[++i])
 			free(tmp->str[i]);
 		tmp = tmp->next;
-	}
-}
-
-int	count_t_lexer(t_lexer *curr)
-{
-	int	i;
-
-	i = 0;
-	while (curr && curr->token != PIPE)
-	{
-		i++;
-		curr = curr->next;
-	}
-	return (i);
-}
-
-void	last_lexer_to_strs_cmd(t_lexer **headlex, t_simple_cmds **headcmd)
-{
-	t_lexer *tmplex;
-	t_simple_cmds *tmpcmd;
-	int i;
-
-	tmplex = *headlex;
-	tmpcmd = *headcmd;
-	if(!tmplex || !tmpcmd)
-		return ;
-	while (tmpcmd)
-	{
-		tmpcmd->str = ft_calloc(sizeof(char *), count_t_lexer(tmplex) + 3);
-		if(!tmpcmd->str)
-			return ;
-		if (tmplex->token == PIPE && tmplex->next && tmplex->prev)
-		{
-			tmplex = tmplex->next;
-			tmpcmd->num_redirections += 1;
-		}
-		i = 0;
-		while (tmplex && tmplex->token != PIPE)
-		{
-			tmpcmd->str[i] = ft_strdup(tmplex->str);
-			i++;
-			tmplex = tmplex->next;
-		}
-		tmpcmd = tmpcmd->next;
 	}
 }

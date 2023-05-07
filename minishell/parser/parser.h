@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:16:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/17 21:18:25 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:41:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ t_simple_cmds	*new_node(void);
 void			add_back(t_simple_cmds **head, t_simple_cmds *new);
 void			print_cmd(t_simple_cmds **head);
 int				count_cmd(t_simple_cmds **head);
-void	last_lexer_to_strs_cmd(t_lexer **headlex,
-							t_simple_cmds **headcmd);
+void			last_lexer_to_strs_cmd(t_lexer **headlex,
+					t_simple_cmds **headcmd);
+void			add_redir_splitted(t_simple_cmds *tmpcmd, t_lexer **tmplex,
+					t_lexer **redir, t_lexer **lexer);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:18:15 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 13:50:59 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:23:34 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,8 @@ char		*fill_buffer_quote(int *i, char *input, int c, t_tokens *token);
 char		*fill_buffer_word(int *i, char *input, t_tokens *token);
 char		*fill_buffer_meta(int *i, char *input, t_tokens *token);
 t_lexer		*ft_lexer(char *input, t_tools *tools);
+void		fill_buffer_word_two(char *input, int *i, int *j);
+void		lexer_list(t_lexer **tail, t_lexer **head, t_lexer **new);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 13:10:39 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:35:19 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	print_tokens(t_lexer *head)
 	}
 }
 
-void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **env)
+void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
+		char **env)
 {
 	int	i;
 
@@ -56,6 +57,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **
 	while (42)
 	{
 		error_num = 0;
+		stop_heredoc = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
 		{
@@ -67,21 +69,16 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **
 		scmds = group_command(&lexer);
 		add_redir(&scmds, &lexer);
 		last_lexer_to_strs_cmd(&lexer, &scmds);
-		print_cmd(&scmds);
-		print_tokens(lexer);
-		print_t_lexer_list(scmds);
-		if(error_num == 0)
-		{
-			i = count_cmd(&scmds);
-			in_cmd = 1;
-			if (i == 1)
-				one_command(scmds, tool, lexer);
-			else
-				multiple_commands(&scmds, tool, lexer);
-			in_cmd = 0;
-		}
+		// print_cmd(&scmds);
+		// print_tokens(lexer);
+		// print_t_lexer_list(scmds);
+		i = count_cmd(&scmds);
+		in_cmd = 1;
+		if (i == 1)
+			one_command(scmds, tool, lexer);
 		else
-			ft_error(scmds, lexer, tool);
+			multiple_commands(&scmds, tool);
+		in_cmd = 0;
 		if (tool->input[0] != '\0')
 			add_history(tool->input);
 		lstclear_lexer(&lexer, free);
@@ -100,12 +97,6 @@ void	reset_tool(t_tools **tools)
 	(*tools)->pid = NULL;
 }
 
-void	ft_error(t_simple_cmds *cmd, t_lexer *lexer, t_tools *tools)
-{
-	(void)cmd;
-	(void)lexer;
-	(void)tools;
-}
 int	init_tool(t_tools **tools, char **env)
 {
 	*tools = ft_calloc(sizeof(t_tools), 1);
@@ -123,9 +114,9 @@ int	init_tool(t_tools **tools, char **env)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_tools 		*tool;
-	t_lexer 		*lexer;
-	t_simple_cmds 	*scmds;
+	t_tools *tool;
+	t_lexer *lexer;
+	t_simple_cmds *scmds;
 
 	tool = NULL;
 	lexer = NULL;
@@ -136,6 +127,7 @@ int	main(int argc, char **argv, char **envp)
 		handle_signal();
 		in_cmd = 0;
 		stop_heredoc = 0;
+		in_heredoc = 0;
 		minishell_loop(tool, lexer, scmds, envp);
 		free(tool);
 	}
