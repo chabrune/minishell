@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 17:59:09 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 13:10:39 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **
 	init_tool(&tool, env);
 	while (42)
 	{
+		error_num = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
 		{
@@ -66,9 +67,9 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **
 		scmds = group_command(&lexer);
 		add_redir(&scmds, &lexer);
 		last_lexer_to_strs_cmd(&lexer, &scmds);
-		// print_cmd(&scmds);
-		// print_tokens(lexer);
-		// print_t_lexer_list(scmds);
+		print_cmd(&scmds);
+		print_tokens(lexer);
+		print_t_lexer_list(scmds);
 		if(error_num == 0)
 		{
 			i = count_cmd(&scmds);

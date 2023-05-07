@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 17:53:58 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:45:32 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 		fill_cmd_heredoc(curr);
 		dup_heredoc(curr);
 		if (curr->redirections)
+		{
 			if (check_redir(curr) == 1)
-				my_exit(tools, curr, lexer);
+				exit(0);
+		}
 		if (builtins_to_fork(curr) == 1)
 			choose_bultins_one(tools, curr, lexer);
 		else
@@ -63,9 +65,9 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 	return (EXIT_SUCCESS);
 }
 
-int	dup_two_cmd(t_simple_cmds *curr, int pipes[2])
+int	dup_two_cmd(t_simple_cmds *curr, int pipes[2], int fd_in)
 {
-	if (curr->prev && dup2(curr->fd_in, STDIN_FILENO) < 0)
+	if (curr->prev && dup2(fd_in, STDIN_FILENO) < 0)
 	{
 		perror("dup2 ");
 		return (EXIT_FAILURE);
@@ -78,11 +80,11 @@ int	dup_two_cmd(t_simple_cmds *curr, int pipes[2])
 	}
 	close(pipes[1]);
 	if (curr->prev)
-		close(curr->fd_in);
+		close(fd_in);
 	return (EXIT_SUCCESS);
 }
 
-int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], t_lexer *lexer)
+int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], t_lexer *lexer, int fd_in)
 {
 	pid_t	pid;
 
@@ -94,11 +96,8 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], t_lexer *lexer)
 	}
 	else if (pid == 0)
 	{
-		if (curr->redirections)
-			if (check_redir(curr) == 1)
-				my_exit(tools, curr, lexer);
-		if (dup_two_cmd(curr, pipes) == 1)
-			my_exit(tools, curr, lexer);
+		dup_two_cmd(curr, pipes, fd_in);
+		check_redir(curr);
 		if (is_builtins(curr) == 1)
 			choose_bultins_multiple(tools, curr, lexer);
 		else
@@ -145,15 +144,15 @@ int	wait_process(t_tools *tools, t_simple_cmds **head)
 int	multiple_commands(t_simple_cmds **head, t_tools *tools, t_lexer *lexer)
 {
 	t_simple_cmds	*tmp;
-	int				fd_in;
 	int				j;
 	int				pipes[2];
+	int 			fd_in;
 
 	ft_memset(pipes, 0, sizeof(pipes));
 	j = count_cmd(head);
 	tools->pid = ft_calloc(sizeof(int), j + 1);
-	fd_in = STDIN_FILENO;
 	tmp = *head;
+	fd_in = STDIN_FILENO;
 	while (tmp)
 	{
 		fill_cmd_heredoc(tmp);
@@ -165,7 +164,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools, t_lexer *lexer)
 				return (EXIT_FAILURE);
 			}
 		}
-		ft_fork(tools, tmp, pipes, lexer);
+		ft_fork(tools, tmp, pipes, lexer, fd_in);
 		close(pipes[1]);
 		if (tmp->prev)
 			close(fd_in);
@@ -187,12 +186,15 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools, t_lexer *lexer)
 	tools->cmd = get_cmd(curr, tools);
 	if (!tools->cmd || !curr->str)
 	{
+		printf("COUCOU\n");
 		perror("Execve ");
 		exit(0);
 		return (1);
 	}
 	if (tools->cmd && curr->str)
 	{
+		printf("FDP\n");
+		printf("%s\n", curr->str[0]);
 		execve(tools->cmd, curr->str, tools->envp);
 		perror("Execve ");
 		exit(0);

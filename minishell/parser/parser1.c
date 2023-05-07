@@ -72,3 +72,17 @@ void del_node(t_lexer **head, t_lexer *node_to_delete)
     current->next = node_to_delete->next;
     free(node_to_delete);
 }
+
+// void	del_node(t_lexer **head, t_lexer *delone)
+// {
+// 	if (!head)
+// 		return ;
+// 	if (*head == delone) // si le noeud à supprimer est la tête de la liste
+// 		*head = delone;
+// 	if (delone && delone->prev != NULL) // si le noeud à supprimer n'est pas la tête de la liste
+// 		delone->prev->next = delone->next;
+// 	if (delone && delone->next != NULL) // si le noeud à supprimer n'est pas la queue de la liste
+// 		delone->next->prev = delone->prev;
+// 	free(delone);
+// 	delone = NULL;
+// }
