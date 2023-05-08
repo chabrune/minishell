@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 12:07:54 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 14:36:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	lstclear_all(t_lexer **lexer, t_simple_cmds **cmds, t_tools *tools)
+{
+	lstclear_lexer(lexer, free);
+	lstclear_cmds(cmds, free);
+	lstclear_tools(tools);
+}
 
 void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 {

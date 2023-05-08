@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 18:27:43 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:30:07 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,9 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 			change_env(tools, home, old_pwd);
 	}
 	if (check_err == -1)
-		ft_putendl_fd("No such file or directory", 2);
+	{
+		error_num = 1;
+		ft_putendl_fd("bash: No such file or directory", 2);
+	}
 	free(old_pwd);
 }

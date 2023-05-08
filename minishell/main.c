@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 12:39:09 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:04:47 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,29 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 			printf("exit\n");
 			my_exit(tool, scmds, lexer);
 		}
+		if (tool->input[0] != '\0')
+			add_history(tool->input);
 		lexer = ft_lexer(tool->input, tool);
+		if(check_pipe(lexer) == 1)
+			continue;
+		if (!lexer)
+		{
+			lstclear_lexer(&lexer, free);
+			lstclear_tools(tool);
+			continue;
+		}
 		scmds = group_command(&lexer);
 		add_redir(&scmds, &lexer);
 		last_lexer_to_strs_cmd(&lexer, &scmds);
+		if(scmds->redirections)
+		{
+			if(!scmds->redirections->str)
+			{
+				lstclear_all(&lexer, &scmds, tool);
+				ft_putendl_fd("bash: syntax error", 2);
+				continue;
+			}
+		}
 		// print_cmd(&scmds);
 		// print_tokens(lexer);
 		// print_t_lexer_list(scmds);
@@ -78,11 +97,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		else
 			multiple_commands(&scmds, tool);
 		in_cmd = 0;
-		if (tool->input[0] != '\0')
-			add_history(tool->input);
-		lstclear_lexer(&lexer, free);
-		lstclear_cmds(&scmds, free);
-		lstclear_tools(tool);
+		lstclear_all(&lexer, &scmds, tool);
 	}
 }
 

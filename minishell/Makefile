@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emuller <emuller@student.42.fr>            +#+  +:+       +#+         #
+#    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/05/08 12:38:00 by emuller          ###   ########.fr        #
+#    Updated: 2023/05/08 15:36:03 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,8 @@ SRCS       	=	main.c \
 				expander/expander_utils.c \
 				signal.c \
 				error.c \
-
+				executor/exec3.c \
+				lexer/lexer3.c \
 
 #######################################################
 ###### RULES

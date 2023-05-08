@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:18:15 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 12:37:26 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:04:28 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char		*fill_buffer_meta(int *i, char *input, t_tokens *token);
 t_lexer		*ft_lexer(char *input, t_tools *tools);
 void		fill_buffer_word_two(char *input, int *i, int *j);
 void		lexer_list(t_lexer **tail, t_lexer **head, t_lexer **new);
+int			check_pipe(t_lexer *lexer);
 
 
 #endif

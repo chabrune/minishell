@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:15:45 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 18:46:12 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 16:11:26 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@ t_lexer	*init_redir(t_lexer *curr)
 	if (!redir)
 		return (NULL);
 	redir->token = curr->token;
+	redir->prev = NULL;
+	redir->next = NULL;
 	if (!curr->next)
-		return (NULL);
+	{
+		redir->str = NULL;
+		return (redir);
+	}
 	else
 		redir->str = ft_strdup(curr->next->str);
-	redir->next = NULL;
 	return (redir);
 }
 
@@ -81,7 +85,7 @@ void	add_redir(t_simple_cmds **head, t_lexer **lexer)
 	{
 		if (tmplex->token == PIPE && tmplex->next)
 			tmplex = tmplex->next;
-		while (tmplex && tmplex->next && tmplex->token != PIPE)
+		while (tmplex && tmplex->token != PIPE)
 		{
 			if (tmplex->token == GREAT || tmplex->token == GREATGREAT
 				|| tmplex->token == LESS || tmplex->token == LESSLESS)

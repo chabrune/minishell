@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:30:04 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 15:37:01 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:57:51 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,9 @@ int	check_append(t_lexer *redir)
 	int	fd;
 
 	if (redir->token == GREATGREAT)
-	{
 		fd = open(redir->str, O_CREAT | O_RDWR | O_APPEND, 0644);
-		if (fd == -1)
-			perror("open ");
-	}
 	else
-	{
 		fd = open(redir->str, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (fd == -1)
-			perror("open ");
-	}
 	return (fd);
 }
 

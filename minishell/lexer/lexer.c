@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 16:55:31 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:48:42 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ t_tokens	chose_token(char *str)
 	else if (ft_strncmp(str, ">", 2) == 0)
 		token = GREAT;
 	else if (ft_strncmp(str, ">>", 3) == 0)
-	{
 		token = GREATGREAT;
-	}
 	return (token);
 }
 

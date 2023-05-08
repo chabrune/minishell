@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 12:37:27 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 15:26:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,7 @@ void						ft_error(t_simple_cmds *cmd, t_lexer *lexer,
 void						reset_tool(t_tools **tools);
 void						lstclear_tools_two(t_tools *tools);
 int							cmd_not_found(char *str);
+void						lstclear_all(t_lexer **lexer, t_simple_cmds **cmds, t_tools *tools);
+
 
 #endif
