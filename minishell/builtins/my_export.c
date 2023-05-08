@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 15:23:47 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:01:02 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,8 @@ int	check_valid_name(char *var)
 	if (var[i] != '_' && !ft_isalpha(var[i]))
 		return (-1);
 	i++;
-	while (var[i] && (ft_isalpha(var[i]) || var[i] == '_' || ft_isdigit(var[i])))
+	while (var[i] && (ft_isalpha(var[i]) || var[i] == '_'
+			|| ft_isdigit(var[i])))
 		i++;
 	if (var[i] == '=')
 		i++;
@@ -228,7 +229,7 @@ int	fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 	ft_strlcpy(*var_name, cmd->str[i + 1], j + 1);
 	if (check_valid_name(*var_name) == -1)
 	{
-		error_num = 1;
+		g_global.error_num = 1;
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(*var_name, 2);
 		ft_putendl_fd(" : not a valid identifier", 2);

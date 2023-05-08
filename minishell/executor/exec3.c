@@ -17,7 +17,7 @@ void	free_child(t_tools *tools)
 	int i;
 
 	i = -1;
-	while(tools->paths[++i])
+	while (tools->paths[++i])
 		free(tools->paths[i]);
 	free(tools->paths);
 	free(tools->cmd);

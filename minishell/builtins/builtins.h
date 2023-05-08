@@ -29,6 +29,6 @@ void	*free_old_env(char **tab);
 int		builtins_to_fork(t_simple_cmds *cmds);
 void	choose_builtins_one_split(t_simple_cmds *cmds, t_tools *tools);
 void	choose_builtins_one_split_two(t_simple_cmds *cmds, t_tools *tools,
-		t_lexer *lexer);
+			t_lexer *lexer);
 
 #endif

@@ -28,8 +28,8 @@ t_simple_cmds	*new_node(void);
 void			add_back(t_simple_cmds **head, t_simple_cmds *new);
 void			print_cmd(t_simple_cmds **head);
 int				count_cmd(t_simple_cmds **head);
-void			last_lexer_to_strs_cmd(t_lexer **headlex,
-					t_simple_cmds **headcmd);
+void	last_lexer_to_strs_cmd(t_lexer **headlex,
+							t_simple_cmds **headcmd);
 void			add_redir_splitted(t_simple_cmds *tmpcmd, t_lexer **tmplex,
 					t_lexer **redir, t_lexer **lexer);
 

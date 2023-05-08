@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 15:57:39 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:02:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools)
 		if (str[i] == '$' && str[i + 1] == '?')
 		{
 			var_name[j] = ft_strdup("?");
-			var_content[j] = ft_itoa(error_num);
+			var_content[j] = ft_itoa(g_global.error_num);
 			j++;
 		}
 		else if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))

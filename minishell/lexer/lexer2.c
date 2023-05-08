@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 15:29:08 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:00:33 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ char	*fill_buffer_meta(int *i, char *input, t_tokens *token)
 	if (*token == 0)
 	{
 		ft_putendl_fd("bash: syntax error", 2);
-		error_num = 258;
-		return(NULL);
+		g_global.error_num = 258;
+		return (NULL);
 	}
 	return (buffer);
 }
@@ -111,8 +111,8 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		else
 		{
 			buffer = fill_buffer_meta(&i, input, &token);
-			if(!buffer)
-				return(NULL);
+			if (!buffer)
+				return (NULL);
 		}
 		while (ft_isspace(input[i]) && input[i])
 			i++;
@@ -128,7 +128,7 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 			tail->prev = tail;
 			tail = new;
 		}
-			free(buffer);
+		free(buffer);
 	}
 	return (head);
 }

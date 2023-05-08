@@ -27,5 +27,4 @@ void		fill_buffer_word_two(char *input, int *i, int *j);
 void		lexer_list(t_lexer **tail, t_lexer **head, t_lexer **new);
 int			check_pipe(t_lexer *lexer);
 
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 16:04:47 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:00:09 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 	init_tool(&tool, env);
 	while (42)
 	{
-		error_num = 0;
-		stop_heredoc = 0;
+		g_global.error_num = 0;
+		g_global.stop_heredoc = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
 		{
@@ -91,12 +91,12 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		// print_tokens(lexer);
 		// print_t_lexer_list(scmds);
 		i = count_cmd(&scmds);
-		in_cmd = 1;
+		g_global.in_cmd = 1;
 		if (i == 1)
 			one_command(scmds, tool, lexer);
 		else
 			multiple_commands(&scmds, tool);
-		in_cmd = 0;
+		g_global.in_cmd = 0;
 		lstclear_all(&lexer, &scmds, tool);
 	}
 }
@@ -135,13 +135,13 @@ int	main(int argc, char **argv, char **envp)
 	tool = NULL;
 	lexer = NULL;
 	scmds = NULL;
-	error_num = 0;
+	g_global.error_num = 0;
 	if (argc == 1 || argv[1])
 	{
 		handle_signal();
-		in_cmd = 0;
-		stop_heredoc = 0;
-		in_heredoc = 0;
+		g_global.in_cmd = 0;
+		g_global.stop_heredoc = 0;
+		g_global.in_heredoc = 0;
 		minishell_loop(tool, lexer, scmds, envp);
 		free(tool);
 	}

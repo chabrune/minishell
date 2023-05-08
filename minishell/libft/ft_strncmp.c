@@ -23,8 +23,8 @@ int	ft_strncmp(const char *first, const char *second, size_t length)
 	i = 0;
 	if (length == 0)
 		return (0);
-	if(!snd)
-		return(1);
+	if (!snd)
+		return (1);
 	while ((prem[i] || snd[i]) && i < length)
 	{
 		if (prem[i] > snd[i])

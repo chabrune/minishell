@@ -6,7 +6,7 @@
 #    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/05/08 15:36:03 by chabrune         ###   ########.fr        #
+#    Updated: 2023/05/08 16:48:30 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,7 @@ ${NAME}:	${OBJS}
 
 debug:		fclean ${OBJS}
 			${MAKE} -C libft
-			${CC} ${CFLAGS} -fsanitize=address ${OBJS} ${LIBFT} ${READLINE} -o ${NAME}
+			${CC} ${CFLAGS} -fsanitize=address ${OBJS} ${LIBFT} ${READLINE_LIB} -o ${NAME}
 
 clean:
 			${RM} ${OBJS}
