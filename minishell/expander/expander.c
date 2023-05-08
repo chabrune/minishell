@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 17:35:33 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:38:25 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,43 @@ char	*sub_back_dollar_in_quotes(char *str)
 	return (str);
 }
 
+int	check_closed_quotes(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+		{
+			i++;
+			while (str[i] && str[i] != '\'')
+				i++;
+			if (!str[i])
+				return (EXIT_FAILURE);
+			i++;
+		}
+		else if (str[i] == '\"')
+		{
+			i++;
+			while (str[i] && str[i] != '\"')
+				i++;
+			if (!str[i])
+				return (EXIT_FAILURE);
+			i++;
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
 char	*expander(t_tools *tools, char *str)
 {
 	char	*result;
 	int		count;
 
 	result = NULL;
+	if (check_closed_quotes(str) == 1)
+		exit (1);
 	str = sub_dollar_in_quotes(str);
 	count = count_dollar(str);
 	if (count == 0)

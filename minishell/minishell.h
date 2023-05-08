@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 18:54:57 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:37:27 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ t_lexer						*new_token(char *str, t_tokens token, int i);
 t_lexer						*ft_lexer(char *input, t_tools *tool);
 void						print_tokens(t_lexer *head);
 t_simple_cmds				*group_command(t_lexer **lexer);
-int							check_closed_quotes(char *input);
 void						print_cmd(t_simple_cmds **head);
 void						lstdelone_lexer(t_lexer *lst, void (*del)(void *));
 void						lstclear_lexer(t_lexer **lst, void (*del)(void *));
@@ -105,5 +104,6 @@ void						ft_error(t_simple_cmds *cmd, t_lexer *lexer,
 								t_tools *tools);
 void						reset_tool(t_tools **tools);
 void						lstclear_tools_two(t_tools *tools);
+int							cmd_not_found(char *str);
 
 #endif

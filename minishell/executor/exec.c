@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 16:24:53 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:30:33 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 	tools->cmd = get_cmd(curr, tools);
 	if (!tools->cmd || !curr->str)
 	{
-		perror("Execve ");
+		error_num = cmd_not_found(curr->str[0]);
 		exit(0);
 	}
 	if (tools->cmd && curr->str)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
-		perror("Execve ");
+		error_num = cmd_not_found(curr->str[0]);
 		exit(0);
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:01:42 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 17:39:38 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:38:37 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ void	replace_name_with_content_utils(char **str, char **result, int *k,
 			int *i);
 void	replace_name_with_content_utils2(char ***var_content, char **result,
 			int *l, int *i);
+int		check_closed_quotes(char *str);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 18:35:19 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:39:09 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 			printf("exit\n");
 			my_exit(tool, scmds, lexer);
 		}
-		tool->inputs = ft_split(tool->input, ' ');
 		lexer = ft_lexer(tool->input, tool);
 		scmds = group_command(&lexer);
 		add_redir(&scmds, &lexer);

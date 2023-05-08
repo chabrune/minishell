@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 17:42:40 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:22:44 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,26 @@ char	*fill_buffer_meta(int *i, char *input, t_tokens *token)
 	return (buffer);
 }
 
+// char	*fill_buffer_content(int *i, char **input, t_tokens *token)
+// {
+// 	char	*buffer;
+
+// 	while (ft_isspace((*input)[(*i)]) && (*input)[(*i)])
+// 		(*i)++;
+// 	if ((*input)[(*i)] == '\'')
+// 		buffer = fill_buffer_quote(&(*i), (*input), '\'', &(*token));
+// 	else if ((*input)[(*i)] == '\"')
+// 		buffer = fill_buffer_quote(&(*i), (*input), '\"', &(*token));
+// 	else if (ft_istoken((*input)[(*i)]) == 0)
+// 		buffer = fill_buffer_word(&(*i), (*input), &(*token));
+// 	else
+// 		buffer = fill_buffer_meta(&(*i), (*input), &(*token));
+// 	while (ft_isspace((*input)[(*i)]) && (*input)[(*i)])
+// 		(*i)++;
+
+// 	return (buffer);
+// }
+
 // IL FAUT ENCORE GERER LES QUOTES NON FERMEES !!!
 t_lexer	*ft_lexer(char *input, t_tools *tools)
 {
@@ -99,6 +119,7 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		return (NULL);
 	while (input[i])
 	{
+		// buffer = fill_buffer_content(&i, &input, &token);
 		while (ft_isspace(input[i]) && input[i])
 			i++;
 		if (input[i] == '\'')

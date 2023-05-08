@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:18:15 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 17:23:34 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:37:26 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "../minishell.h"
 
-int			check_closed_quotes(char *input);
 t_lexer		*new_token(char *str, t_tokens token, int i);
 int			ft_isspace(int c);
 int			ft_istoken(int c);

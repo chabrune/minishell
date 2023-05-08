@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 18:59:46 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:07:54 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,6 @@ void	lstclear_tools(t_tools *tools)
 		return ;
 	i = -1;
 	lstclear_tools_two(tools);
-	if (tools->inputs)
-	{
-		while (tools->inputs[++i])
-			free(tools->inputs[i]);
-		free(tools->inputs);
-	}
-	i = -1;
 	if (tools->paths)
 	{
 		while (tools->paths[++i])
