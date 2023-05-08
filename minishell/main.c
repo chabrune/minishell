@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:31:43 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:12:38 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 	init_tool(&tool, env);
 	while (42)
 	{
+		g_global.in_child = 1;
 		g_global.stop_heredoc = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
@@ -31,11 +32,13 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 			add_history(tool->input);
 		lexer = ft_lexer(tool->input, tool);
 		if(check_pipe(lexer) == 1)
+		{
+			lstclear_all(&lexer, &scmds, tool);
 			continue;
+		}
 		if (!lexer)
 		{
-			lstclear_lexer(&lexer, free);
-			lstclear_tools(tool);
+			lstclear_all(&lexer, &scmds, tool);
 			continue;
 		}
 		scmds = group_command(&lexer);

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 16:51:36 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:57:21 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,35 +37,36 @@ void	lstclear_lexer(t_lexer **lst, void (*del)(void *))
 	}
 }
 
-void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
+void lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
 {
-	int		i;
-	t_lexer	*tmp;
-	t_lexer	*next;
+    int i;
+    t_lexer *tmp;
+    t_lexer *next;
 
-	if (lst == NULL)
-		return ;
-	i = -1;
-	if (lst->str)
-		while (lst->str[++i])
-			free(lst->str[i]);
-	free(lst->str);
-	if (lst->hd_file_name)
-		free(lst->hd_file_name);
-	if (lst->redirections)
-	{
-		tmp = lst->redirections;
-		while (tmp)
-		{
-			next = lst->redirections->next;
-			if (tmp->str)
-				free(tmp->str);
-			free(tmp);
-			tmp = next;
-		}
-	}
-	del(lst);
+    if (lst == NULL)
+        return ;
+    i = -1;
+    if (lst->str)
+        while (lst->str[++i])
+            free(lst->str[i]);
+    free(lst->str);
+    if (lst->hd_file_name)
+        free(lst->hd_file_name);
+    if (lst->redirections)
+    {
+        tmp = lst->redirections;
+        while (tmp)
+        {
+            next = tmp->next;
+            if (tmp->str)
+                free(tmp->str);
+            free(tmp);
+            tmp = next;
+        }
+    }
+    del(lst);
 }
+
 
 void	lstclear_tools(t_tools *tools)
 {

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:00:44 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:44:20 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 	if (i == 0)
 		*pwd = ft_strjoin(*pwd, "/");
 	path = ft_strjoin(*pwd, cmds->str[1] + i);
+	free(home);
 	return (path);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:21:33 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 18:04:52 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	heredoc(char *filename, t_lexer *curr, t_tools *tools)
 		close(fd);
 		exit(0);
 	}
-	while (line && ft_strncmp(curr->str, line, ft_strlen(curr->str)))
+	while (line && ft_strcmp(curr->str, line))
 	{
 		line = expander_hd(tools, line);
 		if (g_global.stop_heredoc == 1)

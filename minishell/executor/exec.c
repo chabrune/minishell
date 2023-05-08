@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:16:08 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:05:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	fd_in = STDIN_FILENO;
 	while (tmp)
 	{
+		fill_tools_param(tmp, tools);
 		fill_cmd_heredoc(tmp, tools);
 		if (tmp->next)
 			if (pipe(pipes) == -1)
@@ -56,22 +57,25 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	return (0);
 }
 
-int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
+void	fill_tools_param(t_simple_cmds *curr, t_tools *tools)
 {
 	tools->path = find_path(tools->envp);
 	tools->paths = ft_split(tools->path, ':');
 	tools->cmd = get_cmd(curr, tools);
+}
+
+
+int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
+{
 	if (!tools->cmd || !curr->str)
 	{
 		g_global.error_num = cmd_not_found(curr->str[0]);
-		free_child(tools);
 		exit(0);
 	}
 	if (tools->cmd && curr->str)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
 		g_global.error_num = cmd_not_found(curr->str[0]);
-		free_child(tools);
 		exit(0);
 	}
 	return (0);

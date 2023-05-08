@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:15:36 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:05:13 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int		check_append(t_lexer *redir);
 int		check_infile(char *file);
 int		check_redir(t_simple_cmds *cmd);
 int		check_outfile(t_lexer *redir);
-void	free_child(t_tools *tools);
+void	free_child(t_tools **tools);
+void	fill_tools_param(t_simple_cmds *curr, t_tools *tools);
+
 
 #endif

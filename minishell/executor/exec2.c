@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:51:44 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:16:35 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:12:21 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 	pid = fork();
 	if (pid == 0)
 	{
+		g_global.in_child = 0;
+		fill_tools_param(curr, tools);
 		fill_cmd_heredoc(curr, tools);
 		dup_heredoc(curr);
 		if (curr->redirections)
@@ -58,6 +60,10 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 			choose_bultins_one(tools, curr, lexer);
 		else
 			handle_cmd(curr, tools);
+		int i = -1;
+		while(tools->inputs[++i])
+			free(tools->inputs[i]);
+		free(tools->inputs);
 	}
 	waitpid(pid, NULL, 0);
 	return (EXIT_SUCCESS);
@@ -94,6 +100,7 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], int fd_in)
 	}
 	else if (pid == 0)
 	{
+		g_global.in_child = 0;
 		if (dup_two_cmd(curr, pipes, fd_in) == 1)
 			exit(0);
 		if (curr->redirections)

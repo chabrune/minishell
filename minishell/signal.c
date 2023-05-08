@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:38:43 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:09:44 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:15:25 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	control_c(int sig)
 	{
 		printf("\n");
 		rl_redisplay();
-		printf("coucou");
 	}
 	if (g_global.in_cmd)
 	{
@@ -43,7 +42,10 @@ void	control_c(int sig)
 
 void	handle_signal(void)
 {
-	signal(SIGINT, control_c);
-	signal(SIGQUIT, SIG_IGN);
-	rl_catch_signals = 0;
+	if(g_global.in_child == 0)
+	{
+		signal(SIGINT, control_c);
+		signal(SIGQUIT, SIG_IGN);
+		rl_catch_signals = 0;
+	}
 }

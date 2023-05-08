@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 16:59:10 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:11:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_global
 	int						stop_heredoc;
 	int						error_num;
 	int						in_heredoc;
+	int						in_child;
 }							t_global;
 
 t_global					g_global;

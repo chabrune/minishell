@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:32:01 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:47:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	check_pipe(t_lexer *lexer)
 	j = 0;
 	i = 0;
 	tmp = lexer;
+	if(!tmp)
+		return (0);
 	if (tmp->token == PIPE)
 	{
 		g_global.error_num = 258;
