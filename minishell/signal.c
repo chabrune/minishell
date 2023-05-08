@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:38:43 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:04:36 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:09:44 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 void	control_c(int sig)
 {
 	(void)sig;
-	stop_heredoc = 1;
-	error_num = 1;
-	if (in_heredoc == 0)
+	g_global.stop_heredoc = 1;
+	g_global.error_num = 1;
+	if (g_global.in_heredoc == 0)
 	{
 		printf("\n");
 		rl_redisplay();
 		printf("coucou");
 	}
-	if (in_cmd)
+	if (g_global.in_cmd)
 	{
-		if (in_heredoc == 1)
+		if (g_global.in_heredoc == 1)
 		{
 			rl_replace_line("", 0);
 			rl_on_new_line();
@@ -33,7 +33,7 @@ void	control_c(int sig)
 		}
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		error_num = 130;
+		g_global.error_num = 130;
 		return ;
 	}
 	rl_replace_line("", 0);
