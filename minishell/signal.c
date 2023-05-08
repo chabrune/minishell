@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:38:43 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 18:28:21 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:50:12 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	control_c(int sig)
 {
 	(void)sig;
 	stop_heredoc = 1;
+	error_num = 1;
 	if (in_heredoc == 0)
 	{
 		printf("\n");
 		rl_redisplay();
 	}
-	error_num = 130;
 	if (in_cmd)
 	{
 		if (in_heredoc == 1)
@@ -32,6 +32,7 @@ void	control_c(int sig)
 		}
 		rl_replace_line("", 0);
 		rl_on_new_line();
+		error_num = 130;
 		return ;
 	}
 	rl_replace_line("", 0);
