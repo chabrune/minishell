@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_env_pwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:59 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/02 13:51:53 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:32:56 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	my_env(t_tools *tools, t_simple_cmds *cmd)
 	i = -1;
 	if (cmd->str[1])
 	{
+		g_global.error_num = 1;
 		ft_putendl_fd("env does not handle args", 2);
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:28:24 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:31:43 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 			{
 				lstclear_all(&lexer, &scmds, tool);
 				ft_putendl_fd("bash: syntax error", 2);
+				g_global.error_num = 258;
 				continue;
 			}
 		}
