@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:23:31 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:28:42 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,6 @@ char	*expander_hd(t_tools *tools, char *str)
 	int		count;
 
 	result = NULL;
-	// if (check_closed_quotes(str) == 1)
-	// 	return (0);
 	count = count_dollar(str);
 	if (count == 0)
 		return (str);

@@ -3,50 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:00:09 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:28:24 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_t_lexer_list(t_simple_cmds *head)
-{
-	t_lexer			*current;
-	t_simple_cmds	*tmp;
-
-	if (!head)
-		return ;
-	current = head->redirections;
-	tmp = head;
-	while (tmp)
-	{
-		while (current)
-		{
-			printf("Token: %d, Filename: %s\n", current->token, current->str);
-			current = current->next;
-		}
-		tmp = tmp->next;
-	}
-}
-
-void	print_tokens(t_lexer *head)
-{
-	t_lexer	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		printf("=================\n");
-		printf("Token: %s\n", tmp->str);
-		printf("Token type: %d\n", tmp->token);
-		printf("Index: %d\n", tmp->i);
-		printf("=================\n");
-		tmp = tmp->next;
-	}
-}
 
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		char **env)
@@ -56,7 +20,6 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 	init_tool(&tool, env);
 	while (42)
 	{
-		g_global.error_num = 0;
 		g_global.stop_heredoc = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
@@ -87,9 +50,6 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 				continue;
 			}
 		}
-		// print_cmd(&scmds);
-		// print_tokens(lexer);
-		// print_t_lexer_list(scmds);
 		i = count_cmd(&scmds);
 		g_global.in_cmd = 1;
 		if (i == 1)
@@ -142,6 +102,7 @@ int	main(int argc, char **argv, char **envp)
 		g_global.in_cmd = 0;
 		g_global.stop_heredoc = 0;
 		g_global.in_heredoc = 0;
+		g_global.error_num = 0;
 		minishell_loop(tool, lexer, scmds, envp);
 		free(tool);
 	}
