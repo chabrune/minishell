@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 17:59:31 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:53:23 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*replace_name_with_content(char *str, char **var_name,
 	while (++l <= count)
 	{
 		replace_name_with_content_utils(&str, &result, &k, &i);
-		if (str[k] == '$' && (ft_isalnum(str[k + 1]) || str[k + 1] == '_'))
+		if (str[k] == '$' && (ft_isalnum(str[k + 1]) || str[k + 1] == '_' || str[k + 1] == '?'))
 			k = k + ft_strlen(var_name[l]) + 1;
 		replace_name_with_content_utils2(&var_content, &result, &l, &i);
 		while (str[k] && str[k] != '$')

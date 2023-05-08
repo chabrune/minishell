@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 11:10:42 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:23:47 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-// Il faut check si la variable existe deja (strcmp)
-// normalemet ca marche sauf quand je commence par declaerer sans le =
-// Il faut aussi gerer les +=
 
 void	*free_old_env(char **tab)
 {
@@ -202,6 +198,23 @@ void	fill_var_content(t_simple_cmds *cmd, int i, int j, char **var_content)
 	remove_useless_squotes(var_content, check_quote, i);
 }
 
+int	check_valid_name(char *var)
+{
+	int	i;
+
+	i = 0;
+	if (var[i] != '_' && !ft_isalpha(var[i]))
+		return (-1);
+	i++;
+	while (var[i] && (ft_isalpha(var[i]) || var[i] == '_' || ft_isdigit(var[i])))
+		i++;
+	if (var[i] == '=')
+		i++;
+	if (var[i])
+		return (-1);
+	return (0);
+}
+
 int	fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 {
 	int	j;
@@ -213,6 +226,14 @@ int	fill_var_name(t_simple_cmds *cmd, char **var_name, int i)
 		j++;
 	*var_name = ft_calloc(j + 2, sizeof(char));
 	ft_strlcpy(*var_name, cmd->str[i + 1], j + 1);
+	if (check_valid_name(*var_name) == -1)
+	{
+		error_num = 1;
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(*var_name, 2);
+		ft_putendl_fd(" : not a valid identifier", 2);
+		return (-1);
+	}
 	return (j);
 }
 
@@ -320,6 +341,8 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd)
 	while (++i < nb_var)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
+		if (j < 0)
+			return ;
 		tmp = ft_calloc(sizeof(char), ft_strlen(var_name[i]));
 		ft_strlcpy(tmp, var_name[i], ft_strlen(var_name[i]));
 		if (var_name_is_new(tools, tmp) == 2)

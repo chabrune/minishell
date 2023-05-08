@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:26:52 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 17:29:05 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:52:46 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	replace_name_with_content_utils(char **str, char **result, int *k,
 	while ((*str)[*k] && (*str)[*k] != '$')
 		(*result)[(*i)++] = (*str)[(*k)++];
 	while ((*str)[*k] == '$' && (!ft_isalnum((*str)[*k + 1]) && (*str)[*k
-			+ 1] != '_'))
+			+ 1] != '_' && (*str)[*k + 1] != '?'))
 		(*result)[(*i)++] = (*str)[(*k)++];
 	while ((*str)[*k] && (*str)[*k] != '$')
 		(*result)[(*i)++] = (*str)[(*k)++];

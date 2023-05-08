@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 12:38:25 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 15:57:39 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,13 @@ char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools)
 		return (0);
 	while (str[++i])
 	{
-		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
+		if (str[i] == '$' && str[i + 1] == '?')
+		{
+			var_name[j] = ft_strdup("?");
+			var_content[j] = ft_itoa(error_num);
+			j++;
+		}
+		else if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
 		{
 			var_name[j] = find_var_name(str, i);
 			var_content[j] = find_var_env(tools, var_name[j]);
@@ -126,7 +132,7 @@ char	*expander(t_tools *tools, char *str)
 
 	result = NULL;
 	if (check_closed_quotes(str) == 1)
-		exit (1);
+		return (0);
 	str = sub_dollar_in_quotes(str);
 	count = count_dollar(str);
 	if (count == 0)
