@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:01:47 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:21:33 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	heredoc(char *filename, t_lexer *curr)
+void	heredoc(char *filename, t_lexer *curr, t_tools *tools)
 {
 	int		fd;
 	char	*line;
@@ -26,6 +26,7 @@ void	heredoc(char *filename, t_lexer *curr)
 	}
 	while (line && ft_strncmp(curr->str, line, ft_strlen(curr->str)))
 	{
+		line = expander_hd(tools, line);
 		if (g_global.stop_heredoc == 1)
 		{
 			close(fd);
@@ -61,7 +62,7 @@ char	*create_filename(void)
 	return (filename);
 }
 
-void	fill_cmd_heredoc(t_simple_cmds *curr)
+void	fill_cmd_heredoc(t_simple_cmds *curr, t_tools *tools)
 {
 	char	*filename;
 	t_lexer	*tmp;
@@ -80,7 +81,7 @@ void	fill_cmd_heredoc(t_simple_cmds *curr)
 			curr->hd_file_name = ft_strdup(filename);
 			free(filename);
 			g_global.in_heredoc = 1;
-			heredoc(curr->hd_file_name, curr->redirections);
+			heredoc(curr->hd_file_name, curr->redirections, tools);
 			g_global.in_heredoc = 0;
 		}
 		curr->redirections = curr->redirections->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:02:04 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:23:31 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,24 @@ char	*expander(t_tools *tools, char *str)
 	{
 		result = expand_str(count, result, str, tools);
 		result = sub_back_dollar_in_quotes(result);
+		return (result);
+	}
+}
+
+char	*expander_hd(t_tools *tools, char *str)
+{
+	char	*result;
+	int		count;
+
+	result = NULL;
+	// if (check_closed_quotes(str) == 1)
+	// 	return (0);
+	count = count_dollar(str);
+	if (count == 0)
+		return (str);
+	else
+	{
+		result = expand_str(count, result, str, tools);
 		return (result);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:01:29 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:16:08 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	fd_in = STDIN_FILENO;
 	while (tmp)
 	{
-		fill_cmd_heredoc(tmp);
+		fill_cmd_heredoc(tmp, tools);
 		if (tmp->next)
 			if (pipe(pipes) == -1)
 				return (EXIT_FAILURE);

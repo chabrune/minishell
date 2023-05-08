@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 13:01:55 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:15:36 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 int		one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer);
 char	*find_path(char **env);
 char	*get_cmd(t_simple_cmds *cmd, t_tools *tools);
-void	fill_cmd_heredoc(t_simple_cmds *curr);
-void	heredoc(char *filename, t_lexer *curr);
+void	fill_cmd_heredoc(t_simple_cmds *curr, t_tools *tools);
+void	heredoc(char *filename, t_lexer *curr, t_tools *tools);
 char	*create_filename(void);
 int		ft_whitespaces(char c);
 int		multiple_commands(t_simple_cmds **head, t_tools *tools);

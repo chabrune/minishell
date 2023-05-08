@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:01:42 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 12:38:37 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:23:21 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../minishell.h"
 
 char	*expander(t_tools *tools, char *str);
+char	*expander_hd(t_tools *tools, char *str);
 char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools);
 char	*find_var_name(char *str, int dollar_pos);
 char	*coupe_le_debut(char *env);
