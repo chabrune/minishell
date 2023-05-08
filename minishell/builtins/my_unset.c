@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:53:08 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/10 15:28:16 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/08 18:18:32 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,22 @@ int	is_removable(t_tools *tools, char *str)
 	return (0);
 }
 
+int	check_valid_name_unset(char *var)
+{
+	int	i;
+
+	i = 0;
+	if (var[i] != '_' && !ft_isalpha(var[i]))
+		return (-1);
+	i++;
+	while (var[i] && (ft_isalpha(var[i]) || var[i] == '_'
+			|| ft_isdigit(var[i])))
+		i++;
+	if (var[i])
+		return (-1);
+	return (0);
+}
+
 void	my_unset(t_tools *tools, t_simple_cmds *cmd)
 {
 	int	i;
@@ -63,6 +79,13 @@ void	my_unset(t_tools *tools, t_simple_cmds *cmd)
 		return ;
 	while (cmd->str[++i])
 	{
+		if (check_valid_name_unset(cmd->str[i]) == -1)
+		{
+			g_global.error_num = 1;
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(cmd->str[i], 2);
+			ft_putendl_fd(" : not a valid identifier", 2);
+		}
 		if (is_removable(tools, cmd->str[i]) == 1)
 			remove_a_var_from_env(tools, cmd->str[i]);
 	}

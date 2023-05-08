@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/07 18:24:05 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:31:42 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,19 @@ void	my_exit(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 	if (tools)
 		lstclear_tools(tools);
 	exit(0);
+}
+
+void	my_exit_2(t_tools *tools, t_simple_cmds *cmds)
+{
+	if (cmds->str[1] && ft_atoi(cmds->str[1]) != 0)
+		g_global.error_num = ft_atoi(cmds->str[1]);
+	else if (cmds->str[1])
+		ft_putendl_fd("minishell: exit: numeric argument required", 2);
+	if (cmds)
+		lstclear_cmds(&cmds, free);
+	if (tools)
+		lstclear_tools(tools);
+	exit (g_global.error_num);
 }
 
 int	builtins_to_fork(t_simple_cmds *cmds)
@@ -95,7 +108,7 @@ void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds)
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
 			my_env(tools, cmds);
 		else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
-			exit(0);
+			my_exit_2(tools, cmds);
 		tmp = tmp->next;
 	}
 	exit(0);
