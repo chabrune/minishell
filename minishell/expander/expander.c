@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:28:42 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/09 16:38:17 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,69 +94,4 @@ char	*sub_back_dollar_in_quotes(char *str)
 		i++;
 	}
 	return (str);
-}
-
-int	check_closed_quotes(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == '\'')
-		{
-			i++;
-			while (str[i] && str[i] != '\'')
-				i++;
-			if (!str[i])
-				return (EXIT_FAILURE);
-			i++;
-		}
-		else if (str[i] == '\"')
-		{
-			i++;
-			while (str[i] && str[i] != '\"')
-				i++;
-			if (!str[i])
-				return (EXIT_FAILURE);
-			i++;
-		}
-	}
-	return (EXIT_SUCCESS);
-}
-
-char	*expander(t_tools *tools, char *str)
-{
-	char	*result;
-	int		count;
-
-	result = NULL;
-	if (check_closed_quotes(str) == 1)
-		return (0);
-	str = sub_dollar_in_quotes(str);
-	count = count_dollar(str);
-	if (count == 0)
-		return (str);
-	else
-	{
-		result = expand_str(count, result, str, tools);
-		result = sub_back_dollar_in_quotes(result);
-		return (result);
-	}
-}
-
-char	*expander_hd(t_tools *tools, char *str)
-{
-	char	*result;
-	int		count;
-
-	result = NULL;
-	count = count_dollar(str);
-	if (count == 0)
-		return (str);
-	else
-	{
-		result = expand_str(count, result, str, tools);
-		return (result);
-	}
 }

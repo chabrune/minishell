@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 01:27:43 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:36:45 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,15 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
 	if (!tools->cmd || !curr->str)
 	{
-
+		free_cmd_and_paths(tools);
 		g_global.error_num = cmd_not_found(curr->str[0]);
 		my_exit(tools, curr, NULL);
 	}
 	if (tools->cmd && curr->str)
 	{
-		tools->path = find_path(tools->envp);
-		tools->paths = ft_split(tools->path, ':');
-		tools->cmd = get_cmd(curr, tools);
 		execve(tools->cmd, curr->str, tools->envp);
 		g_global.error_num = cmd_not_found(curr->str[0]);
+		free_cmd_and_paths(tools);
 		my_exit(tools, curr, NULL);
 	}
 	free(tools->cmd);
@@ -101,6 +99,5 @@ char	*get_cmd(t_simple_cmds *cmd, t_tools *tools)
 		free(command);
 		i++;
 	}
-	i = -1;
 	return (NULL);
 }

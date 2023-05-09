@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:44:52 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/22 16:56:20 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/09 16:23:55 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*free_tab(char **tab, int j)
 
 char	**dup_env(char **tab)
 {
-	char **new_tab;
-	int i;
+	char	**new_tab;
+	int		i;
 
 	i = 0;
 	while (tab[i])

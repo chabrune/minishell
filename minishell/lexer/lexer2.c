@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 01:14:57 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:39:40 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		return (NULL);
 	while (input[i])
 	{
-		// buffer = fill_buffer_content(&i, &input, &token);
 		while (ft_isspace(input[i]) && input[i])
 			i++;
 		if (input[i] == '\'')

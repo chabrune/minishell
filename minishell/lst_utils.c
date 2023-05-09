@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 00:58:26 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:24:45 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	lstdelone_cmds(t_simple_cmds *lst, void (*del)(void *))
 	t_lexer	*tmp;
 	t_lexer	*next;
 
-	if (lst == NULL)
-		return ;
 	i = -1;
 	if (lst->str)
 		while (lst->str[++i])
@@ -74,22 +72,9 @@ void	lstclear_tools(t_tools *tools)
 	if (!tools)
 		return ;
 	i = -1;
-	lstclear_tools_two(tools);
-	if (tools->paths)
-	{
-		while (tools->paths[++i])
-			free(tools->paths[i]);
-		free(tools->paths);
-	}
-	reset_tool(&tools);
-}
-
-void	lstclear_tools_two(t_tools *tools)
-{
-	if (tools->cmd)
-		free(tools->cmd);
 	if (tools->input)
 		free(tools->input);
 	if (tools->pid)
 		free(tools->pid);
+	reset_tool(&tools);
 }

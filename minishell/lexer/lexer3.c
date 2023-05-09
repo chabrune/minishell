@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/05 22:13:03 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:39:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_pipe(t_lexer *lexer)
 {
-	t_lexer *tmp;
+	t_lexer	*tmp;
 
 	tmp = lexer;
 	if (!tmp)

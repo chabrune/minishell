@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/05 22:39:26 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:25:23 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ t_global	g_global;
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_tools *tool;
-	t_lexer *lexer;
-	t_simple_cmds *scmds;
+	t_tools			*tool;
+	t_lexer			*lexer;
+	t_simple_cmds	*scmds;
 
 	tool = NULL;
 	lexer = NULL;

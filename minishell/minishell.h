@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 00:02:49 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:03:09 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -34,6 +32,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef enum s_tokens
 {
@@ -94,13 +94,11 @@ t_tokens					chose_token(char *str);
 void						handle_signal(void);
 void						lstclear_tools(t_tools *tools);
 int							init_tool(t_tools **tools, char **env);
-void						ft_error(t_simple_cmds *cmd, t_lexer *lexer,
-								t_tools *tools);
 void						reset_tool(t_tools **tools);
-void						lstclear_tools_two(t_tools *tools);
 int							cmd_not_found(char *str);
 void						lstclear_all(t_lexer **lexer, t_simple_cmds **cmds,
 								t_tools *tools);
+void						free_cmd_and_paths(t_tools *tools);
 
 typedef struct s_global
 {

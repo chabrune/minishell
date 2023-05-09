@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 15:53:23 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/09 16:47:07 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*replace_name_with_content(char *str, char **var_name,
 	if (!var_content || !var_name)
 		return (str);
 	result = ft_calloc(find_len_result(str, var_name, var_content, count),
-						sizeof(char));
+		sizeof(char));
 	while (++l <= count)
 	{
 		replace_name_with_content_utils(&str, &result, &k, &i);
@@ -39,3 +39,68 @@ char	*replace_name_with_content(char *str, char **var_name,
 	}
 	return (result);
 }
+
+char	*expander(t_tools *tools, char *str)
+{
+	char	*result;
+	int		count;
+
+	result = NULL;
+	if (check_closed_quotes(str) == 1)
+		return (0);
+	str = sub_dollar_in_quotes(str);
+	count = count_dollar(str);
+	if (count == 0)
+		return (str);
+	else
+	{
+		result = expand_str(count, result, str, tools);
+		result = sub_back_dollar_in_quotes(result);
+		return (result);
+	}
+}
+
+char	*expander_hd(t_tools *tools, char *str)
+{
+	char	*result;
+	int		count;
+
+	result = NULL;
+	count = count_dollar(str);
+	if (count == 0)
+		return (str);
+	else
+	{
+		result = expand_str(count, result, str, tools);
+		return (result);
+	}
+}
+int	check_closed_quotes(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+		{
+			i++;
+			while (str[i] && str[i] != '\'')
+				i++;
+			if (!str[i])
+				return (EXIT_FAILURE);
+			i++;
+		}
+		else if (str[i] == '\"')
+		{
+			i++;
+			while (str[i] && str[i] != '\"')
+				i++;
+			if (!str[i])
+				return (EXIT_FAILURE);
+			i++;
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+

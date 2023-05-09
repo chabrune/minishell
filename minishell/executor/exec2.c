@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:51:44 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 01:07:08 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:35:14 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 	if (pid == 0)
 	{
 		g_global.in_child = 0;
-		fill_cmd_heredoc(curr, tools);
-		dup_heredoc(curr);
+		one_command_split(curr, tools);
 		if (curr->redirections)
 			if (check_redir(curr) == 1)
 				exit(0);
@@ -59,6 +58,7 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 			choose_bultins_one(tools, curr, lexer);
 		else
 			handle_cmd(curr, tools);
+		free_cmd_and_paths(tools);
 	}
 	waitpid(pid, NULL, 0);
 	return (EXIT_SUCCESS);
