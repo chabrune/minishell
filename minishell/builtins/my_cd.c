@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 18:44:20 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:19:19 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*find_parent_dir(char *pwd)
 		i--;
 	str = ft_calloc(i + 2, sizeof(char));
 	ft_strlcpy(str, pwd, i + 1);
+	free(pwd);
 	return (str);
 }
 
@@ -88,9 +89,9 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 	while (tools->envp[++i])
 	{
 		if (ft_strncmp(tools->envp[i], "HOME=", 5) == 0)
-			home = tools->envp[i] + 5;
+			home = ft_strdup(tools->envp[i] + 5);
 		else if (ft_strncmp(tools->envp[i], "PWD=", 4) == 0)
-			pwd = tools->envp[i] + 4;
+			pwd = ft_strdup(tools->envp[i] + 4);
 	}
 	old_pwd = ft_strdup(pwd);
 	if (!(cmds->str[1]))
@@ -118,4 +119,6 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 		ft_putendl_fd("bash: No such file or directory", 2);
 	}
 	free(old_pwd);
+	free(pwd);
+	free(home);
 }

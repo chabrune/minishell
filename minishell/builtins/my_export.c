@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 01:14:55 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:19:04 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,36 @@ void	add_lines_to_env(t_tools *tools, char **var_name, char **var_content)
 			var_content);
 }
 
+void	pour_la_norme(char ***sorted_env)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while ((*sorted_env)[++i])
+	{
+		j = 0;
+		write(1, "declare -x ", 11);
+		while ((*sorted_env)[i][j] && (*sorted_env)[i][j] != '=')
+			write(1, &(*sorted_env)[i][j++], 1);
+		if ((*sorted_env)[i][j] == '=')
+		{
+			write(1, "=\"", 2);
+			j++;
+			while ((*sorted_env)[i][j])
+				write(1, &(*sorted_env)[i][j++], 1);
+			write(1, "\"\n", 2);
+		}
+		else
+			write(1, "\n", 1);
+	}
+}
+
 void	print_export(t_tools *tools)
 {
 	char	*tmp;
 	int		i;
 	char	**sorted_env;
-	int		j;
 
 	sorted_env = dup_env(tools->envp);
 	tmp = 0;
@@ -121,31 +145,10 @@ void	print_export(t_tools *tools)
 		else
 			i++;
 	}
-	i = -1;
-	while (sorted_env[++i])
-	{
-		j = 0;
-		write(1, "declare -x ", 11);
-		while (sorted_env[i][j] && sorted_env[i][j] != '=')
-			write(1, &sorted_env[i][j++], 1);
-		if (sorted_env[i][j] == '=')
-		{
-			write(1, "=\"", 2);
-			j++;
-			while (sorted_env[i][j])
-				write(1, &sorted_env[i][j++], 1);
-			write(1, "\"\n", 2);
-		}
-		else
-			write(1, "\n", 1);
-	}
-	i = -1;
-	while(sorted_env[++i])
-		free(sorted_env[i]);
-	free(sorted_env);
+	pour_la_norme(&sorted_env);
+	free_old_env(sorted_env);
 	return ;
 }
-
 
 int	count_var(t_simple_cmds *cmd)
 {

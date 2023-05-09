@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 18:22:03 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/07 18:34:46 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 17:50:47 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ void	choose_builtins_one_split_two(t_simple_cmds *cmds, t_tools *tools,
 	}
 	else if (ft_strncmp("export", cmds->str[0], 6) == 0 && !cmds->str[1])
 	{
-		my_export(tools, cmds);
+		my_export(tools, cmds, -1, 0);
 		exit(1);
 	}
 	else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
 		my_cd(tools, cmds);
 	else if (ft_strncmp("export", cmds->str[0], 6) == 0 && cmds->str[1])
-		my_export(tools, cmds);
+		my_export(tools, cmds, -1, 0);
 	else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
 		my_unset(tools, cmds);
 }

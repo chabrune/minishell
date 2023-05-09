@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 18:31:42 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/09 17:49:49 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds)
 		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
 			my_cd(tools, cmds);
 		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
-			my_export(tools, cmds);
+			my_export(tools, cmds, -1, 0);
 		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
 			my_unset(tools, cmds);
 		else if (ft_strncmp("env", cmds->str[0], 3) == 0)

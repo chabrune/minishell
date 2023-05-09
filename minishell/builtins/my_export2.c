@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 00:07:07 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 00:14:28 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 17:38:44 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	remove_useless_dquotes(char **var_content, int check_quote, int i)
 
 	j = -1;
 	while (var_content[i][++j])
+	{
 		if (var_content[i][j] == '\"' && check_quote == 1)
 		{
 			while (var_content[i][j] && var_content[i][j + 1])
@@ -27,6 +28,7 @@ void	remove_useless_dquotes(char **var_content, int check_quote, int i)
 			}
 			var_content[i][j] = 0;
 		}
+	}
 }
 
 void	remove_useless_squotes(char **var_content, int check_quote, int i)
@@ -35,6 +37,7 @@ void	remove_useless_squotes(char **var_content, int check_quote, int i)
 
 	j = -1;
 	while (var_content[i][++j])
+	{
 		if (var_content[i][j] == '\'' && check_quote == 2)
 		{
 			while (var_content[i][j] && var_content[i][j + 1])
@@ -44,6 +47,7 @@ void	remove_useless_squotes(char **var_content, int check_quote, int i)
 			}
 			var_content[i][j] = 0;
 		}
+	}
 }
 
 void	fill_var_content(t_simple_cmds *cmd, int i, int j, char **var_content)

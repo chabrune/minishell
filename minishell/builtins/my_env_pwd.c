@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:59 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/08 17:32:56 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/09 17:35:32 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	my_pwd(t_tools *tools)
 
 void	my_env(t_tools *tools, t_simple_cmds *cmd)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (cmd->str[1])

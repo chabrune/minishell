@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/04/23 18:50:13 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/09 17:34:58 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	my_echo(t_simple_cmds *cmd)
 {
-	int i;
-	bool n;
+	int		i;
+	bool	n;
 
 	i = 1;
 	n = 0;
