@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:03:09 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:55:29 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef enum s_tokens
 
 typedef struct s_lexer
 {
+	char					*buffer;
 	char					*str;
 	t_tokens				token;
 	int						i;
@@ -63,6 +64,7 @@ typedef struct s_tools
 	int						*pid;
 	char					*input;
 	char					**inputs;
+	int						k;
 }							t_tools;
 
 typedef struct s_simple_cmds
@@ -83,10 +85,10 @@ t_simple_cmds				*group_command(t_lexer **lexer);
 void						print_cmd(t_simple_cmds **head);
 void						lstdelone_lexer(t_lexer *lst, void (*del)(void *));
 void						lstclear_lexer(t_lexer **lst, void (*del)(void *));
-void						lstdelone_cmds(t_simple_cmds *lst,
-								void (*del)(void *));
-void						lstclear_cmds(t_simple_cmds **lst,
-								void (*del)(void *));
+void	lstdelone_cmds(t_simple_cmds *lst,
+					void (*del)(void *));
+void	lstclear_cmds(t_simple_cmds **lst,
+					void (*del)(void *));
 char						**dup_env(char **tab);
 void						*free_tab(char **tab, int j);
 int							ft_istoken(int c);

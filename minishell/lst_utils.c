@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 19:39:34 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 22:14:44 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	lstdelone_lexer(t_lexer *lst, void (*del)(void *))
 		return ;
 	if (del)
 		free(lst->str);
+	free(lst->buffer);
 	free(lst);
 	lst = NULL;
 }

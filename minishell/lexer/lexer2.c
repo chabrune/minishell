@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 19:54:22 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:27:10 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,56 +81,39 @@ char	*fill_buffer_meta(int *i, char *input, t_tokens *token)
 	return (buffer);
 }
 
-
-t_lexer	*ft_lexer(char *input, t_tools *tools)
+t_lexer	*create_token(char *input, int *i, t_tools *tools)
 {
-	t_lexer		*head;
 	t_lexer		*new;
-	t_lexer		*tail;
-	t_tokens	token;
 	char		*buffer;
-	int			i;
-	int			k;
+	t_tokens	token;
 
-	tail = 0;
-	head = 0;
-	i = 0;
-	k = 1;
-	input = expander(tools, input);
-	if (!input)
-		return (NULL);
-	while (input[i])
+	new = NULL;
+	if (input[*i] == '\'')
+		buffer = fill_buffer_quote(i, input, '\'', &token);
+	else if (input[*i] == '\"')
+		buffer = fill_buffer_quote(i, input, '\"', &token);
+	else if (ft_istoken(input[*i]) == 0)
+		buffer = fill_buffer_word(i, input, &token);
+	else
 	{
-		while (ft_isspace(input[i]) && input[i])
-			i++;
-		if (input[i] == '\'')
-			buffer = fill_buffer_quote(&i, input, '\'', &token);
-		else if (input[i] == '\"')
-			buffer = fill_buffer_quote(&i, input, '\"', &token);
-		else if (ft_istoken(input[i]) == 0)
-			buffer = fill_buffer_word(&i, input, &token);
-		else
-		{
-			buffer = fill_buffer_meta(&i, input, &token);
-			if (!buffer)
-				return (NULL);
-		}
-		while (ft_isspace(input[i]) && input[i])
-			i++;
-		new = new_token(buffer, token, k++);
-		if (head == NULL)
-		{
-			head = new;
-			tail = new;
-		}
-		else
-		{
-			tail->next = new;
-			tail->prev = tail;
-			tail = new;
-		}
-		free(buffer);
+		buffer = fill_buffer_meta(i, input, &token);
+		if (!buffer)
+			return (NULL);
 	}
-	free(input);
-	return (head);
+	return (new_token(buffer, token, tools->k++));
+}
+
+void	add_token(t_lexer **head, t_lexer **tail, t_lexer *new)
+{
+	if (*head == NULL)
+	{
+		*head = new;
+		*tail = new;
+	}
+	else
+	{
+		(*tail)->next = new;
+		(*tail)->prev = *tail;
+		*tail = new;
+	}
 }

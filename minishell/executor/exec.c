@@ -76,12 +76,12 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 
 char	*find_path(char **env)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (env[++i])
 	{
-		if(ft_strncmp("PATH", env[i], 4) == 0)
+		if (ft_strncmp("PATH", env[i], 4) == 0)
 			return (env[i] + 5);
 	}
 	return (NULL);
@@ -94,10 +94,10 @@ char	*get_cmd(t_simple_cmds *cmd, t_tools *tools)
 	int		i;
 
 	i = 0;
-	if(!cmd->str)
+	if (!cmd->str)
 		return (NULL);
 	if (!access(cmd->str[0], F_OK))
-		return(ft_strdup(cmd->str[0]));
+		return (ft_strdup(cmd->str[0]));
 	while (tools->paths[i])
 	{
 		tmp = ft_strjoin(tools->paths[i], "/");

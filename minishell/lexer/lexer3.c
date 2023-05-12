@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 15:20:01 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 22:12:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,32 @@ int	check_pipe(t_lexer *lexer)
 	}
 	return (0);
 }
-t_lexer	*ft_lstlast_lexer(t_lexer *lst)
-{
-	t_lexer	*temp;
 
-	if (!lst)
+t_lexer	*ft_lexer(char *input, t_tools *tools)
+{
+	t_lexer	*head;
+	t_lexer	*tail;
+	int		i;
+	t_lexer	*new;
+
+	tail = NULL;
+	head = NULL;
+	i = 0;
+	input = expander(tools, input);
+	if (!input)
 		return (NULL);
-	temp = lst;
-	while (temp->next != NULL)
+	while (input[i])
 	{
-		temp = temp->next;
+		while (ft_isspace(input[i]) && input[i])
+			i++;
+		new = create_token(input, &i, tools);
+		if (!new)
+			return (NULL);
+		while (ft_isspace(input[i]) && input[i])
+			i++;
+		add_token(&head, &tail, new);
+		free(new->buffer);
 	}
-	return (temp);
+	free(input);
+	return (head);
 }
-
-void	ft_lstadd_back_lexer(t_lexer **lst, t_lexer *new)
-{
-	t_lexer	*temp;
-
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		temp = ft_lstlast_lexer(*lst);
-		temp->next = new;
-	}
-}
-

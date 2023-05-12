@@ -31,7 +31,7 @@ int	check_infile(char *file)
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: infile: No such file or directory\n",
-			STDERR_FILENO);
+						STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	if (fd > 0 && dup2(fd, STDIN_FILENO) < 0)

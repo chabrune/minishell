@@ -6,66 +6,75 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 19:35:50 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:50:11 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
-		char **env)
+void	handle_input(t_tools *tool, t_lexer **lexer, t_simple_cmds **scmds)
 {
-	int	i;
+	tool->input = readline("MiniPROUT> ");
+	if (!tool->input)
+	{
+		printf("exit\n");
+		my_exit(tool, *scmds, *lexer);
+	}
+	if (tool->input[0] != '\0')
+		add_history(tool->input);
+	*lexer = ft_lexer(tool->input, tool);
+	if (check_pipe(*lexer) == 1)
+	{
+		lstclear_all(lexer, scmds, tool);
+		return ;
+	}
+	if (!*lexer)
+	{
+		lstclear_all(lexer, scmds, tool);
+		return ;
+	}
+	*scmds = group_command(lexer);
+	add_redir(scmds, lexer);
+	last_lexer_to_strs_cmd(lexer, scmds);
+	if ((*scmds)->redirections && !(*scmds)->redirections->str)
+	{
+		lstclear_all(lexer, scmds, tool);
+		ft_putendl_fd("minishell: syntax error", 2);
+		g_global.error_num = 258;
+		return ;
+	}
+}
 
+void handle_commands(t_simple_cmds *scmds, t_tools *tool, t_lexer *lexer)
+{
+	int i;
+
+	i = count_cmd(&scmds);
+	g_global.in_cmd = 1;
+	print_cmd(&scmds);
+	if (i == 1)
+		one_command(scmds, tool, lexer);
+	else
+		multiple_commands(&scmds, tool);
+	g_global.in_cmd = 0;
+	lstclear_all(&lexer, &scmds, tool);
+	g_global.error_num = 0;
+}
+
+void minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **env)
+{
 	init_tool(&tool, env);
 	while (42)
 	{
 		g_global.in_child = 1;
 		g_global.stop_heredoc = 0;
-		tool->input = readline("MiniPROUT> ");
-		if (!tool->input)
-		{
-			printf("exit\n");
-			my_exit(tool, scmds, lexer);
-		}
-		if (tool->input[0] != '\0')
-			add_history(tool->input);
-		lexer = ft_lexer(tool->input, tool);
-		if (check_pipe(lexer) == 1)
-		{
-			lstclear_all(&lexer, &scmds, tool);
+		handle_input(tool, &lexer, &scmds);
+		if (g_global.error_num != 0)
 			continue ;
-		}
-		if (!lexer)
-		{
-			lstclear_all(&lexer, &scmds, tool);
-			continue ;
-		}
-		scmds = group_command(&lexer);
-		add_redir(&scmds, &lexer);
-		last_lexer_to_strs_cmd(&lexer, &scmds);
-		if (scmds->redirections)
-		{
-			if (!scmds->redirections->str)
-			{
-				printf("FDP\n");
-				lstclear_all(&lexer, &scmds, tool);
-				ft_putendl_fd("minishell: syntax error", 2);
-				g_global.error_num = 258;
-				continue ;
-			}
-		}
-		i = count_cmd(&scmds);
-		g_global.in_cmd = 1;
-		if (i == 1)
-			one_command(scmds, tool, lexer);
-		else
-			multiple_commands(&scmds, tool);
-		g_global.in_cmd = 0;
-		lstclear_all(&lexer, &scmds, tool);
-		g_global.error_num = 0;
+		handle_commands(scmds, tool, lexer);
 	}
 }
+
 
 void	reset_tool(t_tools **tools)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:27:54 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 21:58:23 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,3 @@ int	check_closed_quotes(char *str)
 	}
 	return (EXIT_SUCCESS);
 }
-

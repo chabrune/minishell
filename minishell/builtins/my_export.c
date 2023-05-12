@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 18:19:04 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 21:30:46 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,40 +122,4 @@ void	pour_la_norme(char ***sorted_env)
 		else
 			write(1, "\n", 1);
 	}
-}
-
-void	print_export(t_tools *tools)
-{
-	char	*tmp;
-	int		i;
-	char	**sorted_env;
-
-	sorted_env = dup_env(tools->envp);
-	tmp = 0;
-	i = 0;
-	while (sorted_env[i + 1])
-	{
-		if (ft_strcmp(sorted_env[i], sorted_env[i + 1]) > 0)
-		{
-			tmp = sorted_env[i];
-			sorted_env[i] = sorted_env[i + 1];
-			sorted_env[i + 1] = tmp;
-			i = 0;
-		}
-		else
-			i++;
-	}
-	pour_la_norme(&sorted_env);
-	free_old_env(sorted_env);
-	return ;
-}
-
-int	count_var(t_simple_cmds *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->str[i])
-		i++;
-	return (i - 1);
 }

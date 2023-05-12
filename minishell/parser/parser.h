@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:16:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/06 00:05:34 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:48:10 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int								count_cmd(t_simple_cmds **head);
 void							last_lexer_to_strs_cmd(t_lexer **headlex,
 									t_simple_cmds **headcmd);
 void							add_redir_splitted(t_simple_cmds *tmpcmd,
-									t_lexer **tmplex, t_lexer **redir,
+									t_lexer **tmplex,
+									t_lexer **redir,
 									t_lexer **lexer);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:10:13 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 18:16:45 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 21:45:21 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,13 @@ int		builtins_to_fork(t_simple_cmds *cmds);
 void	choose_builtins_one_split(t_simple_cmds *cmds, t_tools *tools);
 void	choose_builtins_one_split_two(t_simple_cmds *cmds, t_tools *tools,
 			t_lexer *lexer);
+void	my_cd(t_tools *tools, t_simple_cmds *cmds);
+int		change_dir(t_tools *tools, char *path, char *old_pwd);
+void	find_pwd(t_tools *tools, char **home, char **pwd);
+char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home);
+char	*ft_strjoin_without_leaks(char *s1, char const *s2);
+void	change_env(t_tools *tools, char *path, char *old_pwd);
+char	*find_parent_dir(char **pwd);
+void	ignore_var(char ***var_name, char ***var_content, int i);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 00:09:08 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 18:00:47 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 21:33:41 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,30 +95,5 @@ void	check_existing_name(t_tools *tools, char ***var_name, int *i)
 		my_unset_2(tools, tmp);
 	if (var_name_is_new(tools, (*var_name)[*i]) == 1)
 		my_unset_2(tools, (*var_name)[*i]);
-}
-
-void	my_export(t_tools *tools, t_simple_cmds *cmd, int i, int j)
-{
-	int		nb_var;
-	char	**var_name;
-	char	**var_content;
-
-	if (!cmd->str[1])
-		return (print_export(tools));
-	nb_var = count_var(cmd);
-	var_name = ft_calloc(nb_var + 1, sizeof(char *));
-	var_content = ft_calloc(nb_var + 1, sizeof(char *));
-	while (++i < nb_var)
-	{
-		j = fill_var_name(cmd, &var_name[i], i);
-		if (j < 0)
-			return ;
-		check_existing_name(tools, &var_name, &i);
-		fill_var_content(cmd, i, j, &var_content[i]);
-		if (var_name_is_new(tools, var_name[i]) == 2)
-			ignore_var(&var_name, &var_content, i);
-	}
-	add_lines_to_env(tools, var_name, var_content);
-	free_tab(var_content, i);
-	free_tab(var_name, i);
+	free(tmp);
 }
