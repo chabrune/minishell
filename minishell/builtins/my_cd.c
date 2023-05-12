@@ -6,26 +6,26 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 18:19:19 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 15:40:51 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-char	*find_parent_dir(char *pwd)
+char	*find_parent_dir(char **pwd)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
-	while (pwd[i])
+	while ((*pwd)[i])
 		i++;
 	i--;
-	while (pwd[i] && pwd[i] != '/')
+	while ((*pwd)[i] && (*pwd)[i] != '/')
 		i--;
 	str = ft_calloc(i + 2, sizeof(char));
-	ft_strlcpy(str, pwd, i + 1);
-	free(pwd);
+	ft_strlcpy(str, *pwd, i + 1);
+	free(*pwd);
 	return (str);
 }
 
@@ -49,6 +49,35 @@ void	change_env(t_tools *tools, char *path, char *old_pwd)
 	}
 }
 
+char	*ft_strjoin_without_leaks(char *s1, char const *s2)
+{
+	char	*str;
+	int		len;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	str = (char *)malloc(len * sizeof(char));
+	if (!str)
+		return (NULL);
+	while (s1[i])
+	{
+		str[j++] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		str[j++] = s2[i];
+		i++;
+	}
+	str[j] = 0;
+	free(s1);
+	return (str);
+}
+
 char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 {
 	int		i;
@@ -57,7 +86,7 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 	i = 0;
 	while (cmds->str[1][i] == '.' && cmds->str[1][i + 1] == '.')
 	{
-		*pwd = find_parent_dir(*pwd);
+		*pwd = find_parent_dir(&(*pwd));
 		i += 2;
 		if (cmds->str[1][i] == '/')
 			i++;
@@ -66,14 +95,39 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 		i++;
 	if (i == 0 && cmds->str[1][i] == '~')
 	{
+		free(*pwd);
 		*pwd = ft_strdup(home);
 		i++;
 	}
 	if (i == 0)
-		*pwd = ft_strjoin(*pwd, "/");
+		*pwd = ft_strjoin_without_leaks(*pwd, "/");
 	path = ft_strjoin(*pwd, cmds->str[1] + i);
 	free(home);
 	return (path);
+}
+
+void	find_pwd(t_tools *tools, char **home, char **pwd)
+{
+	int	i;
+
+	i = -1;
+	while (tools->envp[++i])
+	{
+		if (ft_strncmp(tools->envp[i], "HOME=", 5) == 0)
+			*home = ft_strdup(tools->envp[i] + 5);
+		else if (ft_strncmp(tools->envp[i], "PWD=", 4) == 0)
+			*pwd = ft_strdup(tools->envp[i] + 4);
+	}
+}
+
+int	change_dir(t_tools *tools, char *path, char *old_pwd)
+{
+	int	check_err;
+
+	check_err = chdir(path);
+	if (check_err >= 0)
+		change_env(tools, path, old_pwd);
+	return (check_err);
 }
 
 void	my_cd(t_tools *tools, t_simple_cmds *cmds)
@@ -81,37 +135,18 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 	char	*home;
 	char	*pwd;
 	char	*old_pwd;
-	int		i;
 	int		check_err;
 
-	i = -1;
-	check_err = 0;
-	while (tools->envp[++i])
-	{
-		if (ft_strncmp(tools->envp[i], "HOME=", 5) == 0)
-			home = ft_strdup(tools->envp[i] + 5);
-		else if (ft_strncmp(tools->envp[i], "PWD=", 4) == 0)
-			pwd = ft_strdup(tools->envp[i] + 4);
-	}
+	find_pwd(tools, &home, &pwd);
 	old_pwd = ft_strdup(pwd);
 	if (!(cmds->str[1]))
-	{
-		check_err = chdir(home);
-		if (check_err >= 0)
-			change_env(tools, home, old_pwd);
-	}
+		check_err = change_dir(tools, home, old_pwd);
 	else if (cmds->str[1][0] == '/')
-	{
-		check_err = chdir(cmds->str[1]);
-		if (check_err >= 0)
-			change_env(tools, cmds->str[1], old_pwd);
-	}
+		check_err = change_dir(tools, cmds->str[1], old_pwd);
 	else
 	{
 		home = find_relative_path(cmds, &pwd, home);
-		check_err = chdir(home);
-		if (check_err >= 0)
-			change_env(tools, home, old_pwd);
+		check_err = change_dir(tools, home, old_pwd);
 	}
 	if (check_err == -1)
 	{
