@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:19:44 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 15:06:18 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 22:21:05 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_lexer	*new_token(char *str, t_tokens token, int i)
 	new = ft_calloc(1, sizeof(t_lexer));
 	if (!new)
 		return (NULL);
-	new->str = ft_strdup(str);
+	new->str = str;
 	new->token = token;
 	new->i = i;
 	new->next = NULL;

@@ -6,17 +6,17 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 18:58:25 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/08 17:50:12 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 22:22:50 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
+void lstclear_cmds(t_simple_cmds **lst, void (*del)(void *))
 {
-	t_simple_cmds	*temp;
+	t_simple_cmds *temp;
 
-	if (lst)
+	if (lst && *lst)
 	{
 		while (*lst)
 		{
