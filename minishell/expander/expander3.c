@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:47:07 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:27:54 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*expander(t_tools *tools, char *str)
 	str = sub_dollar_in_quotes(str);
 	count = count_dollar(str);
 	if (count == 0)
-		return (str);
+		return (sub_back_dollar_in_quotes(str));
 	else
 	{
 		result = expand_str(count, result, str, tools);
@@ -75,12 +75,13 @@ char	*expander_hd(t_tools *tools, char *str)
 		return (result);
 	}
 }
+
 int	check_closed_quotes(char *str)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
 	{
 		if (str[i] == '\'')
 		{
@@ -100,6 +101,8 @@ int	check_closed_quotes(char *str)
 				return (EXIT_FAILURE);
 			i++;
 		}
+		else
+			i++;
 	}
 	return (EXIT_SUCCESS);
 }
