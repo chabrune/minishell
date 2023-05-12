@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 22:17:39 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:35:43 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		while (ft_isspace(input[i]) && input[i])
 			i++;
 		add_token(&head, &tail, new);
-		free(new->buffer);
+		// free(new->buffer);
 	}
-	free(input);
+	// free(input);
 	return (head);
 }

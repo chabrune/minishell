@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 18:22:03 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 17:50:47 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 22:32:02 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ void	choose_builtins_one_split(t_simple_cmds *cmds, t_tools *tools)
 void	choose_builtins_one_split_two(t_simple_cmds *cmds, t_tools *tools,
 		t_lexer *lexer)
 {
+	(void)lexer;
 	if (ft_strncmp("exit", cmds->str[0], 4) == 0)
 	{
 		write(2, "exit\n", 5);
-		my_exit(tools, cmds, lexer);
+		my_exit_2(tools, cmds);
 	}
 	else if (ft_strncmp("export", cmds->str[0], 6) == 0 && !cmds->str[1])
 	{

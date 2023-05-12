@@ -6,15 +6,14 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:50:11 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:41:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_input(t_tools *tool, t_lexer **lexer, t_simple_cmds **scmds)
+int	handle_input(t_tools *tool, t_lexer **lexer, t_simple_cmds **scmds)
 {
-	tool->input = readline("MiniPROUT> ");
 	if (!tool->input)
 	{
 		printf("exit\n");
@@ -23,15 +22,10 @@ void	handle_input(t_tools *tool, t_lexer **lexer, t_simple_cmds **scmds)
 	if (tool->input[0] != '\0')
 		add_history(tool->input);
 	*lexer = ft_lexer(tool->input, tool);
-	if (check_pipe(*lexer) == 1)
+	if (!*lexer || check_pipe(*lexer) == 1)
 	{
-		lstclear_all(lexer, scmds, tool);
-		return ;
-	}
-	if (!*lexer)
-	{
-		lstclear_all(lexer, scmds, tool);
-		return ;
+		lstclear_lexer(lexer, free);
+		return (1);
 	}
 	*scmds = group_command(lexer);
 	add_redir(scmds, lexer);
@@ -41,17 +35,17 @@ void	handle_input(t_tools *tool, t_lexer **lexer, t_simple_cmds **scmds)
 		lstclear_all(lexer, scmds, tool);
 		ft_putendl_fd("minishell: syntax error", 2);
 		g_global.error_num = 258;
-		return ;
+		return (2);
 	}
+	return (0);
 }
 
-void handle_commands(t_simple_cmds *scmds, t_tools *tool, t_lexer *lexer)
+void	handle_commands(t_simple_cmds *scmds, t_tools *tool, t_lexer *lexer)
 {
-	int i;
+	int	i;
 
 	i = count_cmd(&scmds);
 	g_global.in_cmd = 1;
-	print_cmd(&scmds);
 	if (i == 1)
 		one_command(scmds, tool, lexer);
 	else
@@ -61,24 +55,42 @@ void handle_commands(t_simple_cmds *scmds, t_tools *tool, t_lexer *lexer)
 	g_global.error_num = 0;
 }
 
-void minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **env)
+void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
+		char **env)
 {
 	init_tool(&tool, env);
 	while (42)
 	{
+		tool->input = readline("MiniPROUT> ");
+		if (!tool->input)
+		{
+			printf("exit\n");
+			my_exit(tool, scmds, lexer);
+		}
+		if (tool->input[0] != '\0')
+			add_history(tool->input);
 		g_global.in_child = 1;
 		g_global.stop_heredoc = 0;
-		handle_input(tool, &lexer, &scmds);
-		if (g_global.error_num != 0)
+		if (handle_input(tool, &lexer, &scmds) > 0)
+		{
+			free(tool->input);
 			continue ;
+		}
+		// if (g_global.error_num != 0)
+		// {
+		// 	free(tool->input);
+		// 	continue ;
+		// }
 		handle_commands(scmds, tool, lexer);
+		free(tool->input);
 	}
 }
-
 
 void	reset_tool(t_tools **tools)
 {
 	(*tools)->cmd = NULL;
+	if ((*tools)->input)
+		free((*tools)->input);
 	(*tools)->input = NULL;
 	(*tools)->inputs = NULL;
 	(*tools)->path = NULL;

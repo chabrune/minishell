@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:58:23 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:38:48 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char	*replace_name_with_content(char *str, char **var_name,
 		return (str);
 	result = ft_calloc(find_len_result(str, var_name, var_content, count),
 		sizeof(char));
+	if (!result)
+		return (NULL);
 	while (++l <= count)
 	{
 		replace_name_with_content_utils(&str, &result, &k, &i);

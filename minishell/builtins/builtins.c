@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 17:26:59 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:31:04 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	my_exit(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 {
-	if (lexer)
-		lstclear_lexer(&lexer, free);
-	if (cmds)
-		lstclear_cmds(&cmds, free);
+	(void)cmds;
+	(void)lexer;
+	// if (lexer)
+	// 	lstclear_lexer(&lexer, free);
+	// if (cmds)
+	// 	lstclear_cmds(&cmds, free);
 	if (tools)
 		lstclear_tools(tools);
 	exit(0);
@@ -25,6 +27,12 @@ void	my_exit(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 
 void	my_exit_2(t_tools *tools, t_simple_cmds *cmds)
 {
+	if (cmds->str[2])
+	{
+		g_global.error_num = 1;
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		return ;
+	}
 	if (cmds->str[1] && ft_atoi(cmds->str[1]) != 0)
 		g_global.error_num = ft_atoi(cmds->str[1]);
 	else if (cmds->str[1])

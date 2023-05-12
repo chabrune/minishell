@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:10:13 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 21:45:21 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 22:29:49 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds);
 void	my_export(t_tools *tools, t_simple_cmds *cmd, int i, int j);
 void	my_unset(t_tools *tools, t_simple_cmds *cmd);
 void	my_exit(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer);
+void	my_exit_2(t_tools *tools, t_simple_cmds *cmds);
 void	*free_old_env(char **tab);
 int		builtins_to_fork(t_simple_cmds *cmds);
 void	choose_builtins_one_split(t_simple_cmds *cmds, t_tools *tools);

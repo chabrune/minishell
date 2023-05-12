@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:55:29 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:00:23 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int							cmd_not_found(char *str);
 void						lstclear_all(t_lexer **lexer, t_simple_cmds **cmds,
 								t_tools *tools);
 void						free_cmd_and_paths(t_tools *tools);
+
 
 typedef struct s_global
 {
