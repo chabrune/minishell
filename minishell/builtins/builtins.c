@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 17:49:49 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/12 17:26:59 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,21 @@ int	is_builtins(t_simple_cmds *cmds)
 
 void	choose_bultins_multiple(t_tools *tools, t_simple_cmds *cmds)
 {
-	t_simple_cmds	*tmp;
-
-	tmp = cmds;
 	if (!cmds->str)
 		return ;
-	while (tmp)
-	{
-		if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
-			my_pwd(tools);
-		else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
-			my_echo(cmds);
-		else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
-			my_cd(tools, cmds);
-		else if (ft_strncmp("export", cmds->str[0], 6) == 0)
-			my_export(tools, cmds, -1, 0);
-		else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
-			my_unset(tools, cmds);
-		else if (ft_strncmp("env", cmds->str[0], 3) == 0)
-			my_env(tools, cmds);
-		else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
-			my_exit_2(tools, cmds);
-		tmp = tmp->next;
-	}
+	if (ft_strncmp("pwd", cmds->str[0], 3) == 0)
+		my_pwd(tools);
+	else if (ft_strncmp("echo", cmds->str[0], 4) == 0)
+		my_echo(cmds);
+	else if (ft_strncmp("cd", cmds->str[0], 2) == 0)
+		my_cd(tools, cmds);
+	else if (ft_strncmp("export", cmds->str[0], 6) == 0)
+		my_export(tools, cmds, -1, 0);
+	else if (ft_strncmp("unset", cmds->str[0], 5) == 0)
+		my_unset(tools, cmds);
+	else if (ft_strncmp("env", cmds->str[0], 3) == 0)
+		my_env(tools, cmds);
+	else if (ft_strncmp("exit", cmds->str[0], 4) == 0)
+		my_exit_2(tools, cmds);
 	exit(0);
 }

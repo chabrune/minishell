@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:42:20 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 16:24:45 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:39:34 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	lstclear_tools(t_tools *tools)
 	if (!tools)
 		return ;
 	i = -1;
-	if (tools->input)
-		free(tools->input);
 	if (tools->pid)
 		free(tools->pid);
 	reset_tool(&tools);

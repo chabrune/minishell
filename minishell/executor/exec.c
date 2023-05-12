@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:36:45 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:29:24 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 	fd_in = STDIN_FILENO;
 	while (tmp)
 	{
-		fill_tools_param(tmp, tools);
-		fill_cmd_heredoc(tmp, tools);
+		fill_all(tmp, tools);
 		if (tmp->next)
 			pipe(pipes);
 		ft_fork(tools, tmp, pipes, fd_in);
@@ -51,6 +50,7 @@ int	multiple_commands(t_simple_cmds **head, t_tools *tools)
 			close(fd_in);
 		fd_in = ft_check_heredoc(tools, tmp, pipes);
 		tmp = tmp->next;
+		free_cmd_and_paths(tools);
 	}
 	wait_process(tools, head);
 	return (0);
@@ -71,15 +71,20 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 		free_cmd_and_paths(tools);
 		my_exit(tools, curr, NULL);
 	}
-	free(tools->cmd);
 	return (0);
 }
 
 char	*find_path(char **env)
 {
-	while (strncmp("PATH", *env, 4))
-		env++;
-	return (*env + 5);
+	int i;
+
+	i = -1;
+	while (env[++i])
+	{
+		if(ft_strncmp("PATH", env[i], 4) == 0)
+			return (env[i] + 5);
+	}
+	return (NULL);
 }
 
 char	*get_cmd(t_simple_cmds *cmd, t_tools *tools)
@@ -89,6 +94,10 @@ char	*get_cmd(t_simple_cmds *cmd, t_tools *tools)
 	int		i;
 
 	i = 0;
+	if(!cmd->str)
+		return (NULL);
+	if (!access(cmd->str[0], F_OK))
+		return(ft_strdup(cmd->str[0]));
 	while (tools->paths[i])
 	{
 		tmp = ft_strjoin(tools->paths[i], "/");

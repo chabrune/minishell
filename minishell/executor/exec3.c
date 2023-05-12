@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:03:34 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:37:25 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:11:58 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,10 @@ void	one_command_split(t_simple_cmds *curr, t_tools *tools)
 	fill_tools_param(curr, tools);
 	fill_cmd_heredoc(curr, tools);
 	dup_heredoc(curr);
+}
+
+void	fill_all(t_simple_cmds *curr, t_tools *tools)
+{
+	fill_tools_param(curr, tools);
+	fill_cmd_heredoc(curr, tools);
 }

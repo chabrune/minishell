@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 17:18:15 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/06 00:04:31 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 15:19:46 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ void							fill_buffer_word_two(char *input, int *i,
 void							lexer_list(t_lexer **tail, t_lexer **head,
 									t_lexer **new);
 int								check_pipe(t_lexer *lexer);
+t_lexer							*ft_lstlast_lexer(t_lexer *lst);
+void							ft_lstadd_back_lexer(t_lexer **lst, t_lexer *new);
 
 #endif

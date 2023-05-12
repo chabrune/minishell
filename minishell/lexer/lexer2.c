@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:39:40 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:54:22 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,27 @@ char	*fill_buffer_meta(int *i, char *input, t_tokens *token)
 	*token = chose_token(buffer);
 	if (*token == 0)
 	{
-		ft_putendl_fd("bash: syntax error", 2);
+		ft_putendl_fd("minishell: syntax error", 2);
 		g_global.error_num = 258;
+		free(buffer);
 		return (NULL);
 	}
 	return (buffer);
 }
 
+
 t_lexer	*ft_lexer(char *input, t_tools *tools)
 {
 	t_lexer		*head;
-	t_lexer		*tail;
 	t_lexer		*new;
+	t_lexer		*tail;
 	t_tokens	token;
 	char		*buffer;
 	int			i;
 	int			k;
 
-	head = 0;
 	tail = 0;
+	head = 0;
 	i = 0;
 	k = 1;
 	input = expander(tools, input);
@@ -129,5 +131,6 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 		}
 		free(buffer);
 	}
+	free(input);
 	return (head);
 }

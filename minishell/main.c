@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:25:23 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:35:50 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		{
 			if (!scmds->redirections->str)
 			{
+				printf("FDP\n");
 				lstclear_all(&lexer, &scmds, tool);
-				ft_putendl_fd("bash: syntax error", 2);
+				ft_putendl_fd("minishell: syntax error", 2);
 				g_global.error_num = 258;
 				continue ;
 			}
@@ -62,6 +63,7 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 			multiple_commands(&scmds, tool);
 		g_global.in_cmd = 0;
 		lstclear_all(&lexer, &scmds, tool);
+		g_global.error_num = 0;
 	}
 }
 

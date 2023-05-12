@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:36:18 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/12 16:37:41 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ int		check_outfile(t_lexer *redir);
 void	fill_tools_param(t_simple_cmds *curr, t_tools *tools);
 void	one_command_split(t_simple_cmds *curr, t_tools *tools);
 int		dup_heredoc(t_simple_cmds *curr);
+void	fill_all(t_simple_cmds *curr, t_tools *tools);
+int		check_paths(t_simple_cmds *cmd, t_tools *tools);
 
 #endif
