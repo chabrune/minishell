@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:13:49 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/13 13:03:37 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:25:07 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,9 @@ void	heredoc(char *filename, t_lexer *curr, t_tools *tools)
 	rl_catch_signals = 1;
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline("heredoc> ");
-	// if (g_global.stop_heredoc == 1)
-	// {
-	// 	close(fd);
-	// 	exit(0);
-	// }
 	while (line && ft_strcmp(curr->str, line))
 	{
 		line = expander_hd(tools, line);
-		// if (g_global.stop_heredoc == 1)
-		// {
-		// 	g_global.in_heredoc = 0;
-		// 	close(fd);
-		// 	exit(0);
-		// }
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
@@ -82,9 +71,7 @@ void	fill_cmd_heredoc(t_simple_cmds *curr, t_tools *tools)
 			filename = create_filename();
 			curr->hd_file_name = ft_strdup(filename);
 			free(filename);
-			g_global.in_heredoc = 1;
 			heredoc(curr->hd_file_name, curr->redirections, tools);
-			g_global.in_heredoc = 0;
 		}
 		curr->redirections = curr->redirections->next;
 	}

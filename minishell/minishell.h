@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:32:51 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:28:28 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,7 @@ void						free_cmd_and_paths(t_tools *tools);
 typedef struct s_global
 {
 	int						in_cmd;
-	int						stop_heredoc;
 	int						error_num;
-	int						in_heredoc;
-	int						in_child;
 }							t_global;
 
 extern t_global				g_global;

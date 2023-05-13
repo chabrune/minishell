@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:51:44 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:29:55 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:29:30 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 	pid = fork();
 	if (pid == 0)
 	{
-		g_global.in_child = 0;
 		one_command_split(curr, tools);
 		if (curr->redirections)
 			if (check_redir(curr) == 1)
@@ -98,7 +97,6 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], int fd_in)
 	}
 	else if (pid == 0)
 	{
-		g_global.in_child = 0;
 		if (dup_two_cmd(curr, pipes, fd_in) == 1)
 			my_exit(tools, curr, NULL);
 		if (curr->redirections)
