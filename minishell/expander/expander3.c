@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 23:38:48 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 10:56:12 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*replace_name_with_content(char *str, char **var_name,
 	if (!var_content || !var_name)
 		return (str);
 	result = ft_calloc(find_len_result(str, var_name, var_content, count),
-		sizeof(char));
+			sizeof(char));
 	if (!result)
 		return (NULL);
 	while (++l <= count)
@@ -80,25 +80,22 @@ char	*expander_hd(t_tools *tools, char *str)
 
 int	check_closed_quotes(char *str)
 {
-	int	i;
+	int		i;
+	char	quote;
 
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'')
+		if (str[i] == '\'' || str[i] == '\"')
 		{
+			quote = str[i];
 			i++;
-			while (str[i] && str[i] != '\'')
+			while (str[i])
+			{
+				if (str[i] == quote)
+					break ;
 				i++;
-			if (!str[i])
-				return (EXIT_FAILURE);
-			i++;
-		}
-		else if (str[i] == '\"')
-		{
-			i++;
-			while (str[i] && str[i] != '\"')
-				i++;
+			}
 			if (!str[i])
 				return (EXIT_FAILURE);
 			i++;

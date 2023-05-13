@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 23:41:56 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 10:54:09 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,21 +96,6 @@ void	reset_tool(t_tools **tools)
 	(*tools)->path = NULL;
 	(*tools)->paths = NULL;
 	(*tools)->pid = NULL;
-}
-
-int	init_tool(t_tools **tools, char **env)
-{
-	*tools = ft_calloc(sizeof(t_tools), 1);
-	if (!(*tools))
-		return (EXIT_FAILURE);
-	(*tools)->cmd = NULL;
-	(*tools)->envp = dup_env(env);
-	(*tools)->input = NULL;
-	(*tools)->inputs = NULL;
-	(*tools)->path = NULL;
-	(*tools)->paths = NULL;
-	(*tools)->pid = NULL;
-	return (EXIT_SUCCESS);
 }
 
 t_global	g_global;

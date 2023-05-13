@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:53:08 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 17:40:07 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 10:54:40 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	remove_a_var_from_env(t_tools *tools, char *str)
 	{
 		if (ft_strncmp(tools->envp[i], str, ft_strlen(str)) == 0
 			&& (tools->envp[i][ft_strlen(str)] == '='
-				|| tools->envp[i][ft_strlen(str)] == 0))
+			|| tools->envp[i][ft_strlen(str)] == 0))
 			i++;
 		else
 			new_tab[k++] = ft_strdup(tools->envp[i++]);
@@ -48,7 +48,7 @@ int	is_removable(t_tools *tools, char *str)
 	{
 		if (ft_strncmp(tools->envp[i], str, ft_strlen(str)) == 0
 			&& (tools->envp[i][ft_strlen(str)] == '='
-				|| tools->envp[i][ft_strlen(str)] == 0))
+			|| tools->envp[i][ft_strlen(str)] == 0))
 			return (1);
 	}
 	return (0);

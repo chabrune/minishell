@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 16:53:31 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:27:10 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 10:43:55 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,9 @@ char	*fill_buffer_meta(int *i, char *input, t_tokens *token)
 
 t_lexer	*create_token(char *input, int *i, t_tools *tools)
 {
-	t_lexer		*new;
 	char		*buffer;
 	t_tokens	token;
 
-	new = NULL;
 	if (input[*i] == '\'')
 		buffer = fill_buffer_quote(i, input, '\'', &token);
 	else if (input[*i] == '\"')
