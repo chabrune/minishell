@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:34:15 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 14:44:53 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 	if (tools->cmd && curr->str)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
-		cmd_not_found(curr->str[0], tools);
 		free_cmd_and_paths(tools);
+		cmd_not_found(curr->str[0], tools);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 12:12:07 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/13 14:38:29 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 16:29:48 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,5 @@ void	cmd_not_found(char *str, t_tools *tools)
 	g_global.error_num = 127;
 	if (tools)
 		lstclear_tools(tools);
-	free(tools->cmd);
-	free(tools->paths);
 	exit(127);
 }
