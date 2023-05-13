@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:51:44 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:08:07 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 14:29:55 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 {
 	t_simple_cmds	*curr;
 	int				pid;
+	int				status;
 
 	curr = head;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
@@ -60,7 +61,9 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 			handle_cmd(curr, tools);
 		free_cmd_and_paths(tools);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_global.error_num = WEXITSTATUS(status);
 	return (EXIT_SUCCESS);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 10:54:09 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 14:15:55 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_commands(t_simple_cmds *scmds, t_tools *tool, t_lexer *lexer)
 		multiple_commands(&scmds, tool);
 	g_global.in_cmd = 0;
 	lstclear_all(&lexer, &scmds, tool);
-	g_global.error_num = 0;
+	// g_global.error_num = 0;
 }
 
 void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
@@ -61,6 +61,8 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 	init_tool(&tool, env);
 	while (42)
 	{
+		g_global.in_child = 1;
+		g_global.stop_heredoc = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
 		{
@@ -69,8 +71,6 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		}
 		if (tool->input[0] != '\0')
 			add_history(tool->input);
-		g_global.in_child = 1;
-		g_global.stop_heredoc = 0;
 		if (handle_input(tool, &lexer, &scmds) > 0)
 		{
 			free(tool->input);

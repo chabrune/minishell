@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:38:49 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 10:52:40 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 14:32:51 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void						handle_signal(void);
 void						lstclear_tools(t_tools *tools);
 int							init_tool(t_tools **tools, char **env);
 void						reset_tool(t_tools **tools);
-int							cmd_not_found(char *str);
+void						cmd_not_found(char *str, t_tools *tools);
 void						lstclear_all(t_lexer **lexer, t_simple_cmds **cmds,
 								t_tools *tools);
 void						free_cmd_and_paths(t_tools *tools);

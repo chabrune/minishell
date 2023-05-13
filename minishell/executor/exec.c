@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 19:29:24 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 14:34:15 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	wait_process(t_tools *tools, t_simple_cmds **head)
 		if (kill(tools->pid[i], 0) == 0)
 			waitpid(tools->pid[i], &status, 0);
 		waitpid(tools->pid[i], &status, 0);
+		if (WIFEXITED(status))
+			g_global.error_num = WEXITSTATUS(status);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -61,15 +63,13 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 	if (!tools->cmd || !curr->str)
 	{
 		free_cmd_and_paths(tools);
-		g_global.error_num = cmd_not_found(curr->str[0]);
-		my_exit(tools, curr, NULL);
+		cmd_not_found(curr->str[0], tools);
 	}
 	if (tools->cmd && curr->str)
 	{
 		execve(tools->cmd, curr->str, tools->envp);
-		g_global.error_num = cmd_not_found(curr->str[0]);
+		cmd_not_found(curr->str[0], tools);
 		free_cmd_and_paths(tools);
-		my_exit(tools, curr, NULL);
 	}
 	return (0);
 }
