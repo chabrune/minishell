@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:01:42 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 16:45:13 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:54:03 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ char	*expander(t_tools *tools, char *str);
 char	*expander_hd(t_tools *tools, char *str);
 char	*sub_dollar_in_quotes(char *str);
 char	*sub_back_dollar_in_quotes(char *str);
+void	free_expanded(char **var_name, char **var_content, int j);
 
 #endif

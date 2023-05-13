@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:51:44 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:29:55 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 20:04:31 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 {
 	t_simple_cmds	*curr;
 	int				pid;
-	int				status;
 
 	curr = head;
 	if (is_builtins(curr) == 1 && builtins_to_fork(curr) == 0)
@@ -50,7 +49,6 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 	pid = fork();
 	if (pid == 0)
 	{
-		g_global.in_child = 0;
 		one_command_split(curr, tools);
 		if (curr->redirections)
 			if (check_redir(curr) == 1)
@@ -61,9 +59,7 @@ int	one_command(t_simple_cmds *head, t_tools *tools, t_lexer *lexer)
 			handle_cmd(curr, tools);
 		free_cmd_and_paths(tools);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_global.error_num = WEXITSTATUS(status);
+	status_signal(pid);
 	return (EXIT_SUCCESS);
 }
 
@@ -98,7 +94,6 @@ int	ft_fork(t_tools *tools, t_simple_cmds *curr, int pipes[2], int fd_in)
 	}
 	else if (pid == 0)
 	{
-		g_global.in_child = 0;
 		if (dup_two_cmd(curr, pipes, fd_in) == 1)
 			my_exit(tools, curr, NULL);
 		if (curr->redirections)

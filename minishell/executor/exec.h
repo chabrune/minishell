@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:39:30 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:18:20 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 19:59:44 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ void	one_command_split(t_simple_cmds *curr, t_tools *tools);
 int		dup_heredoc(t_simple_cmds *curr);
 void	fill_all(t_simple_cmds *curr, t_tools *tools);
 int		check_paths(t_simple_cmds *cmd, t_tools *tools);
+void	status_signal(int pid);
 
 #endif

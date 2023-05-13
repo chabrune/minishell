@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 18:58:25 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 10:56:29 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:13:15 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	lstclear_all(t_lexer **lexer, t_simple_cmds **cmds, t_tools *tools)
 
 int	init_tool(t_tools **tools, char **env)
 {
+	(void)env;
 	*tools = ft_calloc(sizeof(t_tools), 1);
 	if (!(*tools))
 		return (EXIT_FAILURE);

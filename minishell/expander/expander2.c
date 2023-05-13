@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:26:52 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/09 16:38:21 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:56:53 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	find_len_result(char *str, char **var_name, char **var_content, int count)
 	int	i;
 
 	len = ft_strlen(str);
+	if (len == 0)
+		return (0);
 	i = -1;
 	while (++i < count)
 		len += ft_strlen(var_content[i]);

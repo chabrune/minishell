@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:03:34 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 18:11:58 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 19:59:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,13 @@ void	fill_all(t_simple_cmds *curr, t_tools *tools)
 {
 	fill_tools_param(curr, tools);
 	fill_cmd_heredoc(curr, tools);
+}
+
+void	status_signal(int pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_global.error_num = WEXITSTATUS(status);
 }

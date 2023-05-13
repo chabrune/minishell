@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:40:37 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:44:53 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 19:43:53 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,13 @@ int	handle_cmd(t_simple_cmds *curr, t_tools *tools)
 {
 	if (!tools->cmd || !curr->str)
 	{
+		free(tools->input_copy);
 		free_cmd_and_paths(tools);
 		cmd_not_found(curr->str[0], tools);
 	}
 	if (tools->cmd && curr->str)
 	{
+		free(tools->input_copy);
 		execve(tools->cmd, curr->str, tools->envp);
 		free_cmd_and_paths(tools);
 		cmd_not_found(curr->str[0], tools);

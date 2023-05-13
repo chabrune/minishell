@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 14:15:55 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/13 20:48:41 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 int	handle_input(t_tools *tool, t_lexer **lexer, t_simple_cmds **scmds)
 {
-	if (!tool->input)
+	if (!tool->input_copy)
 	{
 		printf("exit\n");
 		my_exit(tool, *scmds, *lexer);
 	}
-	if (tool->input[0] != '\0')
-		add_history(tool->input);
-	*lexer = ft_lexer(tool->input, tool);
+	if (tool->input_copy[0] != '\0')
+		add_history(tool->input_copy);
+	*lexer = ft_lexer(tool);
 	if (!*lexer || check_pipe(*lexer) == 1)
 	{
 		lstclear_lexer(lexer, free);
 		return (1);
 	}
+	free(tool->input_copy);
 	*scmds = group_command(lexer);
 	add_redir(scmds, lexer);
 	last_lexer_to_strs_cmd(lexer, scmds);
@@ -52,17 +53,13 @@ void	handle_commands(t_simple_cmds *scmds, t_tools *tool, t_lexer *lexer)
 		multiple_commands(&scmds, tool);
 	g_global.in_cmd = 0;
 	lstclear_all(&lexer, &scmds, tool);
-	// g_global.error_num = 0;
 }
 
-void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
-		char **env)
+void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds, char **env)
 {
 	init_tool(&tool, env);
 	while (42)
 	{
-		g_global.in_child = 1;
-		g_global.stop_heredoc = 0;
 		tool->input = readline("MiniPROUT> ");
 		if (!tool->input)
 		{
@@ -71,26 +68,28 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		}
 		if (tool->input[0] != '\0')
 			add_history(tool->input);
-		if (handle_input(tool, &lexer, &scmds) > 0)
+		tool->input_copy = ft_strdup(tool->input);
+		if (!tool->input_copy)
 		{
 			free(tool->input);
+			continue;
+		}
+		free(tool->input);
+		if (handle_input(tool, &lexer, &scmds) > 0)
+		{
+			free(tool->input_copy);
 			continue ;
 		}
-		// if (g_global.error_num != 0)
-		// {
-		// 	free(tool->input);
-		// 	continue ;
-		// }
 		handle_commands(scmds, tool, lexer);
-		free(tool->input);
+		free(tool->input_copy);
 	}
 }
 
 void	reset_tool(t_tools **tools)
 {
 	(*tools)->cmd = NULL;
-	if ((*tools)->input)
-		free((*tools)->input);
+	if ((*tools)->input_copy)
+		free((*tools)->input_copy);
 	(*tools)->input = NULL;
 	(*tools)->inputs = NULL;
 	(*tools)->path = NULL;
@@ -114,10 +113,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		handle_signal();
 		g_global.in_cmd = 0;
-		g_global.stop_heredoc = 0;
-		g_global.in_heredoc = 0;
 		g_global.error_num = 0;
 		minishell_loop(tool, lexer, scmds, envp);
+		free(tool->input_copy);
 		free(tool);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 16:27:11 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:51:56 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_pipe(t_lexer *lexer)
 	return (0);
 }
 
-t_lexer	*ft_lexer(char *input, t_tools *tools)
+t_lexer	*ft_lexer(t_tools *tools)
 {
 	t_lexer	*head;
 	t_lexer	*tail;
@@ -48,20 +48,27 @@ t_lexer	*ft_lexer(char *input, t_tools *tools)
 	tail = NULL;
 	head = NULL;
 	i = 0;
-	input = expander(tools, input);
-	if (!input)
+	tools->input_copy = expander(tools, tools->input_copy);
+	if (!tools->input_copy)
 		return (NULL);
-	while (input[i])
+	while (tools->input_copy[i])
 	{
-		while (ft_isspace(input[i]) && input[i])
+		while (ft_isspace(tools->input_copy[i]) && tools->input_copy[i])
 			i++;
-		new = create_token(input, &i, tools);
+		new = create_token(tools->input_copy, &i, tools);
 		if (!new)
-			return (NULL);
-		while (ft_isspace(input[i]) && input[i])
+		{
+			lstclear_lexer(&head, free);
+			lstclear_lexer(&tail, free);
+			free(tools->input_copy);
+			tools->input_copy = NULL;
+			return NULL;
+		}
+		while (ft_isspace(tools->input_copy[i]) && tools->input_copy[i])
 			i++;
 		add_token(&head, &tail, new);
 	}
-	// free(input);
+	free(tools->input_copy);
+	tools->input_copy = NULL;
 	return (head);
 }

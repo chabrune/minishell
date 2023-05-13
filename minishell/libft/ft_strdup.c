@@ -6,7 +6,7 @@
 /*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:49:01 by chabrune          #+#    #+#             */
-/*   Updated: 2023/04/17 17:21:04 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:29:25 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strdup(const char *s)
 	size_t	len;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s);
 	str = (char *)ft_calloc(sizeof(char), (len + 1));
 	if (!str)

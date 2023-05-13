@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <chabrune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 10:56:12 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:56:44 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-char	*replace_name_with_content(char *str, char **var_name,
+char *replace_name_with_content(char *str, char **var_name,
 		char **var_content, int count)
 {
-	char	*result;
-	int		i;
-	int		k;
-	int		l;
+	char *result;
+	int i;
+	int k;
+	int l;
 
 	l = -1;
 	k = 0;
@@ -41,6 +41,7 @@ char	*replace_name_with_content(char *str, char **var_name,
 	}
 	return (result);
 }
+
 
 char	*expander(t_tools *tools, char *str)
 {
