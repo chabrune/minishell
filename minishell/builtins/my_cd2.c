@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_cd2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:29:26 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:29:56 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 15:07:36 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 	int		check_err;
 
 	find_pwd(tools, &home, &pwd);
+	if (!home)
+		ft_putendl_fd("minishell: cd: HOME not set", 2);
 	old_pwd = ft_strdup(pwd);
 	if (!(cmds->str[1]))
 		check_err = change_dir(tools, home, old_pwd);
@@ -43,9 +45,11 @@ void	my_cd(t_tools *tools, t_simple_cmds *cmds)
 	if (check_err == -1)
 	{
 		g_global.error_num = 1;
-		ft_putendl_fd("bash: No such file or directory", 2);
+		ft_putendl_fd("minishell: No such file or directory", 2);
 	}
 	free(old_pwd);
-	free(pwd);
-	free(home);
+	if (pwd)
+		free(pwd);
+	if (home)
+		free(home);
 }

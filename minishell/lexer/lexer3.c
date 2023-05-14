@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:36:16 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 20:51:56 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 14:50:44 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ int	check_pipe(t_lexer *lexer)
 	return (0);
 }
 
+t_lexer	*clear_fail(t_lexer **head, t_lexer **tail, t_tools *tools)
+{
+	lstclear_lexer(head, free);
+	lstclear_lexer(tail, free);
+	free(tools->input_copy);
+	tools->input_copy = NULL;
+	return (NULL);
+}
+
 t_lexer	*ft_lexer(t_tools *tools)
 {
 	t_lexer	*head;
@@ -57,13 +66,7 @@ t_lexer	*ft_lexer(t_tools *tools)
 			i++;
 		new = create_token(tools->input_copy, &i, tools);
 		if (!new)
-		{
-			lstclear_lexer(&head, free);
-			lstclear_lexer(&tail, free);
-			free(tools->input_copy);
-			tools->input_copy = NULL;
-			return NULL;
-		}
+			return (clear_fail(&head, &tail, tools));
 		while (ft_isspace(tools->input_copy[i]) && tools->input_copy[i])
 			i++;
 		add_token(&head, &tail, new);

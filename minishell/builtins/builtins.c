@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:34:18 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/13 20:42:51 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 13:40:52 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	my_exit(t_tools *tools, t_simple_cmds *cmds, t_lexer *lexer)
 {
 	(void)cmds;
-	free(lexer->str);
+	(void)lexer;
+	// if (lexer)
+	// 	if (lexer->str)
+	// 		free(lexer->str);
 	if (tools)
 		lstclear_tools(tools);
 	exit(0);

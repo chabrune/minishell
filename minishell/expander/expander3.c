@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   expander3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 17:34:35 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/13 20:56:44 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 13:57:22 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-char *replace_name_with_content(char *str, char **var_name,
+char	*replace_name_with_content(char *str, char **var_name,
 		char **var_content, int count)
 {
-	char *result;
-	int i;
-	int k;
-	int l;
+	char	*result;
+	int		i;
+	int		k;
+	int		l;
 
 	l = -1;
 	k = 0;
@@ -42,7 +42,6 @@ char *replace_name_with_content(char *str, char **var_name,
 	return (result);
 }
 
-
 char	*expander(t_tools *tools, char *str)
 {
 	char	*result;
@@ -50,7 +49,10 @@ char	*expander(t_tools *tools, char *str)
 
 	result = NULL;
 	if (check_closed_quotes(str) == 1)
+	{
+		free(str);
 		return (0);
+	}
 	str = sub_dollar_in_quotes(str);
 	count = count_dollar(str);
 	if (count == 0)
@@ -58,6 +60,7 @@ char	*expander(t_tools *tools, char *str)
 	else
 	{
 		result = expand_str(count, result, str, tools);
+		free(str);
 		result = sub_back_dollar_in_quotes(result);
 		return (result);
 	}

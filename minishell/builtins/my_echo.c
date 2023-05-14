@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:50:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/09 17:34:58 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/14 14:45:14 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,35 @@
 void	my_echo(t_simple_cmds *cmd)
 {
 	int		i;
+	int		j;
 	bool	n;
 
+	j = 1;
 	i = 1;
 	n = 0;
-	while (cmd->str[1] && cmd->str[1][0] == '-' && cmd->str[1][i] == 'n')
+	while (cmd->str[j] && cmd->str[j][0] == '-' && cmd->str[j][1] == 'n')
 	{
-		i++;
-		if (cmd->str[1][i] == 0)
-			n = 1;
+		i = 1;
+		while (cmd->str[j][i] == 'n')
+			i++;
+		if (cmd->str[j][i] == 0)
+			n++;
+		else
+			break ;
+		j++;
 	}
-	if (i > 1)
-		i = 2;
-	while (cmd->str[i])
-	{
-		ft_putstr_fd(cmd->str[i], STDOUT_FILENO);
-		i++;
-		if (cmd->str[i])
-			ft_putchar_fd(' ', STDOUT_FILENO);
-	}
+	print_echo(cmd, j);
 	if (n == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+}
+
+void	print_echo(t_simple_cmds *cmd, int j)
+{
+	while (cmd->str[j])
+	{
+		ft_putstr_fd(cmd->str[j], STDOUT_FILENO);
+		j++;
+		if (cmd->str[j])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+	}
 }

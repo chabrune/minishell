@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:10:13 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 22:29:49 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 14:43:09 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ char	*ft_strjoin_without_leaks(char *s1, char const *s2);
 void	change_env(t_tools *tools, char *path, char *old_pwd);
 char	*find_parent_dir(char **pwd);
 void	ignore_var(char ***var_name, char ***var_content, int i);
+void	print_echo(t_simple_cmds *cmd, int j);
 
 #endif
