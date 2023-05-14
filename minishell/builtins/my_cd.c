@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 21:43:55 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 16:24:44 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 		i++;
 	if (i == 0 && cmds->str[1][i] == '~')
 	{
+		if (!home)
+			return (NULL);
 		free(*pwd);
 		*pwd = ft_strdup(home);
 		i++;
