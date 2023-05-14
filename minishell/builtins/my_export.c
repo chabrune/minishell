@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/12 21:30:46 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 15:56:27 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ int	var_name_is_new(t_tools *tools, char *var)
 		if (ft_strncmp(var, tmp_env, ft_strlen(var)) == 0)
 		{
 			free(tmp_env);
-			if (var[ft_strlen(var) - 1] != '=')
-				return (2);
+			if (ft_strlen(var) > 0)
+				if (var[ft_strlen(var) - 1] != '=')
+					return (2);
 			return (1);
 		}
 		free(tmp_env);

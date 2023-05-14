@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
+/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:30:55 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/12 21:32:55 by chabrune         ###   ########.fr       */
+/*   Updated: 2023/05/14 16:11:50 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,11 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd, int i, int j)
 	{
 		j = fill_var_name(cmd, &var_name[i], i);
 		if (j < 0)
+		{
+			free_tab(var_content, nb_var);
+			free_tab(var_name, nb_var);
 			return ;
+		}
 		check_existing_name(tools, &var_name, &i);
 		fill_var_content(cmd, i, j, &var_content[i]);
 		if (var_name_is_new(tools, var_name[i]) == 2)
