@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 18:49:24 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/14 15:56:27 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/14 16:28:08 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	var_name_is_new(t_tools *tools, char *var)
 	char	*tmp_env;
 	int		i;
 
-	i = 0;
-	while (tools->envp[i])
+	i = -1;
+	while (tools->envp[++i])
 	{
 		j = 0;
 		while (tools->envp[i][j] && tools->envp[i][j] != '=')
@@ -51,7 +51,6 @@ int	var_name_is_new(t_tools *tools, char *var)
 			return (1);
 		}
 		free(tmp_env);
-		i++;
 	}
 	return (0);
 }

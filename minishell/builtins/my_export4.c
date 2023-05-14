@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_export4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:30:55 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/14 16:11:50 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/14 16:27:31 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ int	count_var(t_simple_cmds *cmd)
 	return (i - 1);
 }
 
+void	free_tab_all(char **var_content, char **var_name, int *i)
+{
+	free_tab(var_content, *i);
+	free_tab(var_name, *i);
+}
+
 void	my_export(t_tools *tools, t_simple_cmds *cmd, int i, int j)
 {
 	int		nb_var;
@@ -74,6 +80,5 @@ void	my_export(t_tools *tools, t_simple_cmds *cmd, int i, int j)
 			ignore_var(&var_name, &var_content, i);
 	}
 	add_lines_to_env(tools, var_name, var_content);
-	free_tab(var_content, i);
-	free_tab(var_name, i);
+	free_tab_all(var_content, var_name, &i);
 }

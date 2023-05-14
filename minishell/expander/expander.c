@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 18:00:57 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/14 14:01:54 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/14 16:22:05 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,41 +71,4 @@ char	*expand_str(int nb_dollar, char *result, char *str, t_tools *tools)
 	result = replace_name_with_content(str, var_name, var_content, nb_dollar);
 	free_expanded(var_name, var_content, nb_dollar);
 	return (result);
-}
-
-char	*sub_dollar_in_quotes(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] == '\'')
-		{
-			i++;
-			while (str[i] && str[i] != '\'')
-			{
-				if (str[i] == '$')
-					str[i] = 26;
-				i++;
-			}
-			if (str[i] == '\'' && str[i + 1])
-				i++;
-		}
-		i++;
-	}
-	return (str);
-}
-
-char	*sub_back_dollar_in_quotes(char *str)
-{
-	int		i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == 26)
-			str[i] = '$';
-	return (str);
 }

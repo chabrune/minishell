@@ -6,7 +6,7 @@
 #    By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 11:39:02 by chabrune          #+#    #+#              #
-#    Updated: 2023/05/12 21:44:44 by chabrune         ###   ########.fr        #
+#    Updated: 2023/05/14 16:22:49 by chabrune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRCS       	=	main.c \
 				builtins/my_export3.c \
 				builtins/my_export4.c \
 				builtins/my_cd2.c \
+				expander/expander4.c \
 
 #######################################################
 ###### RULES
