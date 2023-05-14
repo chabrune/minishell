@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chabrune <charlesbrunet51220@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 08:34:17 by chabrune          #+#    #+#             */
-/*   Updated: 2023/05/14 14:04:30 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/14 16:39:09 by chabrune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ void	minishell_loop(t_tools *tool, t_lexer *lexer, t_simple_cmds *scmds,
 		if (tool->input[0] != '\0')
 			add_history(tool->input);
 		tool->input_copy = ft_strdup(tool->input);
-		if (!(tool->input_copy))
-		{
-			free(tool->input);
-			continue ;
-		}
 		free(tool->input);
 		if (handle_input(tool, &lexer, &scmds) > 0)
 		{
