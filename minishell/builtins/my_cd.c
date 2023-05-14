@@ -6,7 +6,7 @@
 /*   By: emuller <emuller@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:19:46 by emuller           #+#    #+#             */
-/*   Updated: 2023/05/14 16:24:44 by emuller          ###   ########.fr       */
+/*   Updated: 2023/05/14 17:01:51 by emuller          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,9 @@ char	*ft_strjoin_without_leaks(char *s1, char const *s2)
 	return (str);
 }
 
-char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
+int	find_relative_2(t_simple_cmds *cmds, char **pwd)
 {
-	int		i;
-	char	*path;
+	int	i;
 
 	i = 0;
 	while (cmds->str[1][i] == '.' && cmds->str[1][i + 1] == '.')
@@ -91,6 +90,15 @@ char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
 		if (cmds->str[1][i] == '/')
 			i++;
 	}
+	return (i);
+}
+
+char	*find_relative_path(t_simple_cmds *cmds, char **pwd, char *home)
+{
+	int		i;
+	char	*path;
+
+	i = find_relative_2(cmds, pwd);
 	if (cmds->str[1][i] == '.')
 		i++;
 	if (i == 0 && cmds->str[1][i] == '~')
